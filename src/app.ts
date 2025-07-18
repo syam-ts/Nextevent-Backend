@@ -7,11 +7,17 @@ dotenv.config({
     path: ".env",
 });
 const app = express();
+
+app.use(express.json())
 app.use(cookieParser());
 
-app.use("/", indexRouter);
+app.get('/hi', (req: any, res: any) => {
+    console.log('GOOD')
+    res.json({message: 'LOADING'})
+})
+app.use("/api/v1", indexRouter);
 
-const port = process.env.PORT || 4040;
+const port = process.env.PORT || 3000;
 
 app.listen(port, async () => {
     await ConnectDB();

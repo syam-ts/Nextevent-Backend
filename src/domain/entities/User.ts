@@ -1,6 +1,6 @@
 export interface User {
-    fullname: string; //getting as first and lastname from api then join
-    emil: string;
+    fullName: string; //getting as first and lastname from api then join
+    email: string;
     mobile: number;
     gender: string;
     country: string;

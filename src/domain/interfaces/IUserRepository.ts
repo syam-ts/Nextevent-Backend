@@ -1,6 +1,6 @@
 export interface IUserRepository {
     signupUser: (
-        fullname: string,
+        fullName: string,
         emil: string,
         mobile: number,
         gender: string,
