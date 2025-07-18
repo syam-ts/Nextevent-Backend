@@ -5,9 +5,9 @@ import verifyToken from "../../middlewares/auth";
 const clientRouter = Router();
 
 const clientController = new ClientController();
-const { createClient } = clientController;
+const { createClient, updateClient } = clientController;
 
 clientRouter.post("/add", verifyToken, createClient);
-
+clientRouter.put("/update/:clientId", verifyToken, updateClient);
 
 export default clientRouter;

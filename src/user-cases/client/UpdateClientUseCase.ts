@@ -1,22 +1,21 @@
 import { IClientRepository } from "../../domain/interfaces/IClientRepository";
 
-interface ICilentBody { 
+interface ICilentBody {
     companyName: string;
     currency: string;
-    email: string;
     phone: number;
     panNumber: string;
 }
 
-export class CreateClient {
+export class UpdateClient {
     constructor(private clientRepository: IClientRepository) { }
 
-    execute(body: ICilentBody) {
-        const { companyName, currency, email, phone, panNumber } = body;
-        return this.clientRepository.createClient( 
+    execute(body: ICilentBody, clientId: string) {
+        const { companyName, currency, phone, panNumber } = body;
+        return this.clientRepository.updateClient(
+            clientId,
             companyName,
             currency,
-            email,
             phone,
             panNumber
         );
