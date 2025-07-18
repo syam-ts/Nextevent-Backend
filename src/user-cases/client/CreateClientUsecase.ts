@@ -1,7 +1,6 @@
 import { IClientRepository } from "../../domain/interfaces/IClientRepository";
 
-interface ICilentBody {
-    clientName: string;
+interface ICilentBody { 
     companyName: string;
     currency: string;
     email: string;
@@ -13,9 +12,8 @@ export class createClient {
     constructor(private clientRepository: IClientRepository) { }
 
     execute(body: ICilentBody) {
-        const { clientName, companyName, currency, email, phone, panNumber } = body;
-        return this.clientRepository.createClient(
-            clientName,
+        const { companyName, currency, email, phone, panNumber } = body;
+        return this.clientRepository.createClient( 
             companyName,
             currency,
             email,

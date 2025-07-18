@@ -1,10 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const clientSchema = new Schema({
-    clientName: {
-        type: String,
-        require: true,
-    },
+const clientSchema = new Schema({ 
     companyName: {
         type: String,
         require: true,

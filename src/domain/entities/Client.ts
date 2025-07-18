@@ -1,5 +1,4 @@
-export interface Client {
-    clientName: string;
+export interface Client { 
     companyName: string;
     currency: string;
     email: string;
