@@ -1,4 +1,4 @@
-import { UserRepositoryDb } from "../../../infrastructure/repositories/userRepositoryDb";
+import { IUserRepository } from "../../domain/interfaces/IUserRepository"; 
 
 interface IBody {
     email: string;
@@ -6,7 +6,7 @@ interface IBody {
 }
 
 export class LoginUser {
-    constructor(private userRepository: UserRepositoryDb) { }
+    constructor(private userRepository: IUserRepository) { }
 
     execute(body: IBody) {
         const { email, password } = body;

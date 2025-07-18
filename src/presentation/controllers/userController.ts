@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { CreateUser } from "../../application/user-cases/user/CreatUserUsecase";
+import { CreateUser } from "../../user-cases/user/CreatUserUsecase";
 import { UserRepositoryDb } from "../../infrastructure/repositories/userRepositoryDb";
 import { generateToken } from "../../utils/jwt/generateToken";
-import { LoginUser } from "../../application/user-cases/user/loginUserUsecase";
+import { LoginUser } from "../../user-cases/user/loginUserUsecase";
 
 const userRepository = new UserRepositoryDb();
 const signupUserUsecase = new CreateUser(userRepository);
