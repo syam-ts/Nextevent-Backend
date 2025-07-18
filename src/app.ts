@@ -10,11 +10,7 @@ const app = express();
 
 app.use(express.json())
 app.use(cookieParser());
-
-app.get('/hi', (req: any, res: any) => {
-    console.log('GOOD')
-    res.json({message: 'LOADING'})
-})
+ 
 app.use("/api/v1", indexRouter);
 
 const port = process.env.PORT || 3000;

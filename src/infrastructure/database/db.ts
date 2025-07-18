@@ -1,8 +1,7 @@
 import { connect } from "mongoose";
 require("dotenv").config();
 
-const mongo_uri = process.env.MONGO_URI as string;
-console.log("ril: ", mongo_uri);
+const mongo_uri = process.env.MONGO_URI as string; 
 
 export const ConnectDB = async () => {
     try {

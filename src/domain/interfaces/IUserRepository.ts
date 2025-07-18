@@ -3,6 +3,7 @@ export interface IUserRepository {
         fullName: string,
         emil: string,
         mobile: number,
+        password: string, 
         gender: string,
         country: string,
         state: string,

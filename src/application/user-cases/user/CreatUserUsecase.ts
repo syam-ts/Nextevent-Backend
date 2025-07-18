@@ -5,6 +5,7 @@ interface IUser {
     lastName: string;
     email: string;
     mobile: number;
+    password: string;
     gender: string;
     country: string;
     state: string;
@@ -20,6 +21,7 @@ export class CreateUser {
             lastName,
             email,
             mobile,
+            password,
             gender,
             country,
             state,
@@ -31,6 +33,7 @@ export class CreateUser {
             fullName,
             email,
             mobile,
+            password,
             gender,
             country,
             state,
