@@ -7,7 +7,7 @@ export class ClientRepositoryDb implements IClientRepository {
         currency: string,
         email: string,
         phone: number,
-        panNumber: number
+        panNumber: string
     ): Promise<any> {
         const newClient = await new ClientModel({ 
             companyName,

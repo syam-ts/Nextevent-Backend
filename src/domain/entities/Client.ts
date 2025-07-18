@@ -3,5 +3,5 @@ export interface Client {
     currency: string;
     email: string;
     phone: number;
-    panNumber: number;
+    panNumber: string;
 }

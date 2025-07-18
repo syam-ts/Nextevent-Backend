@@ -5,7 +5,7 @@ interface ICilentBody {
     currency: string;
     email: string;
     phone: number;
-    panNumber: number;
+    panNumber: string;
 }
 
 export class createClient {

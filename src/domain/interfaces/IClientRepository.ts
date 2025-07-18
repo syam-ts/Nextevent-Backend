@@ -4,6 +4,6 @@ export interface IClientRepository {
         currency: string,
         email: string,
         phone: number,
-        panNumber: number
+        panNumber: string
     ) => Promise<any>;
 }
