@@ -1,4 +1,4 @@
-export interface Client { 
+export interface IClient { 
     companyName: string;
     currency: string;
     email: string;

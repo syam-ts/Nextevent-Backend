@@ -1,4 +1,4 @@
-export interface User {
+export interface IUser {
     _id: string;
     fullName: string; //getting as first and lastname from api then join
     email: string;
