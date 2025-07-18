@@ -3,36 +3,36 @@ import { model, Schema } from "mongoose";
 const userSchema = new Schema({
     fullName: {
         type: String,
-        require: false,
+        require: true,
     },
     email: {
         type: String,
-        require: false,
+        require: true,
     },
     mobile: {
         type: Number,
-        require: false,
+        require: true,
     },
     password: {
         type: String,
-        require: false,
+        require: true,
     },
     gender: {
         type: String,
-        require: false,
+        require: true,
         enum: ["male", "female"],
     },
     country: {
         type: String,
-        require: false,
+        require: true,
     },
     state: {
         type: String,
-        require: false,
+        require: true,
     },
     language: {
         type: String,
-        require: false,
+        require: true,
     },
 });
 
