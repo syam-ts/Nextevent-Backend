@@ -50,9 +50,8 @@ const invoiceSchema = new Schema({
         require: true,
     },
     patmentGateway: {
-        type: Date,
-        require: true,
-        default: Date.now(),
+        type: String,
+        require: true, 
     },
 });
 
