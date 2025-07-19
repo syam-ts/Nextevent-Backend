@@ -1,7 +1,9 @@
+import { IClient } from "../../domain/entities/Client";
 import { IUser } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/interfaces/IUserRepository";
 import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
 import { verifyPassword } from "../../utils/crypto/verifyPassword";
+import { ClientModel } from "../database/Schema/clientSchema";
 import { UserModel } from "../database/Schema/userSchema";
 
 export class UserRepositoryDb implements IUserRepository {
@@ -70,5 +72,20 @@ export class UserRepositoryDb implements IUserRepository {
 
         if (!updateUser) throw new Error("User not found");
         return;
+    }
+
+    async getMyClients(userId: string): Promise<IClient[]> {
+        const clients = await ClientModel.find({ userId }).lean<IClient[]>();
+        console.log("CLIENT: ", clients);
+
+        if (!clients) throw new Error("Clients not found");
+        return clients;
+    }
+
+    async getSingleClients(clientId: string): Promise<IClient> {
+        const client = await ClientModel.findById(clientId).lean<IClient>();
+
+        if (!client) throw new Error("No client found!");
+        return client;
     }
 }

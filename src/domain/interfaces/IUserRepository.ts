@@ -1,3 +1,4 @@
+import { IClient } from "../entities/Client";
 import { IUser } from "../entities/User";
 
 export interface IUserRepository {
@@ -25,4 +26,7 @@ export interface IUserRepository {
         state: string,
         language: string
     ) => Promise<any>;
+
+    getMyClients: (userId: string) => Promise<IClient[]>;
+    getSingleClients: (clientId: string) => Promise<IClient>;
 }

@@ -5,12 +5,16 @@ import { generateToken } from "../../utils/jwt/generateToken";
 import { LoginUser } from "../../user-cases/user/loginUserUsecase";
 import { UpdateUser } from "../../user-cases/user/UpdateUserUsecase";
 import { GetUserProfile } from "../../user-cases/user/GetUserProfileUseCase";
+import { GetMyClients } from "../../user-cases/user/GetMyClientsUseCase";
+import { GetSingleClient } from "../../user-cases/user/GetSingleClientUseCase";
 
 const userRepository = new UserRepositoryDb();
 const signupUserUsecase = new CreateUser(userRepository);
 const loginUserUsecase = new LoginUser(userRepository);
 const getUserProfileUsecase = new GetUserProfile(userRepository);
 const updateUserUsecase = new UpdateUser(userRepository);
+const getMyClientUsecase = new GetMyClients(userRepository);
+const getSingleClientUsecase = new GetSingleClient(userRepository);
 
 export class UserController {
     async signupUser(req: Request, res: Response): Promise<void> {
@@ -58,6 +62,34 @@ export class UserController {
             const result = await updateUserUsecase.execute(req.body, req.user.userId);
 
             res.status(201).json({ message: "User updated ", success: true });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res.status(501).json({ message: err.message, success: false });
+        }
+    }
+
+    async getMyClients(req: any, res: Response): Promise<void> {
+        try {
+            const { userId } = req.user;
+            const clients = await getMyClientUsecase.execute(userId);
+
+            res
+                .status(200)
+                .json({ message: "Clients loaded", clients, success: true });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res.status(501).json({ message: err.message, success: false });
+        }
+    }
+
+    async getSingleClient(req: any, res: Response): Promise<void> {
+        try {
+            const { clientId } = req.params;
+            const client = await getSingleClientUsecase.execute(clientId);
+
+            res
+                .status(200)
+                .json({ message: "Clients loaded", client, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
             res.status(501).json({ message: err.message, success: false });

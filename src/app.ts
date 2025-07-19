@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { indexRouter } from "./presentation/exress-http/routes";
 import { ConnectDB } from "./infrastructure/database/db";
+import morgan from 'morgan'
+import cors from 'cors'
 dotenv.config({
     path: ".env",
 });
@@ -10,7 +12,9 @@ const app = express();
 
 app.use(express.json())
 app.use(cookieParser());
- 
+app.use(cors())
+app.use(morgan("dev"));  
+
 app.use("/api/v1", indexRouter);
 
 const port = process.env.PORT || 3000;
