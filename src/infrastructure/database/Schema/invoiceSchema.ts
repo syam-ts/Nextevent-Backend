@@ -37,7 +37,11 @@ const invoiceSchema = new Schema({
         require: true,
     },
     invoiceDate: {
-        type: String,
+        type: Date,
+        require: true,
+    },
+    dueDate: {
+        type: Date,
         require: true,
     },
     items: [ItemSchema],
