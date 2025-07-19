@@ -6,14 +6,11 @@ const userRouter = Router();
 
 const userController = new UserController();
 
-const { signupUser, loginUser, updateUser } = userController;
+const { signupUser, loginUser,getUserProfile, updateUser } = userController;
 
 userRouter.post("/signup", signupUser);
 userRouter.post("/login", loginUser);
-userRouter.get('/home', verifyToken, (req: any, res: any) => {
-    const user =req.user;
-    res.json({message: 'done', user})
-})
+userRouter.get('/profile', verifyToken, getUserProfile);
 userRouter.put('/update', verifyToken, updateUser);
 
 export default userRouter;

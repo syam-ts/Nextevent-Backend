@@ -1,3 +1,5 @@
+import { IUser } from "../entities/User";
+
 export interface IUserRepository {
     signupUser: (
         fullName: string,
@@ -11,6 +13,8 @@ export interface IUserRepository {
     ) => Promise<any>;
 
     loginUser: (email: string, password: string) => Promise<any>;
+
+    getUserProfile: (userId: string) => Promise<IUser>;
 
     updateUser: (
         userId: string,

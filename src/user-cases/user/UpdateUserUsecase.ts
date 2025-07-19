@@ -9,7 +9,7 @@ interface IBody {
     language: string;
 }
 
-export class updateUser {
+export class UpdateUser {
     constructor(private userRepository: IUserRepository) { }
 
     execute(body: IBody, userId: string) {

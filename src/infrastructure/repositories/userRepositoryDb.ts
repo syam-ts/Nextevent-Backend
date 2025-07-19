@@ -42,6 +42,12 @@ export class UserRepositoryDb implements IUserRepository {
         if (verifiedPassword) return findedUser._id.toString();
     }
 
+    async getUserProfile(userId: string): Promise<IUser> {
+        const user = await UserModel.findById(userId).lean<IUser>();
+        if (!user) throw new Error("user not found!");
+        return user;
+    }
+
     async updateUser(
         userId: string,
         fullName: string,
