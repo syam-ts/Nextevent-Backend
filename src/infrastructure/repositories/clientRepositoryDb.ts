@@ -1,5 +1,7 @@
+import { IInvoice } from "../../domain/entities/Invoice";
 import { IClientRepository } from "../../domain/interfaces/IClientRepository";
 import { ClientModel } from "../database/Schema/clientSchema";
+import { InvoiceModel } from "../database/Schema/invoiceSchema";
 
 export class ClientRepositoryDb implements IClientRepository {
     async createClient(
@@ -40,5 +42,14 @@ export class ClientRepositoryDb implements IClientRepository {
 
         if (!updateClient) throw new Error("Client updation failed!");
         return;
+    }
+
+    async getAllInvoices(clientId: string): Promise<IInvoice[]> {
+        const invoices = await InvoiceModel.find({ "company._id": clientId }).lean<
+            IInvoice[]
+        >();
+
+        if (!invoices) throw new Error("no invoices found!");
+        return invoices;
     }
 }

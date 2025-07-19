@@ -1,3 +1,5 @@
+import { IInvoice } from "../entities/Invoice";
+
 export interface IClientRepository {
     createClient: ( 
         userId: string,
@@ -15,4 +17,6 @@ export interface IClientRepository {
         phone: number,
         panNumber: string
     ) => Promise<any>;
+
+    getAllInvoices: (clientId: string) => Promise<IInvoice[]>
 }

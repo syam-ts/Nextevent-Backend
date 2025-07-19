@@ -3,7 +3,6 @@ import { UserController } from "../../controllers/userController";
 import verifyToken from "../../middlewares/auth";
 
 const userRouter = Router();
-
 const userController = new UserController();
 
 const {
