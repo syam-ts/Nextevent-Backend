@@ -5,20 +5,6 @@ interface IInvoiceItems {
     total: number;
 }
 
-// interface IPaymentGateway {
-//     cards: ["VISA", "MASTER CARD", "RUPAY", "AMEX"];
-//     netBanking: [
-//         "SBI",
-//         "HDFC",
-//         "FEDERAL BANK",
-//         "INDUSIND ",
-//         "KODAK",
-//         "IDFC",
-//         "AXIS"
-//     ];
-//     upi: ["google pay", "paytm", "phone pay", "cred"];
-// }
-
 interface ICompany {
     _id: string;
     name: string;
