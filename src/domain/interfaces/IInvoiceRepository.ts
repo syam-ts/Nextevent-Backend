@@ -1,3 +1,5 @@
+import { IInvoice } from "../entities/Invoice";
+
 export interface IInvoiceRepository {
     createInvoice: (
         companyName: string,
@@ -17,4 +19,6 @@ export interface IInvoiceRepository {
     ) => Promise<void>;
 
     confirmInvoicePayment: (invoiceId: string) => Promise<void>
+
+    getInvoice: (invoiceId: string) => Promise<IInvoice>
 }

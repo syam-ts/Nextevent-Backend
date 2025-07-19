@@ -1,3 +1,4 @@
+import { IInvoice } from "../../domain/entities/Invoice";
 import { IInvoiceRepository } from "../../domain/interfaces/IInvoiceRepository";
 import { generateInvoiceTotal } from "../../utils/invoice/invoiceTotal";
 import { InvoiceModel } from "../database/Schema/invoiceSchema";
@@ -41,7 +42,15 @@ export class InvoiceRepositoryDb implements IInvoiceRepository {
             }
         );
 
-        if (!updateInvoiceAsPaid) throw new Error("Updating invoice payment failed");
+        if (!updateInvoiceAsPaid)
+            throw new Error("Updating invoice payment failed");
         return;
+    }
+
+    async getInvoice(invoiceId: string): Promise<IInvoice> {
+        const invoice = await InvoiceModel.findById(invoiceId).lean<IInvoice>();
+
+        if (!invoice) throw new Error("invoice not found!");
+        return invoice;
     }
 }
