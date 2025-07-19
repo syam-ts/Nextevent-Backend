@@ -6,8 +6,14 @@ const userRouter = Router();
 
 const userController = new UserController();
 
-const { signupUser, loginUser, getUserProfile, updateUser, getMyClients, getSingleClient } =
-    userController;
+const {
+    signupUser,
+    loginUser,
+    getUserProfile,
+    updateUser,
+    getMyClients,
+    getSingleClient,
+} = userController;
 
 userRouter.post("/signup", signupUser);
 userRouter.post("/login", loginUser);
