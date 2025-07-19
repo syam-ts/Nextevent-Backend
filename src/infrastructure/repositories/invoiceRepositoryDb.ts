@@ -1,4 +1,5 @@
 import { IInvoiceRepository } from "../../domain/interfaces/IInvoiceRepository";
+import { generateInvoiceTotal } from "../../utils/invoice/invoiceTotal";
 import { InvoiceModel } from "../database/Schema/invoiceSchema";
 
 export class InvoiceRepositoryDb implements IInvoiceRepository {

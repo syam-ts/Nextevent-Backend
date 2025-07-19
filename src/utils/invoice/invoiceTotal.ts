@@ -5,7 +5,7 @@ interface IItems {
     total: number;
 }
 
-const generateInvoiceTotal = (items: IItems[]): number => {
+export const generateInvoiceTotal = (items: IItems[]): number => {
     const total = items.reduce((acc, curr) => {
         return (acc += curr.total);
     }, 0);

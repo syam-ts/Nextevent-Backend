@@ -1,4 +1,4 @@
-import { User } from "../../domain/entities/User";
+import { IUser } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/interfaces/IUserRepository";
 import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
 import { verifyPassword } from "../../utils/crypto/verifyPassword";
@@ -32,7 +32,7 @@ export class UserRepositoryDb implements IUserRepository {
     }
 
     async loginUser(email: string, password: string): Promise<any> {
-        const findedUser = await UserModel.findOne({ email }).lean<User>().exec();
+        const findedUser = await UserModel.findOne({ email }).lean<IUser>().exec();
 
         if (!findedUser) throw new Error("User not found");
         const verifiedPassword = await verifyPassword(

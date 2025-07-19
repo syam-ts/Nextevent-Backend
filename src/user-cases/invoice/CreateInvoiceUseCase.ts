@@ -1,4 +1,5 @@
 import { IInvoiceRepository } from "../../domain/interfaces/IInvoiceRepository";
+import { generateInvoiceNumber } from "../../utils/invoice/invoiceNumber";
 
 interface IInvoice {
     companyName: string;
