@@ -3,10 +3,16 @@ export interface IInvoiceRepository {
         companyName: string,
         companyId: string,
         invoiceNumber: number,
-        invoiceDate: string,
         dueDate: string,
-        items: [string],
+        items: [
+            {
+                details: string;
+                quantity: number;
+                rate: number;
+                total: number;
+            }
+        ],
         notes: string,
-        patmentGateway: string, 
+        patmentGateway: string
     ) => Promise<any>;
 }

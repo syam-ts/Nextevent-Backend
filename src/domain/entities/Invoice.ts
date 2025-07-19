@@ -20,8 +20,8 @@ interface IInvoiceItems {
 // }
 
 interface ICompany {
-    _id: string
-    name: string
+    _id: string;
+    name: string;
 }
 
 export interface IInvoice {
@@ -30,7 +30,8 @@ export interface IInvoice {
     invoiceDate: string;
     dueDate: string;
     items: [IInvoiceItems];
+    total: number;
     notes: string;
     patmentGateway: string;
-    paid: boolean
+    paid: boolean;
 }

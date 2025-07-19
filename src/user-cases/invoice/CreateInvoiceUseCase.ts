@@ -3,9 +3,15 @@ import { IInvoiceRepository } from "../../domain/interfaces/IInvoiceRepository";
 interface IInvoice {
     companyName: string;
     companyId: string;
-    invoiceDate: string;
     dueDate: string;
-    items: [string];
+    items: [
+        {
+            details: string;
+            quantity: number;
+            rate: number;
+            total: number;
+        }
+    ];
     notes: string;
     patmentGateway: string;
 }
@@ -17,21 +23,13 @@ export class CreateInvoice {
         //generate invoice number
         const invoiceNumber: number = generateInvoiceNumber();
 
-        const {
-            companyName,
-            companyId,
-            invoiceDate,
-            dueDate,
-            items,
-            notes,
-            patmentGateway,
-        } = body;
+        const { companyName, companyId, dueDate, items, notes, patmentGateway } =
+            body;
 
         return this.invoiceRepository.createInvoice(
             companyName,
             companyId,
             invoiceNumber,
-            invoiceDate,
             dueDate,
             items,
             notes,

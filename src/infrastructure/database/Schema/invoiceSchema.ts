@@ -41,6 +41,10 @@ const invoiceSchema = new Schema({
         require: true,
     },
     items: [ItemSchema],
+    total: {
+        type: Number,
+        require: true,
+    },
     notes: {
         type: String,
         require: true,

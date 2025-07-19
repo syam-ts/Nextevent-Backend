@@ -6,21 +6,23 @@ export class InvoiceRepositoryDb implements IInvoiceRepository {
         companyName: string,
         companyId: string,
         invoiceNumber: number,
-        invoiceDate: string,
         dueDate: string,
-        items: [string],
+        items: [{ details: string; quantity: number; rate: number; total: number }],
         notes: string,
         patmentGateway: string
     ) {
+        const sumTotal = generateInvoiceTotal(items);
+
         const newInvoice = await new InvoiceModel({
             company: {
                 _id: companyId,
                 name: companyName,
             },
             invoiceNumber,
-            invoiceDate,
+            invoiceDate: Date.now(),
             dueDate,
             items,
+            total: sumTotal,
             notes,
             patmentGateway,
             paid: false,
