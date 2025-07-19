@@ -4,7 +4,8 @@ import { InvoiceModel } from "../database/Schema/invoiceSchema";
 export class InvoiceRepositoryDb implements IInvoiceRepository {
     async createInvoice(
         companyName: string,
-        invoiceId: string,
+        companyId: string,
+        invoiceNumber: number,
         invoiceDate: string,
         dueDate: string,
         items: [string],
@@ -12,13 +13,17 @@ export class InvoiceRepositoryDb implements IInvoiceRepository {
         patmentGateway: string
     ) {
         const newInvoice = await new InvoiceModel({
-            companyName,
-            invoiceId,
+            company: {
+                _id: companyId,
+                name: companyName,
+            },
+            invoiceNumber,
             invoiceDate,
             dueDate,
             items,
             notes,
             patmentGateway,
+            paid: false,
         }).save();
 
         if (!newInvoice) throw new Error("Ivoice creation Failed!");

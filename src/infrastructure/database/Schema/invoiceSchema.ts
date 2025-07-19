@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 
 const ItemSchema = {
     details: {
@@ -19,13 +19,21 @@ const ItemSchema = {
     },
 };
 
-const invoiceSchema = new Schema({
-    companyName: {
+const ICompany = {
+    _id: {
+        type: mongoose.Types.ObjectId,
+        require: true,
+    },
+    name: {
         type: String,
         require: true,
     },
-    invoiceId: {
-        type: String,
+};
+
+const invoiceSchema = new Schema({
+    company: ICompany,
+    invoiceNumber: {
+        type: Number,
         require: true,
     },
     invoiceDate: {

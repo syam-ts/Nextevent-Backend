@@ -1,7 +1,8 @@
 export interface IInvoiceRepository {
     createInvoice: (
         companyName: string,
-        invoiceId: string,
+        companyId: string,
+        invoiceNumber: number,
         invoiceDate: string,
         dueDate: string,
         items: [string],

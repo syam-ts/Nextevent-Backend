@@ -19,12 +19,18 @@ interface IInvoiceItems {
 //     upi: ["google pay", "paytm", "phone pay", "cred"];
 // }
 
+interface ICompany {
+    _id: string
+    name: string
+}
+
 export interface IInvoice {
-    companyName: string;
-    invoiceId: string;
+    company: ICompany;
+    invoiceNumber: number;
     invoiceDate: string;
     dueDate: string;
     items: [IInvoiceItems];
     notes: string;
     patmentGateway: string;
+    paid: boolean
 }
