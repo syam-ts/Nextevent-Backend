@@ -48,6 +48,7 @@ export class InvoiceRepositoryDb implements IInvoiceRepository {
     }
 
     async getInvoice(invoiceId: string): Promise<IInvoice> {
+
         const invoice = await InvoiceModel.findById(invoiceId).lean<IInvoice>();
 
         if (!invoice) throw new Error("invoice not found!");

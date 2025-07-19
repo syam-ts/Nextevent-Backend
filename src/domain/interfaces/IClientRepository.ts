@@ -18,5 +18,5 @@ export interface IClientRepository {
         panNumber: string
     ) => Promise<any>;
 
-    getAllInvoices: (clientId: string) => Promise<IInvoice[]>
+    getAllInvoices: (clientId: string, filter: string, currentPage: number) => Promise<any>
 }

@@ -38,10 +38,11 @@ export class ClientController {
     async getAllInvoices(req: any, res: any): Promise<void> {
         try {
             const { clientId } = req.params;
-            const invoices = await getAllInvoicesUseCase.execute(clientId);
+            const {filter, currentPage} = req.query;
+            const result = await getAllInvoicesUseCase.execute(clientId, filter, currentPage);
             res
                 .status(201)
-                .json({ message: "Invoices loaded", invoices, success: true });
+                .json({ message: "Invoices loaded", invoices: result.invoices, totalPages: result.totalPages, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
             res.status(501).json({ message: err.message, success: false });

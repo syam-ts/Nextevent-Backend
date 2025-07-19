@@ -44,12 +44,47 @@ export class ClientRepositoryDb implements IClientRepository {
         return;
     }
 
-    async getAllInvoices(clientId: string): Promise<IInvoice[]> {
-        const invoices = await InvoiceModel.find({ "company._id": clientId }).lean<
-            IInvoice[]
-        >();
+    async getAllInvoices(
+        clientId: string,
+        filter: string,
+        currentPage: number
+    ): Promise<any> {
+        const PAGE_SIZE = 4;
+        const buildQuery = (clientId: string, filter: string) => {
+            const query: any = {
+                "company._id": clientId,
+            };
 
-        if (!invoices) throw new Error("no invoices found!");
-        return invoices;
+            if (filter === "paid") {
+                query.paid = true;
+            } else if (filter === "unpaid") {
+                query.paid = false;
+            }
+
+            return query;
+        };
+
+        const query = buildQuery(clientId, filter);
+
+        let sortCondition = {};
+        if (filter === "latest") {
+            sortCondition = { invoiceDate: -1 };
+        }
+
+        let SKIP = Math.floor((currentPage - 1) * PAGE_SIZE);
+
+        const invoices = await InvoiceModel.find(query)
+            .sort(sortCondition)
+            .skip(SKIP)
+            .limit(PAGE_SIZE)
+            .lean<IInvoice[]>();
+
+        const totalCount = await InvoiceModel.countDocuments(query);
+        const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+        if (!invoices || invoices.length === 0) {
+            throw new Error("No invoices found!");
+        }
+        return { invoices, totalPages };
     }
 }

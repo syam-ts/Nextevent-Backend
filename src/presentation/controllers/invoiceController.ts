@@ -38,6 +38,7 @@ export class InvoiceController {
     async getInvoice(req: any, res: any): Promise<void> {
         try {
             const { invoiceId } = req.params;
+            const {filter, currentPage} = req.query;
             const invoice = await getInvoiceUseCase.execute(invoiceId);
 
             res
