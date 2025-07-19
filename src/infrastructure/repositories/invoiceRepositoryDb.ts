@@ -11,7 +11,7 @@ export class InvoiceRepositoryDb implements IInvoiceRepository {
         items: [{ details: string; quantity: number; rate: number; total: number }],
         notes: string,
         patmentGateway: string
-    ) {
+    ): Promise<void> {
         const sumTotal = generateInvoiceTotal(items);
 
         const newInvoice = await new InvoiceModel({
@@ -30,6 +30,18 @@ export class InvoiceRepositoryDb implements IInvoiceRepository {
         }).save();
 
         if (!newInvoice) throw new Error("Ivoice creation Failed!");
-        return newInvoice;
+        return;
+    }
+
+    async confirmInvoicePayment(invoiceId: string): Promise<void> {
+        const updateInvoiceAsPaid = await InvoiceModel.findByIdAndUpdate(
+            invoiceId,
+            {
+                $set: { paid: true },
+            }
+        );
+
+        if (!updateInvoiceAsPaid) throw new Error("Updating invoice payment failed");
+        return;
     }
 }

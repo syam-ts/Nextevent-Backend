@@ -6,4 +6,4 @@ export const indexRouter = Router();
 
 indexRouter.use("/user", userRouter);
 indexRouter.use("/client", clientRouter);
-indexRouter.use('/invoice', invoiceRouter)
+indexRouter.use("/invoice", invoiceRouter);

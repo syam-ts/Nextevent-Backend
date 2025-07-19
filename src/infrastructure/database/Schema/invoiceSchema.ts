@@ -57,6 +57,10 @@ const invoiceSchema = new Schema({
         type: String,
         require: true, 
     },
+    paid: {
+        type: Boolean,
+        require: true
+    }
 });
 
 export const InvoiceModel = model("invoice", invoiceSchema);

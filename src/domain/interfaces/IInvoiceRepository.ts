@@ -14,5 +14,7 @@ export interface IInvoiceRepository {
         ],
         notes: string,
         patmentGateway: string
-    ) => Promise<any>;
+    ) => Promise<void>;
+
+    confirmInvoicePayment: (invoiceId: string) => Promise<void>
 }
