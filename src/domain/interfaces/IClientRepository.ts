@@ -1,5 +1,6 @@
 export interface IClientRepository {
     createClient: ( 
+        userId: string,
         companyName: string,
         currency: string,
         email: string,

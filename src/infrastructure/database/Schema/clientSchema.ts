@@ -1,6 +1,10 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 
 const clientSchema = new Schema({ 
+    userId: {
+        type: Types.ObjectId,
+        require: true,
+    },
     companyName: {
         type: String,
         require: true,

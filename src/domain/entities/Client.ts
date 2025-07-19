@@ -1,4 +1,5 @@
 export interface IClient { 
+    userId: string;
     companyName: string;
     currency: string;
     email: string;

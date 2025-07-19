@@ -11,9 +11,10 @@ interface ICilentBody {
 export class CreateClient {
     constructor(private clientRepository: IClientRepository) { }
 
-    execute(body: ICilentBody) {
+    execute(body: ICilentBody, userId: string) {
         const { companyName, currency, email, phone, panNumber } = body;
         return this.clientRepository.createClient( 
+            userId,
             companyName,
             currency,
             email,

@@ -3,6 +3,7 @@ import { ClientModel } from "../database/Schema/clientSchema";
 
 export class ClientRepositoryDb implements IClientRepository {
     async createClient(
+        userId: string,
         companyName: string,
         currency: string,
         email: string,
@@ -10,6 +11,7 @@ export class ClientRepositoryDb implements IClientRepository {
         panNumber: string
     ): Promise<any> {
         const newClient = await new ClientModel({
+            userId,
             companyName,
             currency,
             email,

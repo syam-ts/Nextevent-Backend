@@ -9,7 +9,8 @@ const updateClientUseCase = new UpdateClient(clientRepository);
 export class ClientController {
     async createClient(req: any, res: any): Promise<void> {
         try {
-            const result = await createClientUseCase.execute(req.body);
+            const { userId } = req.user;
+            const result = await createClientUseCase.execute(req.body, userId);
             res.status(201).json({ message: "new client created", success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
