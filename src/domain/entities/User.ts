@@ -1,6 +1,6 @@
 export interface IUser {
     _id: string;
-    fullName: string; //getting as first and lastname from api then join
+    fullName: string; 
     email: string;
     mobile: number;
     password: string;

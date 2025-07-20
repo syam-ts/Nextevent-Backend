@@ -44,7 +44,7 @@ export class ClientRepositoryDb implements IClientRepository {
         return;
     }
 
-    async getAllInvoices(
+async getAllInvoices(
         clientId: string,
         filter: string,
         currentPage: number

@@ -30,13 +30,13 @@ export class UserController {
 
     async loginUser(req: Request, res: Response): Promise<void> {
         try {
-            const result = await loginUserUsecase.execute(req.body);
-            const token = generateToken(result);
+            const user = await loginUserUsecase.execute(req.body);
+            const token = generateToken(user._id.toString());
             res.cookie("token", token);
 
             res
                 .status(200)
-                .json({ message: "Loggedin Successfull", token, success: true });
+                .json({ message: "Loggedin Successfull",user, token, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
             res.status(501).json({ message: err.message, success: false });

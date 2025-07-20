@@ -41,7 +41,7 @@ export class UserRepositoryDb implements IUserRepository {
             password,
             findedUser.password
         );
-        if (verifiedPassword) return findedUser._id.toString();
+        if (verifiedPassword) return findedUser;
     }
 
     async getUserProfile(userId: string): Promise<IUser> {

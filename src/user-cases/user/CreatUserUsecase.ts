@@ -27,7 +27,7 @@ export class CreateUser {
             state,
             language,
         } = body;
-        const fullName: string = firstName + lastName;
+        const fullName: string = firstName + ' ' + lastName;
 
         return this.userRepository.signupUser(
             fullName,
