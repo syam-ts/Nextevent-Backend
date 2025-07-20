@@ -58,7 +58,7 @@ export class UserRepositoryDb implements IUserRepository {
         country: string,
         state: string,
         language: string
-    ): Promise<any> {
+    ): Promise<IUser> {
         const updateUser = await UserModel.findByIdAndUpdate(userId, {
             $set: {
                 fullName,
@@ -67,11 +67,13 @@ export class UserRepositoryDb implements IUserRepository {
                 country,
                 state,
                 language,
-            },
-        });
+            }
+        }, {
+            new: true
+        }).lean<IUser>();
 
         if (!updateUser) throw new Error("User not found");
-        return;
+        return updateUser;
     }
 
     async getMyClients(userId: string): Promise<IClient[]> {

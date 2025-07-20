@@ -18,7 +18,7 @@ export class UpdateUser {
             userId,
             fullName,
             mobile,
-            gender,
+            gender, 
             country,
             state,
             language

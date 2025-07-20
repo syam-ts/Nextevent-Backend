@@ -25,7 +25,7 @@ export interface IUserRepository {
         country: string,
         state: string,
         language: string
-    ) => Promise<any>;
+    ) => Promise<IUser>;
 
     getMyClients: (userId: string) => Promise<IClient[]>;
     getSingleClients: (clientId: string) => Promise<IClient>;

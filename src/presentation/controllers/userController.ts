@@ -59,9 +59,9 @@ export class UserController {
 
     async updateUser(req: any, res: Response): Promise<void> {
         try {
-            const result = await updateUserUsecase.execute(req.body, req.user.userId);
+            const user = await updateUserUsecase.execute(req.body, req.user.userId);
 
-            res.status(201).json({ message: "User updated ", success: true });
+            res.status(201).json({ message: "User updated ",user, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
             res.status(501).json({ message: err.message, success: false });
