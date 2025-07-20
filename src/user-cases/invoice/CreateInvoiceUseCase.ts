@@ -14,7 +14,7 @@ interface IInvoice {
         }
     ];
     notes: string;
-    patmentGateway: string;
+    paymentGateway: string;
 }
 
 export class CreateInvoice {
@@ -24,7 +24,7 @@ export class CreateInvoice {
         //generate invoice number
         const invoiceNumber: number = generateInvoiceNumber();
 
-        const { companyName, companyId, dueDate, items, notes, patmentGateway } =
+        const { companyName, companyId, dueDate, items, notes, paymentGateway } =
             body;
 
         return this.invoiceRepository.createInvoice(
@@ -34,7 +34,7 @@ export class CreateInvoice {
             dueDate,
             items,
             notes,
-            patmentGateway
+            paymentGateway
         );
     }
 }

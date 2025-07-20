@@ -5,6 +5,7 @@ require("dotenv").config();
 const token_secret = process.env.JWT_SECRET as string;
 
 const verifyToken = (req: any, res: Response, next: NextFunction): any => { 
+    console.log('HERDLER: ', req.headers["authorization"])
     const authHeader = req.headers["authorization"];
 
     if (!authHeader || !authHeader.startsWith("Bearer "))

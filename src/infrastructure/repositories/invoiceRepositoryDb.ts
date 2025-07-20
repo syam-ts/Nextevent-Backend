@@ -11,7 +11,7 @@ export class InvoiceRepositoryDb implements IInvoiceRepository {
         dueDate: string,
         items: [{ details: string; quantity: number; rate: number; total: number }],
         notes: string,
-        patmentGateway: string
+        paymentGateway: string
     ): Promise<void> {
         const sumTotal = generateInvoiceTotal(items);
 
@@ -26,7 +26,7 @@ export class InvoiceRepositoryDb implements IInvoiceRepository {
             items,
             total: sumTotal,
             notes,
-            patmentGateway,
+            paymentGateway,
             paid: false,
         }).save();
 

@@ -53,7 +53,7 @@ const invoiceSchema = new Schema({
         type: String,
         require: true,
     },
-    patmentGateway: {
+    paymentGateway: {
         type: String,
         require: true, 
     },

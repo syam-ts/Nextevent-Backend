@@ -18,6 +18,6 @@ export interface IInvoice {
     items: [IInvoiceItems];
     total: number;
     notes: string;
-    patmentGateway: string;
+    paymentGateway: string;
     paid: boolean;
 }
