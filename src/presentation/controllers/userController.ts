@@ -7,6 +7,8 @@ import { GetUserProfile } from "../../user-cases/user/GetUserProfileUseCase";
 import { GetMyClients } from "../../user-cases/user/GetMyClientsUseCase";
 import { GetSingleClient } from "../../user-cases/user/GetSingleClientUseCase";
 import generateToken from "../../utils/jwt/generateToken";
+import { StatusMessage } from "@/helper/constants/statusMessage";
+import { HttpStatusCode } from "@/helper/constants/statusCodes";
 
 const userRepository = new UserRepositoryDb();
 const signupUserUsecase = new CreateUser(userRepository);
@@ -21,10 +23,14 @@ export class UserController {
         try {
             const result = await signupUserUsecase.execute(req.body);
 
-            res.status(201).json({ message: "new user created", success: true });
+            res
+                .status(HttpStatusCode.CREATED)
+                .json({ message: "new user created", success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
-            res.status(501).json({ message: err.message, success: false });
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
         }
     }
 
@@ -32,7 +38,6 @@ export class UserController {
         try {
             const user = await loginUserUsecase.execute(req.body);
             const { accessToken, refreshToken } = generateToken(user._id);
- 
 
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
@@ -40,7 +45,7 @@ export class UserController {
                 sameSite: "none",
             });
 
-            res.status(200).json({
+            res.status(HttpStatusCode.OK).json({
                 message: "Loggedin Successfull",
                 user,
                 accessToken,
@@ -48,7 +53,9 @@ export class UserController {
             });
         } catch (error: unknown) {
             const err = error as { message: string };
-            res.status(501).json({ message: err.message, success: false });
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
         }
     }
 
@@ -58,11 +65,13 @@ export class UserController {
             const user = await getUserProfileUsecase.execute(userId);
 
             res
-                .status(200)
+                .status(HttpStatusCode.OK)
                 .json({ message: "User load successfully", user, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
-            res.status(501).json({ message: err.message, success: false });
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
         }
     }
 
@@ -70,10 +79,14 @@ export class UserController {
         try {
             const user = await updateUserUsecase.execute(req.body, req.user.userId);
 
-            res.status(201).json({ message: "User updated ", user, success: true });
+            res
+                .status(HttpStatusCode.CREATED)
+                .json({ message: "User updated ", user, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
-            res.status(501).json({ message: err.message, success: false });
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
         }
     }
 
@@ -83,11 +96,13 @@ export class UserController {
             const clients = await getMyClientUsecase.execute(userId);
 
             res
-                .status(200)
+                .status(HttpStatusCode.OK)
                 .json({ message: "Clients loaded", clients, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
-            res.status(501).json({ message: err.message, success: false });
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
         }
     }
 
@@ -97,11 +112,13 @@ export class UserController {
             const client = await getSingleClientUsecase.execute(clientId);
 
             res
-                .status(200)
+                .status(HttpStatusCode.OK)
                 .json({ message: "Clients loaded", client, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
-            res.status(501).json({ message: err.message, success: false });
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
         }
     }
 }

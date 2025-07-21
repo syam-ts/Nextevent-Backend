@@ -1,3 +1,4 @@
+import { HttpStatusCode } from "@/helper/constants/statusCodes";
 import { ClientRepositoryDb } from "../../infrastructure/repositories/clientRepositoryDb";
 import { CreateClient } from "../../user-cases/client/CreateClientUsecase";
 import { GetAllInvoices } from "../../user-cases/client/GetAllInvoicesUseCase";
@@ -13,10 +14,14 @@ export class ClientController {
         try {
             const { userId } = req.user;
             const result = await createClientUseCase.execute(req.body, userId);
-            res.status(201).json({ message: "new client created", success: true });
+            res
+                .status(HttpStatusCode.CREATED)
+                .json({ message: "new client created", success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
-            res.status(501).json({ message: err.message, success: false });
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
         }
     }
 
@@ -27,25 +32,38 @@ export class ClientController {
                 req.params.clientId
             );
             res
-                .status(201)
+                .status(HttpStatusCode.CREATED)
                 .json({ message: "Cilent updated Succssfully", success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
-            res.status(501).json({ message: err.message, success: false });
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
         }
     }
 
     async getAllInvoices(req: any, res: any): Promise<void> {
         try {
             const { clientId } = req.params;
-            const {filter, currentPage} = req.query;
-            const result = await getAllInvoicesUseCase.execute(clientId, filter, currentPage);
+            const { filter, currentPage } = req.query;
+            const result = await getAllInvoicesUseCase.execute(
+                clientId,
+                filter,
+                currentPage
+            );
             res
-                .status(201)
-                .json({ message: "Invoices loaded", invoices: result.invoices, totalPages: result.totalPages, success: true });
+                .status(HttpStatusCode.CREATED)
+                .json({
+                    message: "Invoices loaded",
+                    invoices: result.invoices,
+                    totalPages: result.totalPages,
+                    success: true,
+                });
         } catch (error: unknown) {
             const err = error as { message: string };
-            res.status(501).json({ message: err.message, success: false });
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
         }
     }
 }

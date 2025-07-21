@@ -1,6 +1,7 @@
+import { IUser } from "@/domain/entities/User";
 import { model, Schema } from "mongoose";
 
-const userSchema = new Schema({
+const userSchema = new Schema<IUser>({
     fullName: {
         type: String,
         require: true,
