@@ -15,7 +15,8 @@
   "author": "syam-ts <syamnandhu3@gmail.com>",
   "scripts": {
     "test": "yarn test",
-    "dev": "node src/dist/app.js"
+    "dev": "node src/dist/app.js",
+    "build": "tsc"
   },
   "license": "MIT",
   "devDependencies": {
