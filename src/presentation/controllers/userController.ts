@@ -32,16 +32,17 @@ export class UserController {
         try {
             const user = await loginUserUsecase.execute(req.body);
             const { access_Token, refresh_Token } = generateToken(
-                user._id.toString()
+                user._id
             );
+
+            res.cookie("refresh_Token", refresh_Token);
 
             res
                 .status(200)
                 .json({
                     message: "Loggedin Successfull",
                     user,
-                    access_Token,
-                    refresh_Token,
+                    access_Token, 
                     success: true,
                 });
         } catch (error: unknown) {

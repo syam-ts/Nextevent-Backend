@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { InvoiceController } from "../../controllers/invoiceController";
-import verifyToken from "../../middlewares/auth";
+import verifyToken from "../../middlewares/verifyToken";
 
 const invoiceRouter = Router();
 const invoiceController = new InvoiceController();

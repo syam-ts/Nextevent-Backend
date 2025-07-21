@@ -1,17 +1,30 @@
 import jwt from "jsonwebtoken";
-require("dotenv").config();
 
-const access_Token_Secret = process.env.ACCESS_TOKEN as string;
-const refresh_Token_Secret = process.env.REFRESH_TOKEN as string;
+ 
 
-export const generateToken = (userId: string) => {
-    const access_Token = jwt.sign({ userId }, access_Token_Secret, {
-        expiresIn: "1m",
-    });
+const generateToken = (userId: string) => {
 
-    const refresh_Token = jwt.sign({ userId }, refresh_Token_Secret, {
+    if (!userId) throw new Error("User ID missing in generateTokens");
+    const ACCESS_TOKEN_SECRET: string = process.env.ACCESS_TOKEN_SECRET as string;
+
+    const accessToken = jwt.sign(
+        {
+            userId,
+        },
+        ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: "1m",
+        }
+    );
+
+    const REFRESH_TOKEN_SECRET: string = process.env
+        .REFRESH_TOKEN_SECRET as string;
+
+    const refreshToken = jwt.sign({ userId }, REFRESH_TOKEN_SECRET, {
         expiresIn: "7d",
     });
 
-    return { access_Token, refresh_Token };
+    return { accessToken, refreshToken };
 };
+
+export default generateToken;
