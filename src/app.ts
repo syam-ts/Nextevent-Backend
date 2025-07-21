@@ -5,10 +5,11 @@ import { indexRouter } from "./presentation/exress-http/routes";
 import { ConnectDB } from "./infrastructure/database/db";
 import morgan from "morgan";
 import cors from "cors";
+// import userRouter from "./presentation/exress-http/__tests__/userRouter";
 dotenv.config({
     path: ".env",
 });
-const app = express();
+export const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -22,6 +23,7 @@ app.use(
 app.use(morgan("dev"));
 
 app.use("/api/v1", indexRouter);
+// app.use("/api/v1/users", userRouter); // for testing
 
 const port = process.env.PORT || 3000;
 
