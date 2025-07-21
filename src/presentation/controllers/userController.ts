@@ -31,12 +31,19 @@ export class UserController {
     async loginUser(req: Request, res: Response): Promise<void> {
         try {
             const user = await loginUserUsecase.execute(req.body);
-            const token = generateToken(user._id.toString());
-            res.cookie("token", token);
+            const { access_Token, refresh_Token } = generateToken(
+                user._id.toString()
+            );
 
             res
                 .status(200)
-                .json({ message: "Loggedin Successfull",user, token, success: true });
+                .json({
+                    message: "Loggedin Successfull",
+                    user,
+                    access_Token,
+                    refresh_Token,
+                    success: true,
+                });
         } catch (error: unknown) {
             const err = error as { message: string };
             res.status(501).json({ message: err.message, success: false });
@@ -61,7 +68,7 @@ export class UserController {
         try {
             const user = await updateUserUsecase.execute(req.body, req.user.userId);
 
-            res.status(201).json({ message: "User updated ",user, success: true });
+            res.status(201).json({ message: "User updated ", user, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
             res.status(501).json({ message: err.message, success: false });
