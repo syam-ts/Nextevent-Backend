@@ -1,6 +1,7 @@
+import { IClient } from "@/domain/entities/Client";
 import { model, Schema, Types } from "mongoose";
 
-const clientSchema = new Schema({ 
+const clientSchema = new Schema<IClient>({ 
     userId: {
         type: Types.ObjectId,
         require: true,
