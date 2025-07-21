@@ -2,14 +2,17 @@ import jwt from "jsonwebtoken";
 import { Response, NextFunction, Request } from "express";
 import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import { StatusMessage } from "../../helper/constants/statusMessage";
+require("dotenv").config();
 
 interface DecodedUser {
     userId: string;
 }
 
-const access_secret = process.env.ACCESS_TOKEN_SECRET as string
+const access_secret = process.env.ACCESS_TOKEN_SECRET as string;
 
 const verifyToken = (req: any, res: Response, next: NextFunction): void => {
+    const authHeader = req.headers["authorization"]; // lowercase by default in Express
+
     const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) {
@@ -20,11 +23,8 @@ const verifyToken = (req: any, res: Response, next: NextFunction): void => {
     }
 
     try {
-        const decoded = jwt.verify(
-            token,
-            access_secret
-        ) as DecodedUser;
-        console.log('THE DECODED JWT : ',decoded)
+        const decoded = jwt.verify(token, access_secret) as DecodedUser;
+        // console.log("THE DECODED JWT : ", decoded);
 
         req.user = decoded;
 

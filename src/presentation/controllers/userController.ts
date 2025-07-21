@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CreateUser } from "../../user-cases/user/CreatUserUsecase";
-import { UserRepositoryDb } from "../../infrastructure/repositories/userRepositoryDb"; 
+import { UserRepositoryDb } from "../../infrastructure/repositories/userRepositoryDb";
 import { LoginUser } from "../../user-cases/user/loginUserUsecase";
 import { UpdateUser } from "../../user-cases/user/UpdateUserUsecase";
 import { GetUserProfile } from "../../user-cases/user/GetUserProfileUseCase";
@@ -31,20 +31,21 @@ export class UserController {
     async loginUser(req: Request, res: Response): Promise<void> {
         try {
             const user = await loginUserUsecase.execute(req.body);
-            const { accessToken, refreshToken } = generateToken(
-                user._id
-            );
+            const { accessToken, refreshToken } = generateToken(user._id);
+ 
 
-            res.cookie("refreshToken", refreshToken);
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none",
+            });
 
-            res
-                .status(200)
-                .json({
-                    message: "Loggedin Successfull",
-                    user,
-                    accessToken, 
-                    success: true,
-                });
+            res.status(200).json({
+                message: "Loggedin Successfull",
+                user,
+                accessToken,
+                success: true,
+            });
         } catch (error: unknown) {
             const err = error as { message: string };
             res.status(501).json({ message: err.message, success: false });

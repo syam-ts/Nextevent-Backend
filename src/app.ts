@@ -16,6 +16,7 @@ app.use(
     cors({
         origin: process.env.FRONTEND_URL,
         methods: "GET,POST,PUT,PATCH",
+        credentials: true
     })
 );
 app.use(morgan("dev"));

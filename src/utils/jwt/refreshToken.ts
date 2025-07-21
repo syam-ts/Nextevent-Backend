@@ -1,12 +1,13 @@
-import jwt, { JwtPayload } from "jsonwebtoken"; 
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response } from "express";
 import generateToken from "./generateToken";
+require("dotenv").config();
 
 interface User {
-    userId: string 
-};
+    userId: string;
+}
 
-const refresh_secret =  process.env.REFRESH_TOKEN_SECRET as string;
+const refresh_secret = process.env.REFRESH_TOKEN_SECRET as string;
 
 const refreshToken = (req: Request, res: Response): void => {
     const refreshToken = req.cookies.refreshToken;
@@ -25,7 +26,7 @@ const refreshToken = (req: Request, res: Response): void => {
                 return;
             }
 
-            console.log('REFRESH DECODED JWT: ',decoded)
+            // console.log('REFRESH DECODED JWT: ',decoded)
 
             const { accessToken } = generateToken(decoded.userId);
             res.json({ accessToken });

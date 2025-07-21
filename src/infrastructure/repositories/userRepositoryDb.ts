@@ -78,7 +78,7 @@ export class UserRepositoryDb implements IUserRepository {
 
     async getMyClients(userId: string): Promise<IClient[]> {
         const clients = await ClientModel.find({ userId }).lean<IClient[]>();
-        console.log("CLIENT: ", clients);
+    
 
         if (!clients) throw new Error("Clients not found");
         return clients;
