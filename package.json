@@ -6,6 +6,7 @@
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "mongoose": "^8.16.4"
   },
   "name": "InvoSync-Backend",
@@ -18,6 +19,9 @@
     "dev": "node src/dist/app.js",
     "build": "tsc"
   },
+  "_moduleAliases": {
+  "@": "dist"
+},
   "license": "MIT",
   "devDependencies": {
     "@types/cookie-parser": "^1.4.9",
