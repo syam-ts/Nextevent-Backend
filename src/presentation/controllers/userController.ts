@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { CreateUser } from "../../user-cases/user/CreatUserUsecase";
-import { UserRepositoryDb } from "../../infrastructure/repositories/userRepositoryDb";
-import { generateToken } from "../../utils/jwt/generateToken";
+import { UserRepositoryDb } from "../../infrastructure/repositories/userRepositoryDb"; 
 import { LoginUser } from "../../user-cases/user/loginUserUsecase";
 import { UpdateUser } from "../../user-cases/user/UpdateUserUsecase";
 import { GetUserProfile } from "../../user-cases/user/GetUserProfileUseCase";
 import { GetMyClients } from "../../user-cases/user/GetMyClientsUseCase";
 import { GetSingleClient } from "../../user-cases/user/GetSingleClientUseCase";
+import generateToken from "../../utils/jwt/generateToken";
 
 const userRepository = new UserRepositoryDb();
 const signupUserUsecase = new CreateUser(userRepository);
@@ -31,18 +31,18 @@ export class UserController {
     async loginUser(req: Request, res: Response): Promise<void> {
         try {
             const user = await loginUserUsecase.execute(req.body);
-            const { access_Token, refresh_Token } = generateToken(
+            const { accessToken, refreshToken } = generateToken(
                 user._id
             );
 
-            res.cookie("refresh_Token", refresh_Token);
+            res.cookie("refreshToken", refreshToken);
 
             res
                 .status(200)
                 .json({
                     message: "Loggedin Successfull",
                     user,
-                    access_Token, 
+                    accessToken, 
                     success: true,
                 });
         } catch (error: unknown) {

@@ -6,10 +6,10 @@ interface User {
     userId: string 
 };
 
-const refresh_secret =  process.env.REFRESH_TOKEN_SECRET as string;
+const refresh_secret =  process.env.refreshToken_SECRET as string;
 
 const refreshToken = (req: Request, res: Response): void => {
-    const refreshToken = req.cookies.refresh_Token;
+    const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
         res.status(401).json({ message: "No refresh token" });
