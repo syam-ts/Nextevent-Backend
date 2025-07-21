@@ -7,7 +7,7 @@ interface DecodedUser {
     userId: string;
 }
 
-const access_secret = process.env.accessToken_SECRET as string
+const access_secret = process.env.ACCESS_TOKEN_SECRET as string
 
 const verifyToken = (req: any, res: Response, next: NextFunction): void => {
     const token = req.headers.authorization?.split(" ")[1];
