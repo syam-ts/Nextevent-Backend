@@ -1,13 +1,37 @@
 import { Router } from "express";
-import { InvoiceController } from "../../controllers/invoiceController"; 
+import { InvoiceController } from "../../controllers/invoiceController";
 import { verifyToken } from "../../middlewares/verifyToken";
 
-const invoiceRouter = Router();
-const invoiceController = new InvoiceController();
-const { createInvoice, confirmInvoicePayment, getInvoice } = invoiceController;
+class InvoiceRoute {
 
-invoiceRouter.post("/create", verifyToken, createInvoice);
-invoiceRouter.patch("/paid/:invoiceId", verifyToken, confirmInvoicePayment);
-invoiceRouter.get('/view/:invoiceId', verifyToken, getInvoice);
+    public router: Router;
+    private invoiceController: InvoiceController;
 
-export default invoiceRouter;
+    constructor(invoiceController: InvoiceController) {
+        this.router = Router();
+        this.invoiceController = invoiceController;
+
+        this.initializeRoutes();
+    }
+
+    private initializeRoutes(): void {
+        this.router.post(
+            "/create",
+            verifyToken,
+            this.invoiceController.createInvoice
+        );
+        this.router.patch(
+            "/paid/:invoiceId",
+            verifyToken,
+            this.invoiceController.confirmInvoicePayment
+        );
+        this.router.get(
+            "/view/:invoiceId",
+            verifyToken,
+            this.invoiceController.getInvoice
+        );
+    }
+}
+
+
+export default InvoiceRoute;
