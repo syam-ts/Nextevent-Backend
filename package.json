@@ -11,8 +11,7 @@
   },
   "name": "InvoSync-Backend",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/syam-ts/InvoSync-Backend.git",
+  "main": "index.js", 
   "author": "syam-ts <syamnandhu3@gmail.com>",
   "scripts": {
     "test": "echo && exit 0",
