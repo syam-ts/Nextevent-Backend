@@ -18,8 +18,8 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker Image
-        run: docker build -t invosync-backend .
+        run: docker build -t test-backend .
 
       - name: Run Tests 
         run: |
-          docker run invosync-backend yarn test
+          docker run test-backend yarn test

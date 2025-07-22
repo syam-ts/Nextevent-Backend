@@ -28,5 +28,5 @@ export interface IUserRepository {
     ) => Promise<IUser>;
 
     getMyClients: (userId: string) => Promise<IClient[]>;
-    getSingleClients: (clientId: string) => Promise<IClient>;
+    
 }

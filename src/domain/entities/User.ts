@@ -1,6 +1,8 @@
+
+
 export interface IUser {
     _id: string;
-    fullName: string; 
+    fullName: string;
     email: string;
     mobile: number;
     password: string;
@@ -8,6 +10,4 @@ export interface IUser {
     country: string;
     state: string;
     language: string;
-    //client: Clients
-    //totalInvoices: number
 }

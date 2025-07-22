@@ -83,11 +83,5 @@ export class UserRepositoryDb implements IUserRepository {
         if (!clients) throw new Error("Clients not found");
         return clients;
     }
-
-    async getSingleClients(clientId: string): Promise<IClient> {
-        const client = await ClientModel.findById(clientId).lean<IClient>();
-
-        if (!client) throw new Error("No client found!");
-        return client;
-    }
+ 
 }

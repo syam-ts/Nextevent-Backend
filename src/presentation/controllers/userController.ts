@@ -1,22 +1,16 @@
-import { Request, Response } from "express";
-import { CreateUser } from "../../user-cases/user/CreatUserUsecase";
+import { Request, Response } from "express"; 
 import { UserRepositoryDb } from "../../infrastructure/repositories/userRepositoryDb";
-import { LoginUser } from "../../user-cases/user/loginUserUsecase";
-import { UpdateUser } from "../../user-cases/user/UpdateUserUsecase";
+import { LoginUser } from "../../user-cases/user/loginUserUsecase"; 
 import { GetUserProfile } from "../../user-cases/user/GetUserProfileUseCase";
-import { GetMyClients } from "../../user-cases/user/GetMyClientsUseCase";
-import { GetSingleClient } from "../../user-cases/user/GetSingleClientUseCase";
+import { GetMyClients } from "../../user-cases/user/GetMyClientsUseCase"; 
 import generateToken from "../../utils/jwt/generateToken";
 import { StatusMessage } from "@/helper/constants/statusMessage";
 import { HttpStatusCode } from "@/helper/constants/statusCodes";
 
-const userRepository = new UserRepositoryDb();
-const signupUserUsecase = new CreateUser(userRepository);
+const userRepository = new UserRepositoryDb(); 
 const loginUserUsecase = new LoginUser(userRepository);
-const getUserProfileUsecase = new GetUserProfile(userRepository);
-const updateUserUsecase = new UpdateUser(userRepository);
-const getMyClientUsecase = new GetMyClients(userRepository);
-const getSingleClientUsecase = new GetSingleClient(userRepository);
+const getUserProfileUsecase = new GetUserProfile(userRepository); 
+const getMyClientUsecase = new GetMyClients(userRepository); 
 
 export class UserController {
     async signupUser(req: Request, res: Response): Promise<void> {
@@ -75,21 +69,6 @@ export class UserController {
         }
     }
 
-    async updateUser(req: any, res: Response): Promise<void> {
-        try {
-            const user = await updateUserUsecase.execute(req.body, req.user.userId);
-
-            res
-                .status(HttpStatusCode.CREATED)
-                .json({ message: "User updated ", user, success: true });
-        } catch (error: unknown) {
-            const err = error as { message: string };
-            res
-                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-                .json({ message: err.message, success: false });
-        }
-    }
-
     async getMyClients(req: any, res: Response): Promise<void> {
         try {
             const { userId } = req.user;
@@ -98,22 +77,6 @@ export class UserController {
             res
                 .status(HttpStatusCode.OK)
                 .json({ message: "Clients loaded", clients, success: true });
-        } catch (error: unknown) {
-            const err = error as { message: string };
-            res
-                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-                .json({ message: err.message, success: false });
-        }
-    }
-
-    async getSingleClient(req: any, res: Response): Promise<void> {
-        try {
-            const { clientId } = req.params;
-            const client = await getSingleClientUsecase.execute(clientId);
-
-            res
-                .status(HttpStatusCode.OK)
-                .json({ message: "Clients loaded", client, success: true });
         } catch (error: unknown) {
             const err = error as { message: string };
             res

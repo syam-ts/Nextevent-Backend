@@ -5,8 +5,7 @@ import cookieParser from "cookie-parser";
 import { indexRouter } from "./presentation/exress-http/routes";
 import morgan from "morgan";
 import cors from "cors";
-import ConnectDB from "./infrastructure/database/db";
-// import userRouter from "./presentation/exress-http/__tests__/userRouter";
+import ConnectDB from "./infrastructure/database/db"; 
 
 const connectDB = new ConnectDB();
 
@@ -47,8 +46,7 @@ class Server {
     }
 
     private configuredRoute(): void {
-        this.app.use("/api/v1", indexRouter);
-        // this.app.use('/api/v1/users', userRouter) // for testing only
+        this.app.use("/api/v1", indexRouter); 
     }
 
     private async connectToDatabase(): Promise<void> {
