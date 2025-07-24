@@ -1,4 +1,4 @@
-import { IUserRepository } from "../../domain/interfaces/IUserRepository";
+import { IUserRepository } from "../../domain/interfaces/IOrganiserRepository";
 
 export class GetUserProfile {
     constructor(private userRepository: IUserRepository) { }

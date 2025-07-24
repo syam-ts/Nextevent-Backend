@@ -8,10 +8,10 @@
     "jsonwebtoken": "^9.0.2", 
     "mongoose": "^8.16.4"
   },
-  "name": "test-Backend",
+  "name": "Nextevent-Backend",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/syam-ts/backend_template-Typescript-CleanArch-JWT.git",
+  "repository": "https://github.com/syam-ts/Nextevent-Backend.git",
   "author": "syam-ts <syamnandhu3@gmail.com>", 
   "scripts": {
     "test": "echo && exit 0",

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import UserRoute from "./userRoute";
-import { UserController } from "../../controllers/userController";
+import UserRoute from "./organizerRoute";
+import { UserController } from "../../controllers/organizerController";
 import { ClientController } from "../../controllers/clientController";
 import { InvoiceController } from "../../controllers/invoiceController";
 import ClientRoute from "./clientRoute";

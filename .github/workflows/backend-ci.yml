@@ -18,8 +18,8 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker Image
-        run: docker build -t test-backend .
+        run: docker build -t nextevent-backend .
 
       - name: Run Tests 
         run: |
-          docker run test-backend yarn test
+          docker run nextevent-backend yarn test

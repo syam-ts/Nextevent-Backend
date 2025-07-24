@@ -1,4 +1,4 @@
-import { IUserRepository } from "../../domain/interfaces/IUserRepository"; 
+import { IUserRepository } from "../../domain/interfaces/IOrganiserRepository"; 
 
 interface IBody {
     email: string;
