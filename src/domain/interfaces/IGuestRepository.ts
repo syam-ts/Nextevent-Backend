@@ -9,5 +9,5 @@ export interface IGuestRepository {
         age: number,  
     ) => Promise<void>;
 
-    // loginGuest: (email: string, password: string) => Promise<IGuest>
+    loginGuest: (email: string, password: string) => Promise<IGuest>
 }

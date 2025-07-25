@@ -1,4 +1,7 @@
+import { IGuest } from "../../domain/entities/Guest";
 import { IGuestRepository } from "../../domain/interfaces/IGuestRepository";
+import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
+import { verifyPassword } from "../../utils/crypto/verifyPassword";
 import { GuestModel } from "../database/Schema/GuestSchema";
 
 export class GuestRepositoryDb implements IGuestRepository {
@@ -8,19 +11,30 @@ export class GuestRepositoryDb implements IGuestRepository {
         password: string,
         mobile: number,
         age: number
-    ): Promise<void> { 
-
+    ): Promise<void> {
+        const hashedPass = await hashPasswordFunction(password);
 
         const newGuest = await new GuestModel({
             name,
             email,
-            password,
+            password: hashedPass,
             mobile,
             age,
-            createdAt: Date.now()
+            createdAt: Date.now(),
         }).save();
 
-        if(!newGuest) throw new Error('could not create new guest')
-            return ;
+        if (!newGuest) throw new Error("could not create new guest");
+        return;
+    }
+
+    async loginGuest(email: string, password: string): Promise<IGuest> {
+        const guest = await GuestModel.findOne({ email }).lean<IGuest>();
+
+        if (!guest) throw new Error("Guest not found");
+
+        const verifyPass = await verifyPassword(password, guest.password);
+        if (!verifyPass) throw new Error("Wrong password!");
+
+        return guest;
     }
 }
