@@ -13,6 +13,10 @@ const EventSchema = new Schema<IEvent>({
         type: String,
         require: true,
     },
+    eventImage: {
+        type: String,
+        require: true,
+    },
     location: {
         type: String,
         require: true,

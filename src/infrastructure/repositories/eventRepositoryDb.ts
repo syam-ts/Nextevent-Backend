@@ -6,6 +6,7 @@ export class EventRepositorDb implements IEventRepository {
     async createEvent(
         organizerId: string,
         eventName: string,
+        eventImage: string,
         location: string,
         date: Date,
         time: string,
@@ -15,6 +16,7 @@ export class EventRepositorDb implements IEventRepository {
     ): Promise<void> {
         const newEvent = await new EventModel({
             eventName,
+            eventImage,
             location,
             date,
             time,

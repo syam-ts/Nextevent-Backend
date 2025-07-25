@@ -2,6 +2,7 @@ export interface IEventRepository {
     createEvent: ( 
         organizerId: string,
         eventName: string,
+        eventImage: string,
         location: string,
         date: Date,
         time: string,
