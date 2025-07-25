@@ -1,22 +1,11 @@
 import { Router } from "express";
-import UserRoute from "./organizerRoute";
-import { UserController } from "../../controllers/organizerController";
-import { ClientController } from "../../controllers/clientController";
-import { InvoiceController } from "../../controllers/invoiceController";
-import ClientRoute from "./clientRoute";
-import InvoiceRoute from "./invoiceRoute";
+import UserRoute from "./organizerRoute"; 
+import OrganizerRoute from "./organizerRoute";
 export const indexRouter = Router();
 
-const userController = new UserController();
-const clientController = new ClientController();
-const invoiceController = new InvoiceController();
+const organizationRoute = new OrganizerRoute();
 
-const userRouter = new UserRoute(userController);
-const clientRouter = new ClientRoute(clientController);
-const invoiceRouter = new InvoiceRoute(invoiceController);
-
-indexRouter.use("/user", userRouter.router);
-indexRouter.use("/client", clientRouter.router);
-indexRouter.use("/invoice", invoiceRouter.router);
+indexRouter.use('/organizer', organizationRoute.router); 
+ 
 
 export default indexRouter;

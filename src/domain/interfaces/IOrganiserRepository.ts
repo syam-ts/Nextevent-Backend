@@ -1,3 +1,4 @@
+import { IOrganizer } from "../entities/Organizer";
 
 export interface IOrganizerRepository {
        
@@ -7,9 +8,9 @@ export interface IOrganizerRepository {
         mobile: number,
         password: string,
         organizationName: string 
-    ) => Promise<any>;
+    ) => Promise<void>;
 
-    loginOrganizer: (email: string, password: string) => Promise<any>;
+    loginOrganizer: (email: string, password: string) => Promise<IOrganizer>;
 
  
     

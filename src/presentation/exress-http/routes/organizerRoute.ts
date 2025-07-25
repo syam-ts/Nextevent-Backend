@@ -7,20 +7,17 @@ class OrganizerRoute {
     public router: Router;
     private organizerController: OrganizerController;
 
-    constructor(userController: UserController) {
+    constructor()  {
         this.router = Router();
-        this.organizerController = this.organizerController();
+        this.organizerController = new OrganizerController();
 
         this.initializeRoutes();
     }
 
     private initializeRoutes(): void {
-        this.router.get("/refresh-token", refreshToken);
-        this.router.get("/profile", verifyToken, this.organizerController.getUserProfile);
-        this.router.get("/my-clients", verifyToken, this.organizerController.getMyClients); 
-        this.router.post("/signup", this.organizerController.signupUser);
-        this.router.post("/login", this.organizerController.loginUser);
-        this.router.put("/update", verifyToken, this.organizerController.updateUser);
+        // this.router.get("/refresh-token", refreshToken);
+        this.router.post('/signup', this.organizerController.signupUser);
+
     }
 }
 
