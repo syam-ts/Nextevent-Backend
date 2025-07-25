@@ -1,3 +1,7 @@
+interface IOrganizer {
+    _id: string
+}
+
 export interface IEvent {
    _id: string
    eventName: string;
@@ -6,6 +10,9 @@ export interface IEvent {
    time: string;
    totalSeats: number;
    isPaid: boolean;
+   organizerDetails: IOrganizer;
    details: string;
    isClosed: boolean;
+   createdAt: Date;
 }
+

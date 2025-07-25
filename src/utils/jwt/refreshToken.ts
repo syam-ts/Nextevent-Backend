@@ -3,10 +3,6 @@ import { Request, Response } from "express";
 import generateToken from "./generateToken";
 require("dotenv").config();
 
-interface User {
-    userId: string;
-}
-
 const refresh_secret = process.env.REFRESH_TOKEN_SECRET as string;
 
 const refreshToken = (req: Request, res: Response): void => {
@@ -28,7 +24,7 @@ const refreshToken = (req: Request, res: Response): void => {
 
             // console.log('REFRESH DECODED JWT: ',decoded)
 
-            const { accessToken } = generateToken(decoded.userId);
+            const { accessToken } = generateToken(decoded.userId, decoded.role);
             res.json({ accessToken });
         }
     );

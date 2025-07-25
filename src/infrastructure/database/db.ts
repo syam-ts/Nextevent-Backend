@@ -11,7 +11,6 @@ class ConnectDB {
     }
 
     public async connect(): Promise<void> {
-        console.log("DB URI: ", this._mongo_uri);
         try {
             await connect(this._mongo_uri);
         } catch (error) {
