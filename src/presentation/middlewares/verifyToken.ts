@@ -6,6 +6,7 @@ require("dotenv").config();
 
 interface DecodedUser {
     userId: string;
+    role: "organizer" | "guest";
 }
 
 const access_secret = process.env.ACCESS_TOKEN_SECRET as string;
@@ -26,7 +27,7 @@ const verifyToken = (req: any, res: Response, next: NextFunction): void => {
         const decoded = jwt.verify(token, access_secret) as DecodedUser;
         // console.log("THE DECODED JWT : ", decoded);
 
-        req.user = decoded;
+        req.user = { _id: decoded, role: decoded.role };
 
         return next();
     } catch (error) {

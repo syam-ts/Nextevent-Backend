@@ -5,20 +5,21 @@ const accessToken_SECRET: string = process.env.ACCESS_TOKEN_SECRET as string;
 
 const refreshToken_SECRET: string = process.env.REFRESH_TOKEN_SECRET as string;
 
-const generateToken = (userId: string) => { 
-    if (!userId) throw new Error("User ID missing in generateTokens");
+const generateToken = (roleId: string, role: string) => {
+    if (!roleId) throw new Error(`${role} ID missing in generateTokens`);
 
     const accessToken = jwt.sign(
         {
-            userId,
+            _id: roleId,
+            role
         },
         accessToken_SECRET,
         {
             expiresIn: "1m",
         }
     );
-
-    const refreshToken = jwt.sign({ userId }, refreshToken_SECRET, {
+ 
+    const refreshToken = jwt.sign({ _id: roleId.toString(), role }, refreshToken_SECRET, {
         expiresIn: "7d",
     });
 
