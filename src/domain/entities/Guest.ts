@@ -1,3 +1,5 @@
+import { IEvent } from "./Event"
+
 export interface IGuest {
     _id: string
     name: string
@@ -6,5 +8,6 @@ export interface IGuest {
     mobile: number
     age: number
     numberOfEventsAttended: number,
+    // events: IEvent,
     createdAt: Date 
 }
