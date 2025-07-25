@@ -4,7 +4,7 @@ import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
 import { verifyPassword } from "../../utils/crypto/verifyPassword";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
 
-export class OrganizationRepositoryDb implements IOrganizerRepository {
+export class OrganizerRepositoryDb implements IOrganizerRepository {
   async signupOrganizer(
     name: string,
     email: string,
@@ -53,6 +53,9 @@ export class OrganizationRepositoryDb implements IOrganizerRepository {
           mobile,
           organizationName,
         },
+      },
+      {
+        new: true,
       }
     ).lean<IOrganizer>();
 
