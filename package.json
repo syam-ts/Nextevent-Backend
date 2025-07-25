@@ -5,17 +5,18 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2", 
-    "mongoose": "^8.16.4"
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.4",
+    "nodemon": "^3.1.10"
   },
   "name": "Nextevent-Backend",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/syam-ts/Nextevent-Backend.git",
-  "author": "syam-ts <syamnandhu3@gmail.com>", 
+  "author": "syam-ts <syamnandhu3@gmail.com>",
   "scripts": {
     "test": "echo && exit 0",
-    "dev": "node src/dist/app.js",
+    "dev": "npx nodemon --exec ts-node --transpile-only src/app.ts",
     "build": "tsc"
   },
   "license": "MIT",
@@ -26,6 +27,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "morgan": "^1.10.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
 }

@@ -7,6 +7,6 @@ export interface IOrganizer {
     password: string
     role: "organizer",
     organizationName: string,
-    createdEvents: IEvent,
+    createdEvents: IEvent[],
     createdAt: Date
 }

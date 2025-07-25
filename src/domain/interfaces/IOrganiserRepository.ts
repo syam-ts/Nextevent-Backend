@@ -1,5 +1,6 @@
 
 export interface IOrganizerRepository {
+       
     signupOrganizer: (
         name: string,
         email: string,

@@ -1,5 +1,4 @@
-import express, { Express } from "express";
-require("module-alias/register");
+import express, { Express } from "express"; 
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { indexRouter } from "./presentation/exress-http/routes";

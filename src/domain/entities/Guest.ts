@@ -4,6 +4,5 @@ export interface Guest {
     mobile: number
     age: number
     numberOfEventsAttend: number,
-    createdAt: Date
-
+    createdAt: Date 
 }

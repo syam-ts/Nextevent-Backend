@@ -8,7 +8,16 @@ export class OrganizationRepositoryDb implements IOrganizerRepository {
         password: string,
         organizationName: string
     ): Promise<any> {
-        // const newOrganizer = await
+            // name: string,
+            // email: string
+            // mobile: number,
+            // password: string
+            // role: "organizer",
+            // organizationName: string,
+            // createdEvents: IEvent[],
+            // createdAt: Datet
+
+            
     }
 
     async loginOrganizer(email: string, password: string): Promise<any> { }
