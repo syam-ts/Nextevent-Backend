@@ -1,6 +1,7 @@
 import { IEvent } from "./IEvent"
 
 export interface IOrganizer {
+    _id: string;
     name: string,
     email: string
     mobile: number,

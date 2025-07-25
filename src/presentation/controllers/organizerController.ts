@@ -3,6 +3,7 @@ import { OrganizationRepositoryDb } from "../../infrastructure/repositories/orga
 import { CreateNewOrganizer } from "../../user-cases/organizer/createNewOrganizer";
 import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import { LoginOrganizer } from "../../user-cases/organizer/loginOrganizer";
+import generateToken from "../../utils/jwt/generateToken";
 
 export class OrganizerController {
 
@@ -32,20 +33,21 @@ export class OrganizerController {
     }
 
      loginUser = async(req: Request, res: Response): Promise<void> => {
-        try {
-            // const organizer = await loginOrganizerrUsecase.execute(req.body);
-            //   const { accessToken, refreshToken } = generateToken(organizer._id);
-            // res.cookie("refreshToken", refreshToken, {
-            //     httpOnly: true,
-            //     secure: true,
-            //     sameSite: "none",
-            // });
-            // res.status(HttpStatusCode.OK).json({
-            //     message: "Loggedin Successfull",
-            //     organizer,
-            //     accessToken,
-            //     success: true,
-            // });
+        try { 
+            const organizer = await this.loginUsecase.execute(req.body);
+            console.log('RESULT: ', organizer)
+              const { accessToken, refreshToken } = generateToken(organizer._id);
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none",
+            });
+            res.status(HttpStatusCode.OK).json({
+                message: "Loggedin Successfull",
+                organizer,
+                accessToken,
+                success: true,
+            });
         } catch (error: unknown) {
             const err = error as { message: string };
             res

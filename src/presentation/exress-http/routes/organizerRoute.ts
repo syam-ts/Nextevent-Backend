@@ -17,6 +17,7 @@ class OrganizerRoute {
     private initializeRoutes(): void {
         // this.router.get("/refresh-token", refreshToken);
         this.router.post('/signup', this.organizerController.signupUser);
+        this.router.post('/login', this.organizerController. loginUser);
 
     }
 }
