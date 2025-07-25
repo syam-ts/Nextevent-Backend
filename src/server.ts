@@ -1,10 +1,12 @@
-import express, { Express } from "express"; 
+import express, { Express, Router } from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import { indexRouter } from "./presentation/exress-http/routes";
 import morgan from "morgan";
 import cors from "cors";
-import ConnectDB from "./infrastructure/database/db"; 
+import ConnectDB from "./infrastructure/database/db";
+import GuestRoute from "./presentation/exress-http/routes/guestRoute";
+import OrganizerRoute from "./presentation/exress-http/routes/organizerRoute";
+import EventRoute from "./presentation/exress-http/routes/eventRoute";
 
 const connectDB = new ConnectDB();
 
@@ -13,6 +15,9 @@ class Server {
     private port: number;
     private frontendUrl: string;
     private corsMethods: string[];
+    private guestRoute: GuestRoute;
+    private organizerRoute: OrganizerRoute;
+    private eventRoute: EventRoute;
 
     constructor() {
         dotenv.config({
@@ -22,6 +27,9 @@ class Server {
         this.port = parseInt(process.env.PORT || "3000");
         this.frontendUrl = process.env.FRONTEND_URL as string;
         this.corsMethods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
+        this.guestRoute = new GuestRoute();
+        this.organizerRoute = new OrganizerRoute();
+        this.eventRoute = new EventRoute();
 
         this.configureMiddlewares();
         this.configuredRoute();
@@ -45,7 +53,9 @@ class Server {
     }
 
     private configuredRoute(): void {
-        this.app.use("/api/v1", indexRouter); 
+        this.app.use("/api/guest", this.guestRoute.router);
+        this.app.use("/api/organizer", this.organizerRoute.router);
+        this.app.use("/api/event", this.eventRoute.router);
     }
 
     private async connectToDatabase(): Promise<void> {

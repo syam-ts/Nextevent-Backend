@@ -20,7 +20,7 @@ export class EventController {
             );
 
             res.status(HttpStatusCode.CREATED).json({
-                message: "Organizer updated Successfull",
+                message: "New event created",
                 organizer,
                 success: true,
             });

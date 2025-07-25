@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { IEvent } from "../../../domain/entities/IEvent";
+import { IEvent } from "../../../domain/entities/Event";
 
 const OrganizerSchmea = {
     _id: {
