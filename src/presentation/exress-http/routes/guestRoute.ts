@@ -16,7 +16,8 @@ class GuestRoute {
 
     private initializeRoutes(): void {
         this.router.post("/signup", this.guestController.signupGuest);
-        this.router.post('/login', this.guestController.loginGuest)
+        this.router.post("/login", this.guestController.loginGuest);
+        this.router.put("/update", verifyToken, this.guestController.updateGuest);
     }
 }
 

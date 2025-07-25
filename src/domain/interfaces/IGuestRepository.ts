@@ -10,4 +10,6 @@ export interface IGuestRepository {
     ) => Promise<void>;
 
     loginGuest: (email: string, password: string) => Promise<IGuest>
+
+    updateGuest: (guestId: string,name: string, mobile: number, age: number) => Promise<IGuest>
 }

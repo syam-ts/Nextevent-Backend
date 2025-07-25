@@ -37,4 +37,25 @@ export class GuestRepositoryDb implements IGuestRepository {
 
         return guest;
     }
+    async updateGuest(
+        guestId: string,
+        name: string,
+        mobile: number,
+        age: number
+    ): Promise<IGuest> {
+        const updatedGuest = await GuestModel.findByIdAndUpdate(
+            guestId,
+            {
+                $set: {
+                    name,
+                    mobile,
+                    age,
+                },
+            },
+            { new: true }
+        ).lean<IGuest>();
+
+        if (!updatedGuest) throw new Error("could not update guest");
+        return updatedGuest;
+    }
 }

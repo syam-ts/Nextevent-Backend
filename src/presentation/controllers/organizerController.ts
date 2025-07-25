@@ -1,19 +1,19 @@
 import { Response, Request } from "express";
-import { OrganizationRepositoryDb } from "../../infrastructure/repositories/organizationRepositoryDb";
 import { CreateNewOrganizer } from "../../user-cases/organizer/createNewOrganizer";
 import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import { LoginOrganizer } from "../../user-cases/organizer/loginOrganizer";
 import generateToken from "../../utils/jwt/generateToken";
 import { UpdateOrganizer } from "../../user-cases/organizer/updateOrganizer";
+import { OrganizerRepositoryDb } from "../../infrastructure/repositories/organizerRepositoryDb";
 
 export class OrganizerController {
-    public organizerRepo: OrganizationRepositoryDb;
+    public organizerRepo: OrganizerRepositoryDb;
     public signupUsecase: CreateNewOrganizer;
     public loginUsecase: LoginOrganizer;
     public updateUsecase: UpdateOrganizer;
 
     constructor() {
-        this.organizerRepo = new OrganizationRepositoryDb();
+        this.organizerRepo = new OrganizerRepositoryDb();
         this.signupUsecase = new CreateNewOrganizer(this.organizerRepo);
         this.loginUsecase = new LoginOrganizer(this.organizerRepo);
         this.updateUsecase = new UpdateOrganizer(this.organizerRepo);
