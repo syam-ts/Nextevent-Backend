@@ -62,8 +62,11 @@ export class OrganizerController {
 
     updateOrganizer = async (req: Request, res: Response): Promise<void> => {
         try {
-            console.log('USER: ', req.user)
-            const organizer = await this.updateUsecase.execute(req.user._id,req.body);
+            if (!req.user?._id) throw new Error("organizer id is missing");
+            const organizer = await this.updateUsecase.execute(
+                req.user._id,
+                req.body
+            );
 
             res.status(HttpStatusCode.CREATED).json({
                 message: "Organizer updated Successfull",
