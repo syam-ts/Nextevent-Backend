@@ -6,7 +6,7 @@ const EventDetails = {
         type: String,
         require: true,
     },
-    evenatName: {
+    eventName: {
         type: String,
         require: true,
     },

@@ -7,6 +7,7 @@ import ConnectDB from "./infrastructure/database/db";
 import GuestRoute from "./presentation/exress-http/routes/guestRoute";
 import OrganizerRoute from "./presentation/exress-http/routes/organizerRoute";
 import EventRoute from "./presentation/exress-http/routes/eventRoute";
+import BookingRoute from "./presentation/exress-http/routes/bookingRoute";
 
 const connectDB = new ConnectDB();
 
@@ -18,6 +19,7 @@ class Server {
     private guestRoute: GuestRoute;
     private organizerRoute: OrganizerRoute;
     private eventRoute: EventRoute;
+    private bookingRoute: BookingRoute;
 
     constructor() {
         dotenv.config({
@@ -30,6 +32,7 @@ class Server {
         this.guestRoute = new GuestRoute();
         this.organizerRoute = new OrganizerRoute();
         this.eventRoute = new EventRoute();
+        this.bookingRoute = new BookingRoute();
 
         this.configureMiddlewares();
         this.configuredRoute();
@@ -56,6 +59,7 @@ class Server {
         this.app.use("/api/guest", this.guestRoute.router);
         this.app.use("/api/organizer", this.organizerRoute.router);
         this.app.use("/api/event", this.eventRoute.router);
+        this.app.use("/api/booking", this.bookingRoute.router);
     }
 
     private async connectToDatabase(): Promise<void> {
