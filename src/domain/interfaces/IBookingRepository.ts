@@ -8,4 +8,6 @@ export interface IBookingRepository {
         date: Date,
         time: string
     ): Promise<void>;
+
+    cancelBooking(bookingId: string): Promise<void>;
 }

@@ -15,6 +15,11 @@ class BookingRoute {
 
     private initializeRoutes(): void {
         this.router.post("/new", verifyToken, this.bookingController.newBooking);
+        this.router.delete(
+            "/cancel/:bookingId",
+            verifyToken,
+            this.bookingController.cancelBooking
+        );
     }
 }
 
