@@ -20,6 +20,7 @@ export class GuestRepositoryDb implements IGuestRepository {
             password: hashedPass,
             mobile,
             age,
+            wallet: {},
             createdAt: Date.now(),
         }).save();
 
