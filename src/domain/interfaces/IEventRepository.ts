@@ -1,5 +1,5 @@
 export interface IEventRepository {
-    createEvent: ( 
+    createEvent ( 
         organizerId: string,
         eventName: string,
         eventImage: string,
@@ -9,7 +9,7 @@ export interface IEventRepository {
         totalSeats: number,
         isPaid: boolean,
         details: string, 
-    ) => Promise<void>;
+    ): Promise<void>;
 
 
 }

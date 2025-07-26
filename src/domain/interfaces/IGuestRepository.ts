@@ -1,28 +1,28 @@
 import { IGuest } from "../entities/Guest";
 
 export interface IGuestRepository {
-    signupGuest: (
+    signupGuest (
         name: string,
         email: string,
         password: string,
         mobile: number,
         age: number
-    ) => Promise<void>;
+    ):   Promise<void>;
 
-    loginGuest: (email: string, password: string) => Promise<IGuest>;
+    loginGuest (email: string, password: string): Promise<IGuest>;
 
-    updateGuest: (
+    updateGuest (
         guestId: string,
         name: string,
         mobile: number,
         age: number
-    ) => Promise<IGuest>;
+    ): Promise<IGuest>;
 
-    // bookEvent: (
+    // bookEvent (
     //     guestId: string, 
     //      eventId: string 
     // paymentType: string
     // amount: number
     // numberOfTickets: number
-    // ) => Promise<IGuest>;
+    // ): Promise<IGuest>;
 }
