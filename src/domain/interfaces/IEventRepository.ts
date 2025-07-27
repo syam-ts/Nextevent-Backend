@@ -1,3 +1,5 @@
+import { IEvent } from "../entities/Event"
+
 export interface IEventRepository {
     createEvent ( 
         organizerId: string,
@@ -10,7 +12,8 @@ export interface IEventRepository {
         totalSeats: number,
         isPaid: boolean,
         details: string, 
-    ): Promise<void>;
+    ): Promise<void>
 
+    getMyEvents(organizerId: string): Promise<IEvent[]>
 
 }

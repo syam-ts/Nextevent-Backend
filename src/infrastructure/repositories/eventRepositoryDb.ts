@@ -1,3 +1,4 @@
+import { IEvent } from "../../domain/entities/Event";
 import { IEventRepository } from "../../domain/interfaces/IEventRepository";
 import { EventModel } from "../database/Schema/EventSchema";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
@@ -9,9 +10,9 @@ export class EventRepositorDb implements IEventRepository {
         eventImage: string,
         location: string,
         date: Date,
-        startTime: string, 
-        endTime: string, 
-        totalSeats: number,     
+        startTime: string,
+        endTime: string,
+        totalSeats: number,
         isPaid: boolean,
         details: string
     ): Promise<void> {
@@ -46,5 +47,14 @@ export class EventRepositorDb implements IEventRepository {
         if (!updateOrganization) throw new Error("could not update organization");
 
         return;
+    }
+
+    async getMyEvents(organizerId: string): Promise<IEvent[]> {
+        const events = await EventModel.find({
+            "organizerDetails._id": organizerId,
+        }).lean<IEvent[]>();
+
+        if (!events) throw new Error("No events found");
+        return events;
     }
 }
