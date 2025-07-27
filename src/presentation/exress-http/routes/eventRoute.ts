@@ -15,6 +15,7 @@ class EventRoute {
 
     private initializeRoutes(): void {
         this.router.post("/new", verifyToken, this.eventController.createEvent);
+        this.router.get('/my-events', verifyToken, this.eventController.getMyEvents);
     }
 }
 
