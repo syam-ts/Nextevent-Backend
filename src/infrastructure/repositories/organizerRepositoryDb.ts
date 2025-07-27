@@ -11,8 +11,9 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
     mobile: number,
     password: string,
     organizationName: string
-  ): Promise<void> {
+  ): Promise<void> { 
     const hashedPassword = await hashPasswordFunction(password);
+    console.log('HA',hashedPassword)
 
     const newOrganizer = await new OrganizerModel({
       name,

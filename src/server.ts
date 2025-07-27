@@ -26,7 +26,7 @@ class Server {
             path: ".env",
         }),
             (this.app = express());
-        this.port = parseInt(process.env.PORT || "3000");
+        this.port = parseInt(process.env.PORT || "3001");
         this.frontendUrl = process.env.FRONTEND_URL as string;
         this.corsMethods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
         this.guestRoute = new GuestRoute();

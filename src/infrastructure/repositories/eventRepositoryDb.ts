@@ -9,8 +9,9 @@ export class EventRepositorDb implements IEventRepository {
         eventImage: string,
         location: string,
         date: Date,
-        time: string,
-        totalSeats: number,
+        startTime: string, 
+        endTime: string, 
+        totalSeats: number,     
         isPaid: boolean,
         details: string
     ): Promise<void> {
@@ -19,7 +20,8 @@ export class EventRepositorDb implements IEventRepository {
             eventImage,
             location,
             date,
-            time,
+            startTime,
+            endTime,
             totalSeats,
             isPaid,
             details,

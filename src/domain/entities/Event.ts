@@ -8,7 +8,8 @@ export interface IEvent {
    eventImage: string;
    location: string;
    date: Date;
-   time: string;
+   startTime: string;
+   endTime: string;
    totalSeats: number;
    isPaid: boolean;
    organizerDetails: IOrganizer;

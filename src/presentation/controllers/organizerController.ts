@@ -40,7 +40,7 @@ export class OrganizerController {
             const { accessToken, refreshToken } = generateToken(
                 organizer._id,
                 "organizer"
-            );
+            ); 
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 secure: true,

@@ -5,7 +5,8 @@ interface IBody {
     eventImage: string;
     location: string;
     date: Date;
-    time: string;
+    startTime: string;
+    endTime: string;
     totalSeats: number;
     isPaid: boolean;
     details: string;
@@ -15,7 +16,7 @@ export class CreateEvent {
     constructor(private eventRepo: IEventRepository) { }
 
     execute(organizerId: string, body: IBody) {
-        const { eventName, eventImage,location, date, time, totalSeats, isPaid, details } =
+        const { eventName, eventImage,location, date, startTime, endTime, totalSeats, isPaid, details } =
             body;
 
         return this.eventRepo.createEvent(
@@ -24,7 +25,8 @@ export class CreateEvent {
             eventImage,
             location,
             date,
-            time,
+            startTime,
+            endTime,
             totalSeats,
             isPaid,
             details
