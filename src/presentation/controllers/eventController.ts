@@ -3,19 +3,26 @@ import { EventRepositorDb } from "../../infrastructure/repositories/eventReposit
 import { CreateEvent } from "../../user-cases/event/createEvent";
 import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import { GetMyEvents } from "../../user-cases/event/getMyEvent";
+import { GetAllEvents } from "../../user-cases/event/getAllEvents";
+import { ViewEvent } from "../../user-cases/event/viewEvent";
 
 export class EventController {
-    
+
     public eventRepo: EventRepositorDb;
     public createEventUsecase: CreateEvent;
     public getMyEventsUsecase: GetMyEvents;
+    public getAllEventsUsecase: GetAllEvents;
+    public viewEventUsecase: ViewEvent;
 
     constructor() {
 
         this.eventRepo = new EventRepositorDb();
         this.createEventUsecase = new CreateEvent(this.eventRepo);
         this.getMyEventsUsecase = new GetMyEvents(this.eventRepo);
+        this.getAllEventsUsecase = new GetAllEvents(this.eventRepo);
+        this.viewEventUsecase = new ViewEvent(this.eventRepo);
     }
+    
     createEvent = async (req: Request, res: Response): Promise<void> => {
         try {
             if (!req.user?._id) throw new Error("organizer id is missing");
@@ -41,6 +48,42 @@ export class EventController {
         try {
             if (!req.user?._id) throw new Error("organizer id is missing");
             const events = await this.getMyEventsUsecase.execute(req.user._id);
+
+            res.status(HttpStatusCode.CREATED).json({
+                message: "events loaded successfully",
+                events,
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    getAllEvents = async (req: Request, res: Response): Promise<void> => {
+        try {
+            if (!req.user?._id) throw new Error("organizer id is missing");
+            const events = await this.getAllEventsUsecase.execute();
+
+            res.status(HttpStatusCode.CREATED).json({
+                message: "events loaded successfully",
+                events,
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    viewEvent = async (req: Request, res: Response): Promise<void> => {
+        try {
+            if (!req.user?._id) throw new Error("organizer id is missing");
+            const events = await this.viewEventUsecase.execute(req.params.eventId);
 
             res.status(HttpStatusCode.CREATED).json({
                 message: "events loaded successfully",

@@ -15,5 +15,9 @@ export interface IEventRepository {
     ): Promise<void>
 
     getMyEvents(organizerId: string): Promise<IEvent[]>
+    
+    getAllEvents(): Promise<IEvent[]>;
+
+    viewEvent(eventId: string): Promise<IEvent>
 
 }

@@ -57,4 +57,18 @@ export class EventRepositorDb implements IEventRepository {
         if (!events) throw new Error("No events found");
         return events;
     }
+
+    async getAllEvents(): Promise<IEvent[]> {
+        const events = await EventModel.find().lean<IEvent[]>();
+
+        if (!events) throw new Error("No event found");
+        return events;
+    }
+
+    async viewEvent(eventId: string): Promise<IEvent> {
+        const event = await EventModel.findById(eventId).lean<IEvent>();
+
+        if (!event) throw new Error("Event not found");
+        return event;
+    }
 }
