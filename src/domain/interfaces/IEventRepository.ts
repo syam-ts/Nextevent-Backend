@@ -9,6 +9,7 @@ export interface IEventRepository {
         date: Date,
         startTime: string,
         endTime: string,
+        ticketPrice: number,
         totalSeats: number,
         isPaid: boolean,
         details: string, 

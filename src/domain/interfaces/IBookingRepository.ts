@@ -4,9 +4,11 @@ export interface IBookingRepository {
         eventId: string,
         eventName: string,
         isPaid: boolean,
-        total: number,
-        date: Date,
-        time: string
+        street: string,
+        city: string,
+        zipcode: string,
+        numberOfSeats: number,
+        total: number
     ): Promise<void>;
 
     cancelBooking(bookingId: string): Promise<void>;

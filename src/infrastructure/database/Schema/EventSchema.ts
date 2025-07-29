@@ -33,6 +33,11 @@ const EventSchema = new Schema<IEvent>({
         type: String,
         require: true,
     },
+    ticketPrice: {
+        type: Number,
+        require: true,
+        default: 100,
+    },
     totalSeats: {
         type: Number,
         require: true,

@@ -10,6 +10,7 @@ export interface IEvent {
    date: Date;
    startTime: string;
    endTime: string;
+   ticketPrice: number;
    totalSeats: number;
    isPaid: boolean;
    organizerDetails: IOrganizer;

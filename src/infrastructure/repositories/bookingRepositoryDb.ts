@@ -1,5 +1,6 @@
 import { IBookingRepository } from "../../domain/interfaces/IBookingRepository";
 import { BookingModel } from "../database/Schema/BookingSchema";
+import { EventModel } from "../database/Schema/EventSchema";
 import { GuestModel } from "../database/Schema/GuestSchema";
 
 export class BookingRepositoryDb implements IBookingRepository {
@@ -8,11 +9,12 @@ export class BookingRepositoryDb implements IBookingRepository {
         eventId: string,
         eventName: string,
         isPaid: boolean,
-        total: number,
-        date: Date,
-        time: string
-    ): Promise<void> {
-        console.log("E NAEM: ", eventName);
+        street: string,
+        city: string,
+        zipcode: string,
+        numberOfSeats: number,
+        total: number
+    ): Promise<void> { 
         const addNewBooking = await new BookingModel({
             guestId,
             eventDetails: {
@@ -20,12 +22,23 @@ export class BookingRepositoryDb implements IBookingRepository {
                 eventName: eventName,
             },
             isPaid,
+            street,
+            city,
+            zipcode,
+            numberOfSeats,
             total,
-            date,
-            time,
             createdAt: Date.now(),
         }).save();
         if (!addNewBooking) throw new Error("Could not create new Booking");
+
+        //update seats in event
+        const updateEventSeats = await EventModel.findByIdAndUpdate(eventId, {
+            $inc: { totalSeats: -numberOfSeats },
+        });
+
+        if (!updateEventSeats)
+            throw new Error("Could not update event seats number!");
+
         return;
     }
 
@@ -39,13 +52,15 @@ export class BookingRepositoryDb implements IBookingRepository {
             cancelGuestBooking.guestId,
             {
                 $inc: { "wallet.balance": walletAmount },
-                
-                $push: { "wallet.transaction":
-                   { type: "credit",
-                    amount: walletAmount,
-                    fromName: "admin",
-                    fromId: "admin_id",
-                    createdAt: Date.now()},
+
+                $push: {
+                    "wallet.transaction": {
+                        type: "credit",
+                        amount: walletAmount,
+                        fromName: "admin",
+                        fromId: "admin_id",
+                        createdAt: Date.now(),
+                    },
                 },
             }
         );

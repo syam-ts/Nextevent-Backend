@@ -12,6 +12,7 @@ export class EventRepositorDb implements IEventRepository {
         date: Date,
         startTime: string,
         endTime: string,
+        ticketPrice: number,
         totalSeats: number,
         isPaid: boolean,
         details: string
@@ -23,6 +24,7 @@ export class EventRepositorDb implements IEventRepository {
             date,
             startTime,
             endTime,
+            ticketPrice,
             totalSeats,
             isPaid,
             details,

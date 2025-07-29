@@ -9,6 +9,7 @@ export const GuestSchema = new Schema<IGuest>({
     profilePicture: {
         type: String,
         require: true,
+        default: 'https://images.crunchbase.com/image/upload/c_pad,f_auto,q_auto:eco,dpr_1/vynd1djnvaxvahibbbus'
     },
     email: {
         type: String,

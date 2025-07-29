@@ -12,7 +12,7 @@ const EventDetails = {
     },
 };
 
-export const BookingSchmea = new Schema<IBooking>({
+export const BookingSchema = new Schema<IBooking>({
     guestId: {
         type: String,
         require: true,
@@ -22,23 +22,31 @@ export const BookingSchmea = new Schema<IBooking>({
         type: Boolean,
         require: true,
     },
+    street: {
+        type: String,
+        require: true,
+    },
+    city: {
+        type: String,
+        require: true,
+    },
+    zipcode: {
+        type: String,
+        require: true,
+    },
+    numberOfSeats: {
+        type: Number,
+        require: true,
+    },
     total: {
         type: Number,
         require: true,
     },
-    date: {
-        type: Date,
-        require: true,
-    },
-    time: {
-        type: String,
-        require: true,
-    },
+
     createdAt: {
         type: Date,
         require: true,
     },
 });
 
-
-export const BookingModel = model('booking', BookingSchmea);
+export const BookingModel = model("booking", BookingSchema);
