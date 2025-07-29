@@ -14,6 +14,7 @@ export interface IGuestRepository {
     updateGuest (
         guestId: string,
         name: string,
+        profilePicture: string,
         mobile: number,
         age: number
     ): Promise<IGuest>;

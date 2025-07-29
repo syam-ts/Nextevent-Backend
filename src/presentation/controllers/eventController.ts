@@ -83,11 +83,11 @@ export class EventController {
     viewEvent = async (req: Request, res: Response): Promise<void> => {
         try {
             if (!req.user?._id) throw new Error("organizer id is missing");
-            const events = await this.viewEventUsecase.execute(req.params.eventId);
+            const event = await this.viewEventUsecase.execute(req.params.eventId);
 
             res.status(HttpStatusCode.CREATED).json({
-                message: "events loaded successfully",
-                events,
+                message: "event loaded successfully",
+                event,
                 success: true,
             });
         } catch (error: unknown) {

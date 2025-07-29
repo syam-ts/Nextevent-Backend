@@ -41,6 +41,7 @@ export class GuestRepositoryDb implements IGuestRepository {
     async updateGuest(
         guestId: string,
         name: string,
+        profilePicture: string,
         mobile: number,
         age: number
     ): Promise<IGuest> {
@@ -49,6 +50,7 @@ export class GuestRepositoryDb implements IGuestRepository {
             {
                 $set: {
                     name,
+                    profilePicture,
                     mobile,
                     age,
                 },

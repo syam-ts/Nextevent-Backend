@@ -6,6 +6,10 @@ export const GuestSchema = new Schema<IGuest>({
         type: String,
         require: true,
     },
+    profilePicture: {
+        type: String,
+        require: true,
+    },
     email: {
         type: String,
         require: true,
