@@ -3,21 +3,44 @@ import { BookingRepositoryDb } from "../../infrastructure/repositories/bookingRe
 import { NewBooking } from "../../user-cases/booking/newBooking";
 import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import { CancelBooking } from "../../user-cases/booking/cancelBooking";
+import { BookingPayment } from "../../user-cases/booking/bookingPayment";
 
 export class BookingController {
     public bookingRepo: BookingRepositoryDb;
+    public bookingPaymentUsecase: BookingPayment;
     public newBookingUsecase: NewBooking;
     public cancelBookingUsecase: CancelBooking;
     
     constructor() {
 
         this.bookingRepo = new BookingRepositoryDb();
+        this.bookingPaymentUsecase = new BookingPayment();
         this.newBookingUsecase = new NewBooking(this.bookingRepo);
         this.cancelBookingUsecase = new CancelBooking(this.bookingRepo);
     }
+    bookingPayment = async (req: Request, res: Response): Promise<void> => {
+        try {
+            if (!req.user?._id) throw new Error("guest id is missing");
+            const result = await this.bookingPaymentUsecase.execute(
+                req.body
+            );
+
+            res.status(HttpStatusCode.CREATED).json({
+                result,
+                message: "Payment Done ",
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
     newBooking = async (req: Request, res: Response): Promise<void> => {
         try {
-            if (!req.user?._id) throw new Error("organizer id is missing");
+            if (!req.user?._id) throw new Error("guest id is missing");
             const result = await this.newBookingUsecase.execute(
                 req.user._id,
                 req.body

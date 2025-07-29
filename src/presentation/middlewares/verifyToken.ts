@@ -12,9 +12,9 @@ interface DecodedUser {
 const access_secret = process.env.ACCESS_TOKEN_SECRET as string;
 
 const verifyToken = (req: any, res: Response, next: NextFunction): void => {
-    const authHeader = req.headers["authorization"]; // lowercase by default in Express
-
-    const token = req.headers.authorization?.split(" ")[1];
+    const authHeader = req.headers["authorization"];  
+    
+    const token = req.headers.authorization?.split(" ")[1]; 
 
     if (!token) {
         res.status(HttpStatusCode.UNAUTHORIZED).json({

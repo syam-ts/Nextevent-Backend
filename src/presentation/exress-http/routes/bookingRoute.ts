@@ -14,7 +14,8 @@ class BookingRoute {
     }
 
     private initializeRoutes(): void {
-        this.router.post("/new", verifyToken, this.bookingController.newBooking);
+        this.router.post("/payment", verifyToken, this.bookingController.bookingPayment);
+        this.router.post('/confirm', verifyToken, this.bookingController.newBooking)
         this.router.delete(
             "/cancel/:bookingId",
             verifyToken,
