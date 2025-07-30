@@ -1,4 +1,5 @@
 import { IGuest } from "../../domain/entities/Guest";
+import { IWallet } from "../../domain/entities/Wallet";
 import { IGuestRepository } from "../../domain/interfaces/IGuestRepository";
 import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
 import { verifyPassword } from "../../utils/crypto/verifyPassword";
@@ -60,5 +61,14 @@ export class GuestRepositoryDb implements IGuestRepository {
 
         if (!updatedGuest) throw new Error("could not update guest");
         return updatedGuest;
+    }
+    
+
+    async getWallet(guestId: string): Promise<IWallet> {
+        const guest = await GuestModel.findById(guestId).lean<IGuest>();
+
+        if (!guest) throw new Error("Guest not found");
+
+        return guest.wallet;
     }
 }

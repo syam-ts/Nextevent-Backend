@@ -105,4 +105,6 @@ export class BookingRepositoryDb implements IBookingRepository {
             throw new Error("could not add money to guest wallet");
         return;
     }
+
+
 }

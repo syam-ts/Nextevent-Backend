@@ -5,17 +5,20 @@ import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import generateToken from "../../utils/jwt/generateToken";
 import { LoginGuest } from "../../user-cases/guest/loginGuest";
 import { UpdateGuest } from "../../user-cases/guest/updateGuest";
+import { GetWallet } from "../../user-cases/guest/getWallet";
 
 export class GuestController {
     public guestRepo: GuestRepositoryDb;
     public createGuestUsecase: CreateGuest;
     public loginGuestUsecase: LoginGuest;
+    private getWalletUsecase: GetWallet;
     private updateGuestUsecase: UpdateGuest;
 
     constructor() {
         this.guestRepo = new GuestRepositoryDb();
         this.createGuestUsecase = new CreateGuest(this.guestRepo);
         this.loginGuestUsecase = new LoginGuest(this.guestRepo);
+        this.getWalletUsecase = new GetWallet(this.guestRepo);
         this.updateGuestUsecase = new UpdateGuest(this.guestRepo);
 
     }
@@ -60,12 +63,30 @@ export class GuestController {
 
     updateGuest = async (req: Request, res: Response): Promise<void> => {
         try {
-               if (!req.user?._id) throw new Error("organizer id is missing");
+               if (!req.user?._id) throw new Error("guest id is missing");
             const guest = await this.updateGuestUsecase.execute(req.user._id,req.body); 
              
             res.status(HttpStatusCode.CREATED).json({
                 message: "Guest updated Successfully",
                 guest, 
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    getWallet = async (req: Request, res: Response): Promise<void> => {
+        try {
+               if (!req.user?._id) throw new Error("guest id is missing");
+            const wallet = await this.getWalletUsecase.execute(req.user._id); 
+             
+            res.status(HttpStatusCode.CREATED).json({
+                message: "Wallet loaded Successfully",
+                wallet, 
                 success: true,
             });
         } catch (error: unknown) {
