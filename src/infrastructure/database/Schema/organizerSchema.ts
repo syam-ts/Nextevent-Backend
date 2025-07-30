@@ -4,28 +4,28 @@ import { IOrganizer } from "../../../domain/entities/Organizer";
 const organizerSchema = new Schema<IOrganizer>({
     name: {
         type: String,
-        require: true,
+        required: true,
     },
     email: {
         type: String,
-        require: true,
+        required: true,
     },
     mobile: {
         type: Number,
-        require: true,
+        required: true,
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     role: {
         type: String,
-        require: true,
+        required: true,
         default: "organizer",
     },
     organizationName: {
         type: String,
-        require: true,
+        required: true,
     },
     createdEvents: [
         {
@@ -36,7 +36,7 @@ const organizerSchema = new Schema<IOrganizer>({
     ],
     createdAt: {
         type: Date,
-        require: true,
+        required: true,
     },
 });
 
