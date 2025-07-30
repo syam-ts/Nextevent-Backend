@@ -4,66 +4,66 @@ import { IEvent } from "../../../domain/entities/Event";
 const OrganizerSchmea = {
     _id: {
         type: String,
-        require: true,
+        required: true,
     }, 
 };
 
 const EventSchema = new Schema<IEvent>({
     eventName: {
         type: String,
-        require: true,
+        required: true,
     },
     eventImage: {
         type: String,
-        require: true,
+        required: true,
     },
     location: {
         type: String,
-        require: true,
+        required: true,
     },
     date: {
         type: Date,
-        require: true,
+        required: true,
     },
     startTime: {
         type: String,
-        require: true,
+        required: true,
     },
     endTime: {
         type: String,
-        require: true,
+        required: true,
     },
     ticketPrice: {
         type: Number,
-        require: true,
+        required: true,
         default: 100,
     },
     totalSeats: {
         type: Number,
-        require: true,
+        required: true,
         default: 0,
     },
     isPaid: {
         type: Boolean,
-        require: true,
+        required: true,
     },
     organizerDetails: OrganizerSchmea,
     details: {
         type: String,
-        require: true,
+        required: true,
     },
     isClosed: {
         type: Boolean,
-        require: true,
+        required: true,
     },
     numberOfBooking: {
         type: Number,
-        require: true,
+        required: true,
         default: 0
     },
     createdAt: {
         type: Date,
-        require: true,
+        required: true,
     },
 });
 
