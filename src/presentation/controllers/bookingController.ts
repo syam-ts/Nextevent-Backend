@@ -5,12 +5,14 @@ import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import { CancelBooking } from "../../user-cases/booking/cancelBooking";
 import { BookingPayment } from "../../user-cases/booking/bookingPayment";
 import { GetMyBookings } from "../../user-cases/booking/getMyBookings";
+import { ViewBooking } from "../../user-cases/booking/viewBooking";
 
 export class BookingController {
     public bookingRepo: BookingRepositoryDb;
     public bookingPaymentUsecase: BookingPayment;
     public newBookingUsecase: NewBooking;
     public getMyBookingsUsecase: GetMyBookings;
+    public viewBookingUsecase: ViewBooking;
     public cancelBookingUsecase: CancelBooking;
 
     constructor() {
@@ -18,6 +20,7 @@ export class BookingController {
         this.bookingPaymentUsecase = new BookingPayment();
         this.newBookingUsecase = new NewBooking(this.bookingRepo);
         this.getMyBookingsUsecase = new GetMyBookings(this.bookingRepo);
+        this.viewBookingUsecase = new ViewBooking(this.bookingRepo);
         this.cancelBookingUsecase = new CancelBooking(this.bookingRepo);
     }
     bookingPayment = async (req: Request, res: Response): Promise<void> => {
@@ -66,6 +69,25 @@ export class BookingController {
             res.status(HttpStatusCode.OK).json({
                 message: "Bookings loaded successfully",
                 bookings,
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    viewBooking = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const booking = await this.viewBookingUsecase.execute(
+                req.params.bookingId
+            );
+
+            res.status(HttpStatusCode.OK).json({
+                message: "Booking loaded successfully",
+                booking,
                 success: true,
             });
         } catch (error: unknown) {
