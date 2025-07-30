@@ -1,3 +1,5 @@
+import { IBooking } from "../entities/Booking";
+
 export interface IBookingRepository {
     newBooking(
         guestId: string,
@@ -11,5 +13,6 @@ export interface IBookingRepository {
         total: number
     ): Promise<void>;
 
+    getMyBookings(guestId: string): Promise<IBooking[]>;
     cancelBooking(bookingId: string): Promise<void>;
 }

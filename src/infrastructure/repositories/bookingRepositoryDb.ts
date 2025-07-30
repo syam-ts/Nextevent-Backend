@@ -1,3 +1,4 @@
+import { IBooking } from "../../domain/entities/Booking";
 import { IBookingRepository } from "../../domain/interfaces/IBookingRepository";
 import { BookingModel } from "../database/Schema/BookingSchema";
 import { EventModel } from "../database/Schema/EventSchema";
@@ -14,7 +15,7 @@ export class BookingRepositoryDb implements IBookingRepository {
         zipcode: string,
         numberOfSeats: number,
         total: number
-    ): Promise<void> { 
+    ): Promise<void> {
         const addNewBooking = await new BookingModel({
             guestId,
             eventDetails: {
@@ -40,6 +41,15 @@ export class BookingRepositoryDb implements IBookingRepository {
             throw new Error("Could not update event seats number!");
 
         return;
+    }
+
+    async getMyBookings(guestId: string): Promise<IBooking[]> {
+        const bookings = await BookingModel.find({ guestId: guestId }).lean<
+            IBooking[]
+        >();
+
+        if (!bookings) throw new Error("No booking found");
+        return bookings;
     }
 
     async cancelBooking(bookingId: string): Promise<void> {
