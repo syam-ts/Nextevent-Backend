@@ -56,6 +56,11 @@ const EventSchema = new Schema<IEvent>({
         type: Boolean,
         require: true,
     },
+    numberOfBooking: {
+        type: Number,
+        require: true,
+        default: 0
+    },
     createdAt: {
         type: Date,
         require: true,
