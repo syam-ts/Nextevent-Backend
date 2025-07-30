@@ -34,7 +34,7 @@ export class BookingRepositoryDb implements IBookingRepository {
 
         //update seats in event
         const updateEventSeats = await EventModel.findByIdAndUpdate(eventId, {
-            $inc: { totalSeats: -numberOfSeats },
+            $inc: { totalSeats: -numberOfSeats, numberOfBooking: numberOfSeats },
         });
 
         if (!updateEventSeats)

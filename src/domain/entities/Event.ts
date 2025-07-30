@@ -16,6 +16,7 @@ export interface IEvent {
    organizerDetails: IOrganizer;
    details: string;
    isClosed: boolean;
+   numberOfBooking: number;
    createdAt: Date;
 }
 
