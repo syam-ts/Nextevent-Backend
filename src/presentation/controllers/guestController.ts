@@ -6,6 +6,7 @@ import generateToken from "../../utils/jwt/generateToken";
 import { LoginGuest } from "../../user-cases/guest/loginGuest";
 import { UpdateGuest } from "../../user-cases/guest/updateGuest";
 import { GetWallet } from "../../user-cases/guest/getWallet";
+import { GetHomeStats } from "../../user-cases/guest/getHomeStats";
 
 export class GuestController {
     public guestRepo: GuestRepositoryDb;
@@ -13,6 +14,7 @@ export class GuestController {
     public loginGuestUsecase: LoginGuest;
     private getWalletUsecase: GetWallet;
     private updateGuestUsecase: UpdateGuest;
+    private getHomeStatsUsecase: GetHomeStats;
 
     constructor() {
         this.guestRepo = new GuestRepositoryDb();
@@ -20,7 +22,7 @@ export class GuestController {
         this.loginGuestUsecase = new LoginGuest(this.guestRepo);
         this.getWalletUsecase = new GetWallet(this.guestRepo);
         this.updateGuestUsecase = new UpdateGuest(this.guestRepo);
-
+        this.getHomeStatsUsecase = new GetHomeStats(this.guestRepo);
     }
     signupGuest = async (req: Request, res: Response): Promise<void> => {
         try {
@@ -63,12 +65,15 @@ export class GuestController {
 
     updateGuest = async (req: Request, res: Response): Promise<void> => {
         try {
-               if (!req.user?._id) throw new Error("guest id is missing");
-            const guest = await this.updateGuestUsecase.execute(req.user._id,req.body); 
-             
+            if (!req.user?._id) throw new Error("guest id is missing");
+            const guest = await this.updateGuestUsecase.execute(
+                req.user._id,
+                req.body
+            );
+
             res.status(HttpStatusCode.CREATED).json({
                 message: "Guest updated Successfully",
-                guest, 
+                guest,
                 success: true,
             });
         } catch (error: unknown) {
@@ -81,12 +86,29 @@ export class GuestController {
 
     getWallet = async (req: Request, res: Response): Promise<void> => {
         try {
-               if (!req.user?._id) throw new Error("guest id is missing");
-            const wallet = await this.getWalletUsecase.execute(req.user._id); 
-             
+            if (!req.user?._id) throw new Error("guest id is missing");
+            const wallet = await this.getWalletUsecase.execute(req.user._id);
+
             res.status(HttpStatusCode.CREATED).json({
                 message: "Wallet loaded Successfully",
-                wallet, 
+                wallet,
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    getHomeStats = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const stats = await this.getHomeStatsUsecase.execute();
+
+            res.status(HttpStatusCode.CREATED).json({
+                message: "Statistics loaded Successfully",
+                stats,
                 success: true,
             });
         } catch (error: unknown) {

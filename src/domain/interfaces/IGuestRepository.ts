@@ -21,4 +21,10 @@ export interface IGuestRepository {
     ): Promise<IGuest>;
 
     getWallet(guestId: string): Promise<IWallet>;
+
+    getHomestats(): Promise<{
+        totalEvents: number;
+        totalBookings: number;
+        totalOrganizers: number;
+    }>;
 }
