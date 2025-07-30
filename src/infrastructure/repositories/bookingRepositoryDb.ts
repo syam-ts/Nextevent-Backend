@@ -61,6 +61,7 @@ export class BookingRepositoryDb implements IBookingRepository {
     }
 
     async cancelBooking(bookingId: string): Promise<void> {
+        
         const cancelGuestBooking = await BookingModel.findByIdAndDelete(bookingId);
         if (!cancelGuestBooking) throw new Error("Booking not cancel");
 
