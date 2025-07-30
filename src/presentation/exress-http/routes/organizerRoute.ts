@@ -19,6 +19,7 @@ class OrganizerRoute {
         this.router.post('/signup', this.organizerController.signupOrganizer);
         this.router.post('/login', this.organizerController.loginOrganizer);
         this.router.put('/update',verifyToken, this.organizerController.updateOrganizer);
+        this.router.get('/getHome-stats', verifyToken, this.organizerController.getHomeStats)
 
     }
 }

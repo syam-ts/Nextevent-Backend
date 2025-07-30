@@ -43,6 +43,7 @@ export class EventRepositorDb implements IEventRepository {
                 $addToSet: {
                     createdEvents: newEvent._id,
                 },
+                $inc: { totalEventsCreated: 1 },
             }
         );
 
@@ -72,5 +73,14 @@ export class EventRepositorDb implements IEventRepository {
 
         if (!event) throw new Error("Event not found");
         return event;
+    }
+
+    async getLatestEvents(): Promise<IEvent[]> {
+        const events = await EventModel.find()
+            .sort({ createdAt: -1 })
+            .lean<IEvent[]>();
+
+        if (!events) throw new Error("No event found");
+        return events;
     }
 }

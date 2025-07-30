@@ -21,4 +21,8 @@ export interface IEventRepository {
 
     viewEvent(eventId: string): Promise<IEvent>
 
+    getLatestEvents(): Promise<IEvent[]>
+
+
+
 }

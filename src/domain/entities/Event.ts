@@ -14,7 +14,7 @@ export interface IEvent {
    totalSeats: number;
    isPaid: boolean;
    organizerDetails: IOrganizer;
-   details: string;
+   details: string; 
    isClosed: boolean;
    createdAt: Date;
 }

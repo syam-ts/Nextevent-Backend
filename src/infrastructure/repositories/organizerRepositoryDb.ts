@@ -1,7 +1,9 @@
+import { AnyExpression } from "mongoose";
 import { IOrganizer } from "../../domain/entities/Organizer";
 import { IOrganizerRepository } from "../../domain/interfaces/IOrganiserRepository";
 import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
 import { verifyPassword } from "../../utils/crypto/verifyPassword";
+import { EventModel } from "../database/Schema/EventSchema";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
 
 export class OrganizerRepositoryDb implements IOrganizerRepository {
@@ -11,9 +13,9 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
     mobile: number,
     password: string,
     organizationName: string
-  ): Promise<void> { 
+  ): Promise<void> {
     const hashedPassword = await hashPasswordFunction(password);
-    console.log('HA',hashedPassword)
+    console.log("HA", hashedPassword);
 
     const newOrganizer = await new OrganizerModel({
       name,
@@ -62,5 +64,36 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
 
     if (!updateOrganizer) throw new Error("updation failed!");
     return updateOrganizer;
+  }
+
+  async getHomeStats(organizerId: string): Promise<any> {
+    //Total Ticket Price
+
+    //Total Guest
+
+    const organizer = await OrganizerModel.findById(
+      organizerId
+    ).lean<IOrganizer>();  
+
+    const totalTiketAndGuest: any = await EventModel.aggregate([
+      {
+        $match: { "organizerDetails._id": organizerId },
+      },
+      {
+        $group: {
+          _id: null,
+          totalTicket: { $sum: "$ticketPrice" },
+          totalGuests: { $sum: "$totalSeats"} ,
+        },
+      },
+    ]);
+    console.log('ro', totalTiketAndGuest[0].totalTicket)
+ 
+
+    return {
+      totalEventsCreated: organizer?.totalEventsCreated,
+      totalTicket: totalTiketAndGuest[0].totalTicket,
+      totalGuests: totalTiketAndGuest[0].totalGuests 
+    };
   }
 }

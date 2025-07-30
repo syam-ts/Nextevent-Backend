@@ -9,7 +9,7 @@ const refreshToken = (req: Request, res: Response): void => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-        res.status(401).json({ message: "No refresh token" });
+        res.status(401).json({ message: "No refresh token" , success: false});
         return;
     }
 
@@ -22,7 +22,7 @@ const refreshToken = (req: Request, res: Response): void => {
                 return;
             }
 
-           console.log('REFRESH DECODED JWT: ',decoded)
+           // console.log('REFRESH DECODED JWT: ',decoded)
 
             const { accessToken } = generateToken(decoded._id, decoded.role);
             res.json({ accessToken });

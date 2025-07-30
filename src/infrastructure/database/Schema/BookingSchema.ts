@@ -4,48 +4,48 @@ import { IBooking } from "../../../domain/entities/Booking";
 const EventDetails = {
     _id: {
         type: String,
-        require: true,
+        required: true,
     },
     eventName: {
         type: String,
-        require: true,
+        required: true,
     },
 };
 
 export const BookingSchema = new Schema<IBooking>({
     guestId: {
         type: String,
-        require: true,
+        required: true,
     },
     eventDetails: EventDetails,
     isPaid: {
         type: Boolean,
-        require: true,
+        required: true,
     },
     street: {
         type: String,
-        require: true,
+        required: true,
     },
     city: {
         type: String,
-        require: true,
+        required: true,
     },
     zipcode: {
         type: String,
-        require: true,
+        required: true,
     },
     numberOfSeats: {
         type: Number,
-        require: true,
+        required: true,
     },
     total: {
         type: Number,
-        require: true,
+        required: true,
     },
 
     createdAt: {
         type: Date,
-        require: true,
+        required: true,
     },
 });
 

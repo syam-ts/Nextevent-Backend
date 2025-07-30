@@ -13,6 +13,7 @@ export class EventController {
     public getMyEventsUsecase: GetMyEvents;
     public getAllEventsUsecase: GetAllEvents;
     public viewEventUsecase: ViewEvent;
+    public getLatestEventsUsecase: GetAllEvents;
 
     constructor() {
 
@@ -21,6 +22,8 @@ export class EventController {
         this.getMyEventsUsecase = new GetMyEvents(this.eventRepo);
         this.getAllEventsUsecase = new GetAllEvents(this.eventRepo);
         this.viewEventUsecase = new ViewEvent(this.eventRepo);
+        this.getLatestEventsUsecase = new GetAllEvents(this.eventRepo)
+
     }
     
     createEvent = async (req: Request, res: Response): Promise<void> => {
@@ -88,6 +91,24 @@ export class EventController {
             res.status(HttpStatusCode.CREATED).json({
                 message: "event loaded successfully",
                 event,
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    getLatestEvents = async (req: Request, res: Response): Promise<void> => {
+        try {
+            
+            const events = await this.getLatestEventsUsecase.execute();
+
+            res.status(HttpStatusCode.CREATED).json({
+                message: "events loaded successfully",
+                events,
                 success: true,
             });
         } catch (error: unknown) {

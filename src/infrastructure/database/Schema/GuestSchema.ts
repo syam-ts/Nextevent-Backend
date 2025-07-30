@@ -4,37 +4,37 @@ import { IGuest } from "../../../domain/entities/Guest";
 export const GuestSchema = new Schema<IGuest>({
     name: {
         type: String,
-        require: true,
+        required: true,
     },
     profilePicture: {
         type: String,
-        require: true,
+        required: true,
         default: 'https://images.crunchbase.com/image/upload/c_pad,f_auto,q_auto:eco,dpr_1/vynd1djnvaxvahibbbus'
     },
     email: {
         type: String,
-        require: true,
+        required: true,
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     mobile: {
         type: Number,
-        require: true,
+        required: true,
     },
     age: {
         type: Number,
-        require: true,
+        required: true,
     },
     numberOfEventsAttended: {
         type: Number,
-        require: true,
+        required: true,
         default: 0,
     },
     createdAt: {
         type: Date,
-        require: true,
+        required: true,
     },
 });
 
