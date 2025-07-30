@@ -22,9 +22,9 @@ const refreshToken = (req: Request, res: Response): void => {
                 return;
             }
 
-            // console.log('REFRESH DECODED JWT: ',decoded)
+           console.log('REFRESH DECODED JWT: ',decoded)
 
-            const { accessToken } = generateToken(decoded.userId, decoded.role);
+            const { accessToken } = generateToken(decoded._id, decoded.role);
             res.json({ accessToken });
         }
     );

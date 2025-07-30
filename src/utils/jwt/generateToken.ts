@@ -15,7 +15,7 @@ const generateToken = (roleId: string, role: string) => {
         },
         accessToken_SECRET,
         {
-            expiresIn: "5m",
+            expiresIn: "1m",
         }
     );
  
