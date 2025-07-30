@@ -1,6 +1,8 @@
 import { IEvent } from "../../domain/entities/Event";
+import { IGuest } from "../../domain/entities/Guest";
 import { IEventRepository } from "../../domain/interfaces/IEventRepository";
 import { EventModel } from "../database/Schema/EventSchema";
+import { GuestModel } from "../database/Schema/GuestSchema";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
 
 export class EventRepositorDb implements IEventRepository {
@@ -61,8 +63,44 @@ export class EventRepositorDb implements IEventRepository {
         return events;
     }
 
-    async getAllEvents(): Promise<IEvent[]> {
-        const events = await EventModel.find().lean<IEvent[]>();
+    async getAllEvents(
+        guestId: string,
+        currentPage: number,
+        filter: string
+    ): Promise<IEvent[]> {
+        const guest = await GuestModel.findById(guestId).lean<IGuest>();
+
+        if (!guest) throw new Error("guest not found");
+
+        let filterQuery;
+        if (filter === "free") {
+            filterQuery = {
+                isPaid: false,
+            };
+        } else if (filter === "paid") {
+            filterQuery = {
+                isPaid: true,
+            };
+        } else if (filter === "nearby") {
+            filterQuery = {
+                location: guest.location,
+            };
+        } else {
+            throw new Error("wrong selection");
+        }
+
+        //for future pagination -------------
+        const page_size: number = 4;
+        const skip: number = (currentPage - 1) * page_size;
+        const totalEvents = await EventModel.countDocuments();
+        const totalPages = Math.ceil(totalEvents / page_size);
+        // const events = await EventModel.find(filterQuery)
+        //     .skip(skip)
+        //     .limit(page_size)
+        //     .lean<IEvent[]>();
+        // -----------------------------------
+
+        const events = await EventModel.find(filterQuery).lean<IEvent[]>();
 
         if (!events) throw new Error("No event found");
         return events;

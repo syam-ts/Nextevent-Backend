@@ -17,7 +17,7 @@ export interface IEventRepository {
 
     getMyEvents(organizerId: string): Promise<IEvent[]>
     
-    getAllEvents(): Promise<IEvent[]>;
+    getAllEvents(guestId: string, currentPage: number, filter: string): Promise<IEvent[]>;
 
     viewEvent(eventId: string): Promise<IEvent>
 

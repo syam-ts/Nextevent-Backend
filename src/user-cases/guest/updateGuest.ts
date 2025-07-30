@@ -4,20 +4,20 @@ interface IBody {
     name: string;
     profilePicture: string;
     mobile: number;
-    age: number;
+    location: string;
 }
 
 export class UpdateGuest {
     constructor(private guestRepo: IGuestRepository) { }
 
     execute(guestId: string, body: IBody) {
-        const { name, profilePicture, mobile, age } = body;
+        const { name, profilePicture, mobile, location } = body;
         return this.guestRepo.updateGuest(
             guestId,
             name,
             profilePicture,
             mobile,
-            age
+            location
         );
     }
 }

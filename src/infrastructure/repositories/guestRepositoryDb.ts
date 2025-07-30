@@ -9,13 +9,13 @@ import { GuestModel } from "../database/Schema/GuestSchema";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
 
 export class GuestRepositoryDb implements IGuestRepository {
-    
+
     async signupGuest(
         name: string,
         email: string,
         password: string,
         mobile: number,
-        age: number
+        location: string
     ): Promise<void> {
         const hashedPass = await hashPasswordFunction(password);
 
@@ -24,7 +24,7 @@ export class GuestRepositoryDb implements IGuestRepository {
             email,
             password: hashedPass,
             mobile,
-            age,
+            location,
             wallet: {},
             createdAt: Date.now(),
         }).save();
@@ -43,12 +43,14 @@ export class GuestRepositoryDb implements IGuestRepository {
 
         return guest;
     }
+
+
     async updateGuest(
         guestId: string,
         name: string,
         profilePicture: string,
         mobile: number,
-        age: number
+        location: string
     ): Promise<IGuest> {
         const updatedGuest = await GuestModel.findByIdAndUpdate(
             guestId,
@@ -57,7 +59,7 @@ export class GuestRepositoryDb implements IGuestRepository {
                     name,
                     profilePicture,
                     mobile,
-                    age,
+                    location,
                 },
             },
             { new: true }
@@ -67,6 +69,7 @@ export class GuestRepositoryDb implements IGuestRepository {
         return updatedGuest;
     }
 
+
     async getWallet(guestId: string): Promise<IWallet> {
         const guest = await GuestModel.findById(guestId).lean<IGuest>();
 
@@ -74,6 +77,7 @@ export class GuestRepositoryDb implements IGuestRepository {
 
         return guest.wallet;
     }
+
 
     async getHomestats(): Promise<{
         totalEvents: number;

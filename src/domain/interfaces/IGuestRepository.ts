@@ -7,7 +7,7 @@ export interface IGuestRepository {
         email: string,
         password: string,
         mobile: number,
-        age: number
+        location: string
     ): Promise<void>;
 
     loginGuest(email: string, password: string): Promise<IGuest>;
@@ -17,7 +17,7 @@ export interface IGuestRepository {
         name: string,
         profilePicture: string,
         mobile: number,
-        age: number
+        location: string
     ): Promise<IGuest>;
 
     getWallet(guestId: string): Promise<IWallet>;

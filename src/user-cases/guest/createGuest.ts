@@ -5,14 +5,14 @@ interface IBody {
     email: string;
     password: string;
     mobile: number;
-    age: number;
+    location: string;
 }
 
 export class CreateGuest {
     constructor(private guestRepo: IGuestRepository) { }
 
     execute(body: IBody) {
-        const { name, email, password, mobile, age } = body;
+        const { name, email, password, mobile, location } = body;
         return this.guestRepo.signupGuest(name, email, password, mobile, age);
     }
 }

@@ -8,7 +8,7 @@ export interface IGuest {
     email: string
     password: string
     mobile: number
-    age: number
+    location: string
     numberOfEventsAttended: number,
     wallet: IWallet
     // events: IEvent,
