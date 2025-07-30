@@ -14,5 +14,8 @@ export interface IBookingRepository {
     ): Promise<void>;
 
     getMyBookings(guestId: string): Promise<IBooking[]>;
+
+    viewBooking(BookingId: string): Promise<IBooking>;
+    
     cancelBooking(bookingId: string): Promise<void>;
 }

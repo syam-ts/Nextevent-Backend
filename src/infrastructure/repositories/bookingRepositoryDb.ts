@@ -51,6 +51,15 @@ export class BookingRepositoryDb implements IBookingRepository {
         if (!bookings) throw new Error("No booking found");
         return bookings;
     }
+    
+
+    async viewBooking(BookingId: string): Promise<IBooking> {
+        const booking = await BookingModel.findById(BookingId).lean<IBooking>();
+
+        if (!booking) throw new Error("Booking not found");
+        return booking;
+    }
+
 
     async cancelBooking(bookingId: string): Promise<void> {
         const cancelGuestBooking = await BookingModel.findByIdAndDelete(bookingId);
