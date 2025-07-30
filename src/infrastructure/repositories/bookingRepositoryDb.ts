@@ -1,5 +1,6 @@
 import { IBooking } from "../../domain/entities/Booking";
 import { IBookingRepository } from "../../domain/interfaces/IBookingRepository";
+import { AdminModel } from "../database/Schema/AdminSchema";
 import { BookingModel } from "../database/Schema/BookingSchema";
 import { EventModel } from "../database/Schema/EventSchema";
 import { GuestModel } from "../database/Schema/GuestSchema";
@@ -52,6 +53,13 @@ export class BookingRepositoryDb implements IBookingRepository {
         return bookings;
     }
 
+    async viewBooking(bookingId: string): Promise<IBooking> {
+        const booking = await BookingModel.findById(bookingId).lean<IBooking>();
+
+        if (!booking) throw new Error("Booking not found");
+        return booking;
+    }
+
     async cancelBooking(bookingId: string): Promise<void> {
         const cancelGuestBooking = await BookingModel.findByIdAndDelete(bookingId);
         if (!cancelGuestBooking) throw new Error("Booking not cancel");
@@ -68,7 +76,24 @@ export class BookingRepositoryDb implements IBookingRepository {
                         type: "credit",
                         amount: walletAmount,
                         fromName: "admin",
-                        fromId: "admin_id",
+                        fromId: process.env.ADMIN_OBJECT_ID as string,
+                        createdAt: Date.now(),
+                    },
+                },
+            }
+        );
+
+        const addMoneyToAdminWallet = await AdminModel.findByIdAndUpdate(
+            process.env.ADMIN_OBJECT_ID,
+            {
+                $inc: { "wallet.balance": walletAmount },
+
+                $push: {
+                    "wallet.transaction": {
+                        type: "credit",
+                        amount: walletAmount,
+                        fromName: "guest",
+                        fromId: cancelGuestBooking.guestId as string,
                         createdAt: Date.now(),
                     },
                 },
