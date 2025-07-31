@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { IGuest } from "../../../domain/entities/Guest";
+import { WalletSchema } from "./WalletSchemat";
 
 export const GuestSchema = new Schema<IGuest>({
     name: {
@@ -23,8 +24,8 @@ export const GuestSchema = new Schema<IGuest>({
         type: Number,
         required: true,
     },
-    age: {
-        type: Number,
+    location: {
+        type: String,
         required: true,
     },
     numberOfEventsAttended: {
@@ -32,6 +33,7 @@ export const GuestSchema = new Schema<IGuest>({
         required: true,
         default: 0,
     },
+    wallet: WalletSchema,
     createdAt: {
         type: Date,
         required: true,

@@ -1,5 +1,4 @@
-import { IEvent } from "./Event"
-import { IWallet } from "./Wallet"
+ import { IWallet } from "./Wallet"
 
 export interface IGuest {
     _id: string
@@ -10,7 +9,6 @@ export interface IGuest {
     mobile: number
     location: string
     numberOfEventsAttended: number,
-    wallet: IWallet
-    // events: IEvent,
+    wallet: IWallet 
     createdAt: Date 
 }

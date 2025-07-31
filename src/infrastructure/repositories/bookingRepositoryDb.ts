@@ -73,7 +73,7 @@ export class BookingRepositoryDb implements IBookingRepository {
                 $inc: { "wallet.balance": walletAmount },
 
                 $push: {
-                    "wallet.transaction": {
+                    "wallet.transactions": {
                         type: "credit",
                         amount: walletAmount,
                         fromName: "admin",
@@ -90,7 +90,7 @@ export class BookingRepositoryDb implements IBookingRepository {
                 $inc: { "wallet.balance": walletAmount },
 
                 $push: {
-                    "wallet.transaction": {
+                    "wallet.transactions": {
                         type: "credit",
                         amount: walletAmount,
                         fromName: "guest",

@@ -57,7 +57,7 @@ export class EventRepositorDb implements IEventRepository {
     async getMyEvents(organizerId: string): Promise<IEvent[]> {
         const events = await EventModel.find({
             "organizerDetails._id": organizerId,
-        }).lean<IEvent[]>();
+        }).sort({createdAt: -1}).lean<IEvent[]>();
 
         if (!events) throw new Error("No events found");
         return events;
