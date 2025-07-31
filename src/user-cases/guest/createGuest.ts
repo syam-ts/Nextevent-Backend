@@ -13,6 +13,6 @@ export class CreateGuest {
 
     execute(body: IBody) {
         const { name, email, password, mobile, location } = body;
-        return this.guestRepo.signupGuest(name, email, password, mobile, age);
+        return this.guestRepo.signupGuest(name, email, password, mobile, location);
     }
 }
