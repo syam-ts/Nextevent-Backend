@@ -48,8 +48,7 @@ export class GuestController {
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "none",
-                path: "/",
+                sameSite: "none", 
             });
 
             res.status(HttpStatusCode.OK).json({
