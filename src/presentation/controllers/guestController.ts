@@ -44,11 +44,14 @@ export class GuestController {
         try {
             const guest = await this.loginGuestUsecase.execute(req.body);
             const { accessToken, refreshToken } = generateToken(guest._id, "guest");
+
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
+                path: "/",
             });
+
             res.status(HttpStatusCode.OK).json({
                 message: "Loggedin Successfull",
                 guest,
