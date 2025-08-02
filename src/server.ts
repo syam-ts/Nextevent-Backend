@@ -45,7 +45,6 @@ class Server {
         this.app.use(
             cors({
                 origin: this.frontendUrl,
-                methods: this.corsMethods,
                 credentials: true,
             })
         );
