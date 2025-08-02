@@ -1,5 +1,5 @@
 import { connect } from "mongoose";
-import dotenv from "dotenv";
+import dotenv from "dotenv"; 
 import { createTestAdmin } from "../../helper/helperFuntions/createTestAdmin";
 
 class ConnectDB {

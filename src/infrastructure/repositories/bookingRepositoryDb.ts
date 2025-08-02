@@ -73,7 +73,7 @@ export class BookingRepositoryDb implements IBookingRepository {
                 $inc: { "wallet.balance": walletAmount },
 
                 $push: {
-                    "wallet.transaction": {
+                    "wallet.transactions": {
                         type: "credit",
                         amount: walletAmount,
                         fromName: "admin",
@@ -90,7 +90,7 @@ export class BookingRepositoryDb implements IBookingRepository {
                 $inc: { "wallet.balance": walletAmount },
 
                 $push: {
-                    "wallet.transaction": {
+                    "wallet.transactions": {
                         type: "credit",
                         amount: walletAmount,
                         fromName: "guest",
@@ -105,4 +105,6 @@ export class BookingRepositoryDb implements IBookingRepository {
             throw new Error("could not add money to guest wallet");
         return;
     }
+
+
 }

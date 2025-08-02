@@ -1,29 +1,30 @@
 import { IGuest } from "../entities/Guest";
+import { IWallet } from "../entities/Wallet";
 
 export interface IGuestRepository {
-    signupGuest (
+    signupGuest(
         name: string,
         email: string,
         password: string,
         mobile: number,
-        age: number
-    ):   Promise<void>;
+        location: string
+    ): Promise<void>;
 
-    loginGuest (email: string, password: string): Promise<IGuest>;
+    loginGuest(email: string, password: string): Promise<IGuest>;
 
-    updateGuest (
+    updateGuest(
         guestId: string,
         name: string,
         profilePicture: string,
         mobile: number,
-        age: number
+        location: string
     ): Promise<IGuest>;
 
-    // bookEvent (
-    //     guestId: string, 
-    //      eventId: string 
-    // paymentType: string
-    // amount: number
-    // numberOfTickets: number
-    // ): Promise<IGuest>;
+    getWallet(guestId: string): Promise<IWallet>;
+
+    getHomestats(): Promise<{
+        totalEvents: number;
+        totalBookings: number;
+        totalOrganizers: number;
+    }>;
 }

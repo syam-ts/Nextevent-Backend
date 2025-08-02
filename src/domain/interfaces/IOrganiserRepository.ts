@@ -17,4 +17,6 @@ export interface IOrganizerRepository {
         mobile: number,
         organizationName: string
     ): Promise<IOrganizer>;
+
+    getHomeStats(organizerId: string): Promise<any>
 }

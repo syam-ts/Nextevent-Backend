@@ -6,11 +6,13 @@ import { CancelBooking } from "../../user-cases/booking/cancelBooking";
 import { BookingPayment } from "../../user-cases/booking/bookingPayment";
 import { GetMyBookings } from "../../user-cases/booking/getMyBookings";
 import { ViewBooking } from "../../user-cases/booking/viewBooking";
+import { FreeBooking } from "../../user-cases/booking/freeBooking";
 
 export class BookingController {
     public bookingRepo: BookingRepositoryDb;
     public bookingPaymentUsecase: BookingPayment;
     public newBookingUsecase: NewBooking;
+    public freeBookingUsecase: FreeBooking;
     public getMyBookingsUsecase: GetMyBookings;
     public viewBookingUsecase: ViewBooking;
     public cancelBookingUsecase: CancelBooking;
@@ -19,6 +21,7 @@ export class BookingController {
         this.bookingRepo = new BookingRepositoryDb();
         this.bookingPaymentUsecase = new BookingPayment();
         this.newBookingUsecase = new NewBooking(this.bookingRepo);
+        this.freeBookingUsecase = new FreeBooking(this.bookingRepo);
         this.getMyBookingsUsecase = new GetMyBookings(this.bookingRepo);
         this.viewBookingUsecase = new ViewBooking(this.bookingRepo);
         this.cancelBookingUsecase = new CancelBooking(this.bookingRepo);
@@ -50,7 +53,27 @@ export class BookingController {
             );
 
             res.status(HttpStatusCode.CREATED).json({
-                message: "New Booking created",
+                message: "New Paid Booking created",
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    freeBooking = async (req: Request, res: Response): Promise<void> => {
+        try {
+            if (!req.user?._id) throw new Error("guest id is missing");
+            const result = await this.freeBookingUsecase.execute(
+                req.user._id,
+                req.body
+            );
+
+            res.status(HttpStatusCode.CREATED).json({
+                message: "New Free Booking created",
                 success: true,
             });
         } catch (error: unknown) {

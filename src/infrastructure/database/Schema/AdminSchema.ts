@@ -1,6 +1,6 @@
-import { model, Schema } from "mongoose";
-import { IAdmin } from "../../../domain/entities/Admin";
+import { model, Schema } from "mongoose"; 
 import { WalletSchema } from "./WalletSchemat";
+import { IAdmin } from "../../../domain/entities/Admin";
 
 export const AdminSchema = new Schema<IAdmin>({
     userName: {

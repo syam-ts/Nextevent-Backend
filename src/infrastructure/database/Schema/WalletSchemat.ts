@@ -4,32 +4,31 @@ import { ITransaction, IWallet } from "../../../domain/entities/Wallet";
 const TransactionSchema = new Schema<ITransaction>({
     type: {
         type: String,
-        required: false,
+        required: true,
         enum: ["credit", "debit"],
     },
     amount: {
         type: Number,
-        required: false,
+        required: true,
     },
     fromName: {
         type: String,
-        required: false,
+        required: true,
     },
     fromId: {
         type: String,
-        required: false,
+        required: true,
     },
     createdAt: {
         type: Date,
-        required: false,
+        required: true,
     },
 });
 
 export const WalletSchema = new Schema<IWallet>({
     balance: {
         type: Number,
-        require: true,
-        default: 0,
+        require: false,
     },
     transactions: [TransactionSchema],
 });
