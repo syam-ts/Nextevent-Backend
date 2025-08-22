@@ -15,18 +15,18 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
     const authHeader = req.headers["authorization"];  
     
     const token = authHeader?.split(" ")[1];  
-
+    
     if (!token) {
         res.status(HttpStatusCode.UNAUTHORIZED).json({
             message: StatusMessage[HttpStatusCode.UNAUTHORIZED],
         });
         return;
     }
-
+    
     try {
         const decoded = jwt.verify(token, access_secret) as DecodedUser;
         // console.log("THE DECODED JWT : ", decoded);
- 
+        
         req.user = { _id: decoded._id, role: decoded.role };
 
         return next();

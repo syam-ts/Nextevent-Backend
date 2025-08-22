@@ -1,9 +1,11 @@
+import { autoExpierEvent } from "../../cron-jobs/autoExpireEvent";
 import { IEvent } from "../../domain/entities/Event";
 import { IGuest } from "../../domain/entities/Guest";
+import { INotification } from "../../domain/entities/Notification";
 import { IEventRepository } from "../../domain/interfaces/IEventRepository";
-import { expiryVerification } from "../../helper/helperFuntions/corn";
 import { EventModel } from "../database/Schema/EventSchema";
 import { GuestModel } from "../database/Schema/GuestSchema";
+import { NotificationModel } from "../database/Schema/NotificationSchem";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
 
 export class EventRepositorDb implements IEventRepository {
@@ -19,8 +21,7 @@ export class EventRepositorDb implements IEventRepository {
         totalSeats: number,
         isPaid: boolean,
         details: string
-    ): Promise<void> {
- 
+    ): Promise<INotification> {
         const newEvent = await new EventModel({
             eventName,
             eventImage,
@@ -42,7 +43,14 @@ export class EventRepositorDb implements IEventRepository {
 
         if (!newEvent) throw new Error("Event not created");
 
-        expiryVerification(String(date), newEvent._id);
+        autoExpierEvent(newEvent._id, String(date));
+
+        const addNotification = await new NotificationModel({
+            role: "organizer",
+            message: "hi",
+            entityId: organizerId,
+            createdAt: Date.now(),
+        }).save();
 
         const updateOrganization = await OrganizerModel.findByIdAndUpdate(
             organizerId,
@@ -56,13 +64,15 @@ export class EventRepositorDb implements IEventRepository {
 
         if (!updateOrganization) throw new Error("could not update organization");
 
-        return;
+        return addNotification;
     }
 
     async getMyEvents(organizerId: string): Promise<IEvent[]> {
         const events = await EventModel.find({
             "organizerDetails._id": organizerId,
-        }).sort({createdAt: -1}).lean<IEvent[]>();
+        })
+            .sort({ createdAt: -1 })
+            .lean<IEvent[]>();
 
         if (!events) throw new Error("No events found");
         return events;

@@ -4,7 +4,7 @@ import { IOrganizerRepository } from "../../domain/interfaces/IOrganiserReposito
 export class GetHomeStats {
     constructor(private organizerRepo: IOrganizerRepository) { }
 
-    execute(organizer: any) { 
-        return this.organizerRepo.getHomeStats(organizer._id);
+    execute(organizerId: string) { 
+        return this.organizerRepo.getHomeStats(organizerId);
     }
 }

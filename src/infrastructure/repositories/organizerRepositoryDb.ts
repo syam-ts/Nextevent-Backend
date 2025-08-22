@@ -1,4 +1,3 @@
-import { AnyExpression } from "mongoose";
 import { IOrganizer } from "../../domain/entities/Organizer";
 import { IOrganizerRepository } from "../../domain/interfaces/IOrganiserRepository";
 import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
@@ -73,7 +72,7 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
 
     const organizer = await OrganizerModel.findById(
       organizerId
-    ).lean<IOrganizer>();  
+    ).lean<IOrganizer>();
 
     const totalTiketAndGuest: any = await EventModel.aggregate([
       {
@@ -83,17 +82,15 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
         $group: {
           _id: null,
           totalTicket: { $sum: "$ticketPrice" },
-          totalGuests: { $sum: "$totalSeats"} ,
+          totalGuests: { $sum: "$totalSeats" },
         },
       },
     ]);
-    console.log('ro', totalTiketAndGuest[0].totalTicket)
- 
 
     return {
       totalEventsCreated: organizer?.totalEventsCreated,
       totalTicket: totalTiketAndGuest[0].totalTicket,
-      totalGuests: totalTiketAndGuest[0].totalGuests 
+      totalGuests: totalTiketAndGuest[0].totalGuests,
     };
   }
 }

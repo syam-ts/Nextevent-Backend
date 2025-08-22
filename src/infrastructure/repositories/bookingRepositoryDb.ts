@@ -1,4 +1,6 @@
+import { autoExpierBooking } from "../../cron-jobs/autoExpireBooking";
 import { IBooking } from "../../domain/entities/Booking";
+import { IEvent } from "../../domain/entities/Event";
 import { IBookingRepository } from "../../domain/interfaces/IBookingRepository";
 import { AdminModel } from "../database/Schema/AdminSchema";
 import { BookingModel } from "../database/Schema/BookingSchema";
@@ -33,6 +35,11 @@ export class BookingRepositoryDb implements IBookingRepository {
         }).save();
         if (!addNewBooking) throw new Error("Could not create new Booking");
 
+        const currentEvent = await EventModel.findById(eventId).lean<IEvent>();
+        if (!currentEvent) throw new Error("Event not found");
+
+        autoExpierBooking(addNewBooking._id, String(currentEvent?.date));
+
         //update seats in event
         const updateEventSeats = await EventModel.findByIdAndUpdate(eventId, {
             $inc: { totalSeats: -numberOfSeats, numberOfBooking: numberOfSeats },
@@ -61,7 +68,6 @@ export class BookingRepositoryDb implements IBookingRepository {
     }
 
     async cancelBooking(bookingId: string): Promise<void> {
-        
         const cancelGuestBooking = await BookingModel.findByIdAndDelete(bookingId);
         if (!cancelGuestBooking) throw new Error("Booking not cancel");
 
@@ -105,6 +111,4 @@ export class BookingRepositoryDb implements IBookingRepository {
             throw new Error("could not add money to guest wallet");
         return;
     }
-
-
 }
