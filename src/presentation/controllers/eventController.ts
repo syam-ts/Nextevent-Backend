@@ -8,6 +8,7 @@ import { ViewEvent } from "../../user-cases/event/viewEvent";
 import { LatestEvent } from "../../user-cases/event/latestEvent";
 
 export class EventController {
+    
     public eventRepo: EventRepositorDb;
     public createEventUsecase: CreateEvent;
     public getMyEventsUsecase: GetMyEvents;
@@ -26,6 +27,7 @@ export class EventController {
 
     createEvent = async (req: Request, res: Response): Promise<void> => {
         try {
+            console.log('reched here',req.user)
             if (!req.user?._id) throw new Error("organizer id is missing");
             const organizer = await this.createEventUsecase.execute(
                 req.user._id,

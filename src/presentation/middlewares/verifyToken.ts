@@ -4,17 +4,17 @@ import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import { StatusMessage } from "../../helper/constants/statusMessage";
 require("dotenv").config();
 
-interface DecodedUser {
-    userId: string;
+type DecodedUser = {
+    _id: string | undefined;
     role: "organizer" | "guest";
 }
 
 const access_secret = process.env.ACCESS_TOKEN_SECRET as string;
 
-const verifyToken = (req: any, res: Response, next: NextFunction): void => {
+const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
     const authHeader = req.headers["authorization"];  
     
-    const token = req.headers.authorization?.split(" ")[1]; 
+    const token = authHeader?.split(" ")[1];  
 
     if (!token) {
         res.status(HttpStatusCode.UNAUTHORIZED).json({
@@ -26,8 +26,8 @@ const verifyToken = (req: any, res: Response, next: NextFunction): void => {
     try {
         const decoded = jwt.verify(token, access_secret) as DecodedUser;
         // console.log("THE DECODED JWT : ", decoded);
-
-        req.user = { _id: decoded, role: decoded.role };
+ 
+        req.user = { _id: decoded._id, role: decoded.role };
 
         return next();
     } catch (error) {

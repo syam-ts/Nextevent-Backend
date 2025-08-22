@@ -9,6 +9,7 @@ import { GetWallet } from "../../user-cases/guest/getWallet";
 import { GetHomeStats } from "../../user-cases/guest/getHomeStats";
 
 export class GuestController {
+    
     public guestRepo: GuestRepositoryDb;
     public createGuestUsecase: CreateGuest;
     public loginGuestUsecase: LoginGuest;

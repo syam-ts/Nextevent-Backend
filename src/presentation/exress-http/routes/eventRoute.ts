@@ -3,6 +3,7 @@ import { EventController } from "../../controllers/eventController";
 import { verifyToken } from "../../middlewares/verifyToken";
 
 class EventRoute {
+    
     public router: Router;
     private eventController: EventController;
 

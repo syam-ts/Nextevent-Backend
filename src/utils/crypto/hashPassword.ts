@@ -1,7 +1,9 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 
-const salt = process.env.BCRYPT_SALT_LEVEL || 10;
+const salt: number = Number(process.env.BCRYPT_SALT_LEVEL) || 10;
 
-export const hashPasswordFunction = async (password: string) => {
-    return await bcrypt.hashSync(password, 10);
-}
+export const hashPasswordFunction = async (
+    password: string
+): Promise<string> => {
+    return await bcrypt.hashSync(password, salt);
+};

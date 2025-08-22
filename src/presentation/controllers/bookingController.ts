@@ -9,6 +9,7 @@ import { ViewBooking } from "../../user-cases/booking/viewBooking";
 import { FreeBooking } from "../../user-cases/booking/freeBooking";
 
 export class BookingController {
+    
     public bookingRepo: BookingRepositoryDb;
     public bookingPaymentUsecase: BookingPayment;
     public newBookingUsecase: NewBooking;

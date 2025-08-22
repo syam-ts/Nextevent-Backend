@@ -1,16 +1,12 @@
+import { IGuest } from "../../domain/entities/Guest";
 import { IGuestRepository } from "../../domain/interfaces/IGuestRepository";
-
-interface IBody {
-    name: string;
-    profilePicture: string;
-    mobile: number;
-    location: string;
-}
+  
+type Body = Pick<IGuest, 'name'| 'profilePicture' |'mobile'|'location'>;
 
 export class UpdateGuest {
     constructor(private guestRepo: IGuestRepository) { }
 
-    execute(guestId: string, body: IBody) {
+    execute(guestId: string, body: Required<Body>) {
         const { name, profilePicture, mobile, location } = body;
         return this.guestRepo.updateGuest(
             guestId,

@@ -1,27 +1,33 @@
 import jwt from "jsonwebtoken";
 require("dotenv").config();
 
+type Role = "guest" | "organizer";
+
 const accessToken_SECRET: string = process.env.ACCESS_TOKEN_SECRET as string;
 
 const refreshToken_SECRET: string = process.env.REFRESH_TOKEN_SECRET as string;
 
-const generateToken = (roleId: string, role: string) => {
+const generateToken = (roleId: string, role: Role) => {
     if (!roleId) throw new Error(`${role} ID missing in generateTokens`);
 
     const accessToken = jwt.sign(
         {
             _id: roleId,
-            role
+            role,
         },
         accessToken_SECRET,
         {
             expiresIn: "1m",
         }
     );
- 
-    const refreshToken = jwt.sign({ _id: roleId.toString(), role }, refreshToken_SECRET, {
-        expiresIn: "7d",
-    });
+
+    const refreshToken = jwt.sign(
+        { _id: roleId.toString(), role },
+        refreshToken_SECRET,
+        {
+            expiresIn: "7d",
+        }
+    );
 
     return { accessToken, refreshToken };
 };

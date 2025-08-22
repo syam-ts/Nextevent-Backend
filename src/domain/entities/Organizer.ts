@@ -1,4 +1,3 @@
-import { IEvent } from "./Event"
 
 export interface IOrganizer {
     _id: string;

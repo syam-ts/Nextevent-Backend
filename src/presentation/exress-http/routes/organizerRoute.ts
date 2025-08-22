@@ -4,6 +4,7 @@ import refreshToken from "../../../utils/jwt/refreshToken";
 import { OrganizerController } from "../../controllers/organizerController";
 
 class OrganizerRoute {
+    
     public router: Router;
     private organizerController: OrganizerController;
 

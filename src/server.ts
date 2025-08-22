@@ -1,8 +1,8 @@
-import express, { Express, Router } from "express";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import morgan from "morgan";
+import express, { Express } from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import morgan from "morgan";
 import ConnectDB from "./infrastructure/database/db";
 import GuestRoute from "./presentation/exress-http/routes/guestRoute";
 import OrganizerRoute from "./presentation/exress-http/routes/organizerRoute";
@@ -12,6 +12,7 @@ import BookingRoute from "./presentation/exress-http/routes/bookingRoute";
 const connectDB = new ConnectDB();
 
 class Server {
+
     private app: Express;
     private port: number;
     private frontendUrl: string;
@@ -45,6 +46,7 @@ class Server {
         this.app.use(
             cors({
                 origin: this.frontendUrl,
+                methods: this.corsMethods,
                 credentials: true,
             })
         );

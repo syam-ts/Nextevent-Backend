@@ -2,7 +2,11 @@ import { connect } from "mongoose";
 import dotenv from "dotenv"; 
 import { createTestAdmin } from "../../helper/helperFuntions/createTestAdmin";
 
-class ConnectDB {
+interface IConnectDB {
+    connect(): void
+}
+
+class ConnectDB implements IConnectDB {
     private _mongo_uri: string;
 
     constructor() {

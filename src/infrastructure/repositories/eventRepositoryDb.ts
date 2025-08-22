@@ -1,6 +1,7 @@
 import { IEvent } from "../../domain/entities/Event";
 import { IGuest } from "../../domain/entities/Guest";
 import { IEventRepository } from "../../domain/interfaces/IEventRepository";
+import { expiryVerification } from "../../helper/helperFuntions/corn";
 import { EventModel } from "../database/Schema/EventSchema";
 import { GuestModel } from "../database/Schema/GuestSchema";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
@@ -19,6 +20,7 @@ export class EventRepositorDb implements IEventRepository {
         isPaid: boolean,
         details: string
     ): Promise<void> {
+ 
         const newEvent = await new EventModel({
             eventName,
             eventImage,
@@ -34,10 +36,13 @@ export class EventRepositorDb implements IEventRepository {
                 _id: organizerId,
             },
             isClosed: false,
+            isExpired: false,
             createdAt: Date.now(),
         }).save();
 
         if (!newEvent) throw new Error("Event not created");
+
+        expiryVerification(String(date), newEvent._id);
 
         const updateOrganization = await OrganizerModel.findByIdAndUpdate(
             organizerId,

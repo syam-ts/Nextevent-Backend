@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { EventController } from "../../controllers/eventController";
 import { verifyToken } from "../../middlewares/verifyToken";
 import { GuestController } from "../../controllers/guestController";
 import refreshToken from "../../../utils/jwt/refreshToken";
 
 class GuestRoute {
+
     public router: Router;
     private guestController: GuestController;
 

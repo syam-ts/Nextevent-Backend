@@ -1,22 +1,12 @@
+import { IEvent } from "../../domain/entities/Event";
 import { IEventRepository } from "../../domain/interfaces/IEventRepository";
 
-interface IBody {
-    eventName: string;
-    eventImage: string;
-    location: string;
-    date: Date;
-    startTime: string;
-    endTime: string;
-    ticketPrice: number;
-    totalSeats: number;
-    isPaid: boolean;
-    details: string;
-}
+type Body = Omit<IEvent, "_id" | "organizerDetails" | "isClosed" | "createdAt">;
 
 export class CreateEvent {
     constructor(private eventRepo: IEventRepository) { }
 
-    execute(organizerId: string, body: IBody) {
+    execute(organizerId: string, body: Body) {
         const {
             eventName,
             eventImage,

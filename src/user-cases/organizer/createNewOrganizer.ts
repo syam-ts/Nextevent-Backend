@@ -1,17 +1,12 @@
+import { IOrganizer } from "../../domain/entities/Organizer";
 import { IOrganizerRepository } from "../../domain/interfaces/IOrganiserRepository";
-
-interface IBody {
-    name: string;
-    email: string;
-    mobile: number;
-    password: string;
-    organizationName: string;
-}
+  
+type Body = Pick<IOrganizer, 'name'|'email'|'mobile'|'password'|'organizationName'>;
 
 export class CreateNewOrganizer {
     constructor(private organizerRepo: IOrganizerRepository) { }
 
-    execute(body: IBody) {
+    execute(body: Required<Body>) {
         const { name, email, mobile, password, organizationName } = body;
         return this.organizerRepo.signupOrganizer(
             name,

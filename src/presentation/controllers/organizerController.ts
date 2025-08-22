@@ -8,6 +8,7 @@ import { OrganizerRepositoryDb } from "../../infrastructure/repositories/organiz
 import { GetHomeStats } from "../../user-cases/organizer/getHomeStats";
 
 export class OrganizerController {
+    
     public organizerRepo: OrganizerRepositoryDb;
     public signupUsecase: CreateNewOrganizer;
     public loginUsecase: LoginOrganizer;

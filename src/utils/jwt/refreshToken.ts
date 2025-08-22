@@ -21,7 +21,6 @@ const refreshToken = (req: Request, res: Response): void => {
                 res.status(403).json({ message: "Invalid or expired refresh token" });
                 return;
             }
-
            // console.log('REFRESH DECODED JWT: ',decoded)
 
             const { accessToken } = generateToken(decoded._id, decoded.role);
