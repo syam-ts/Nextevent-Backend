@@ -148,7 +148,7 @@ export class GuestController {
         try {
             const { organizerId } = req.params;
             const {filter} = req.query;
-            const events = await this.getEventsByOrganizerUsecase.execute(organizerId, filter);
+            const events = await this.getEventsByOrganizerUsecase.execute(organizerId, filter as string);
 
             res.status(HttpStatusCode.OK).json({
                 message: "Events loaded Successfully",
