@@ -1,6 +1,7 @@
 import { IGuest } from "../../domain/entities/Guest";
 import { IWallet } from "../../domain/entities/Wallet";
 import { IGuestRepository } from "../../domain/interfaces/IGuestRepository";
+import { sendMail } from "../../helper/helperFuntions/sendMail";
 import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
 import { verifyPassword } from "../../utils/crypto/verifyPassword";
 import { BookingModel } from "../database/Schema/BookingSchema";
@@ -9,7 +10,6 @@ import { GuestModel } from "../database/Schema/GuestSchema";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
 
 export class GuestRepositoryDb implements IGuestRepository {
-
     async signupGuest(
         name: string,
         email: string,
@@ -41,9 +41,10 @@ export class GuestRepositoryDb implements IGuestRepository {
         const verifyPass = await verifyPassword(password, guest.password);
         if (!verifyPass) throw new Error("Wrong password!");
 
+        sendMail(email, guest.name, "Login From Nextevent", "Welcome to Nextevent");
+
         return guest;
     }
-
 
     async updateGuest(
         guestId: string,
@@ -69,7 +70,6 @@ export class GuestRepositoryDb implements IGuestRepository {
         return updatedGuest;
     }
 
-
     async getWallet(guestId: string): Promise<IWallet> {
         const guest = await GuestModel.findById(guestId).lean<IGuest>();
 
@@ -77,7 +77,6 @@ export class GuestRepositoryDb implements IGuestRepository {
 
         return guest.wallet;
     }
-
 
     async getHomestats(): Promise<{
         totalEvents: number;

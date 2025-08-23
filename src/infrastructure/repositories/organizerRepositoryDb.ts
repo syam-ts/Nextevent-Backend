@@ -1,5 +1,6 @@
 import { IOrganizer } from "../../domain/entities/Organizer";
 import { IOrganizerRepository } from "../../domain/interfaces/IOrganiserRepository";
+import { sendMail } from "../../helper/helperFuntions/sendMail";
 import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
 import { verifyPassword } from "../../utils/crypto/verifyPassword";
 import { EventModel } from "../database/Schema/EventSchema";
@@ -38,6 +39,14 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
 
     const verifyPass = verifyPassword(password, organizer.password);
     if (!verifyPass) throw new Error("Wrong Password!");
+
+    sendMail(
+      email,
+      organizer.organizationName,
+      "Login From Nextevent",
+      "Welcome to Nextevent"
+    );
+
     return organizer;
   }
 
