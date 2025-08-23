@@ -1,4 +1,6 @@
+import { IEvent } from "../entities/Event";
 import { IGuest } from "../entities/Guest";
+import { IOrganizer } from "../entities/Organizer";
 import { IWallet } from "../entities/Wallet";
 
 export interface IGuestRepository {
@@ -27,4 +29,8 @@ export interface IGuestRepository {
         totalBookings: number;
         totalOrganizers: number;
     }>;
+
+    getAllOrganizers(): Promise<IOrganizer[]>;
+
+    GetEventsByOrganizer(organizerId: string, filter: string): Promise<IEvent[]>;
 }

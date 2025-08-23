@@ -7,15 +7,18 @@ import { LoginGuest } from "../../user-cases/guest/loginGuest";
 import { UpdateGuest } from "../../user-cases/guest/updateGuest";
 import { GetWallet } from "../../user-cases/guest/getWallet";
 import { GetHomeStats } from "../../user-cases/guest/getHomeStats";
+import { GetAllOrganizers } from "../../user-cases/guest/getAllOrganizers";
+import { GetEventsByOrganizer } from "../../user-cases/guest/getEventsByOrganizer";
 
 export class GuestController {
-    
     public guestRepo: GuestRepositoryDb;
     public createGuestUsecase: CreateGuest;
     public loginGuestUsecase: LoginGuest;
     private getWalletUsecase: GetWallet;
     private updateGuestUsecase: UpdateGuest;
     private getHomeStatsUsecase: GetHomeStats;
+    private getAllOrganizersUsecase: GetAllOrganizers;
+    private getEventsByOrganizerUsecase: GetEventsByOrganizer;
 
     constructor() {
         this.guestRepo = new GuestRepositoryDb();
@@ -24,6 +27,8 @@ export class GuestController {
         this.getWalletUsecase = new GetWallet(this.guestRepo);
         this.updateGuestUsecase = new UpdateGuest(this.guestRepo);
         this.getHomeStatsUsecase = new GetHomeStats(this.guestRepo);
+        this.getAllOrganizersUsecase = new GetAllOrganizers(this.guestRepo);
+        this.getEventsByOrganizerUsecase = new GetEventsByOrganizer(this.guestRepo);
     }
     signupGuest = async (req: Request, res: Response): Promise<void> => {
         try {
@@ -49,7 +54,7 @@ export class GuestController {
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "none", 
+                sameSite: "none",
             });
 
             res.status(HttpStatusCode.OK).json({
@@ -112,6 +117,42 @@ export class GuestController {
             res.status(HttpStatusCode.CREATED).json({
                 message: "Statistics loaded Successfully",
                 stats,
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    getAllOrganizers = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const organizers = await this.getAllOrganizersUsecase.execute();
+
+            res.status(HttpStatusCode.OK).json({
+                message: "Organizers loaded Successfully",
+                organizers,
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    getEventsByOrganizer = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { organizerId } = req.params;
+            const {filter} = req.query;
+            const events = await this.getEventsByOrganizerUsecase.execute(organizerId, filter);
+
+            res.status(HttpStatusCode.OK).json({
+                message: "Events loaded Successfully",
+                events,
                 success: true,
             });
         } catch (error: unknown) {
