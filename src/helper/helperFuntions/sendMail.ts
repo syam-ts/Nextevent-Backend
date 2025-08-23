@@ -20,30 +20,36 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const updateMail = (subject: string, name: string, text: string) => {
+  const html: string = `<!DOCTYPE html>
+                          <html lang="en">
+                          <head>
+                              <meta charset="UTF-8">
+                              <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                              <title>Your Awesome Email</title>
+                          </head>
+                          <body>
+                              <h1>${subject}</h1>
+                              <h3>Hello ${name}!</h3>
+                              <p>${text}</p>
+                              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7TbpKwlHHtCgl7aQ5Qz2MHFPWWbzDKlnRqR8ZA2IxPxf4MHWgb2jhPXxJGrsuEOPmVLc&usqp=CAU"
+                              style="width: 50px; height: 50px;"
+                              alt="Embedded Image">
+                              <p>Nextevent Pvt Ltd!</p>
+                         </body>
+                    </html>`;
+
+  return html;
+};
+
 export const sendMail = (
   to: string,
   name: string,
   subject: string,
   text: string
 ): void => {
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Awesome Email</title>
-</head>
-<body>
-    <h1>${subject}</h1>
-    <p>Hello ${name}!</p>
-    <p>${text}</p>
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7TbpKwlHHtCgl7aQ5Qz2MHFPWWbzDKlnRqR8ZA2IxPxf4MHWgb2jhPXxJGrsuEOPmVLc&usqp=CAU"
-    style="width: 50px; height: 50px;"
-    alt="Embedded Image">
-    <p>Nextevent Pvt Ltd!</p>
-</body>
-</html>`;
+  const html = updateMail(subject, name, text);
 
   const mailOptions: Required<MailOptions> = {
     from: "symanandhu3@gmail.com",

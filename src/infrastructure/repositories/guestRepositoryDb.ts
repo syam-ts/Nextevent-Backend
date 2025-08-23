@@ -1,4 +1,6 @@
+import { IEvent } from "../../domain/entities/Event";
 import { IGuest } from "../../domain/entities/Guest";
+import { IOrganizer } from "../../domain/entities/Organizer";
 import { IWallet } from "../../domain/entities/Wallet";
 import { IGuestRepository } from "../../domain/interfaces/IGuestRepository";
 import { sendMail } from "../../helper/helperFuntions/sendMail";
@@ -95,5 +97,23 @@ export class GuestRepositoryDb implements IGuestRepository {
             totalBookings,
             totalOrganizers,
         };
+    }
+
+    async getAllOrganizers(): Promise<IOrganizer[]> {
+        const organizers = await OrganizerModel.find().lean<IOrganizer[]>();
+
+        if (!organizers) throw new Error("Organizers not found");
+
+        return organizers;
+    }
+
+    async GetEventsByOrganizer(organizerId: string, filter: string): Promise<IEvent[]> { 
+        const events = await EventModel.find({
+            "organizerDetails._id": organizerId,
+            isExpired: filter
+        }).lean<IEvent[]>();
+
+        if (!events) throw new Error("No events found");
+        return events;
     }
 }
