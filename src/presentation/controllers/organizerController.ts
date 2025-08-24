@@ -6,21 +6,25 @@ import generateToken from "../../utils/jwt/generateToken";
 import { UpdateOrganizer } from "../../user-cases/organizer/updateOrganizer";
 import { OrganizerRepositoryDb } from "../../infrastructure/repositories/organizerRepositoryDb";
 import { GetHomeStats } from "../../user-cases/organizer/getHomeStats";
+import { MarkAsReadNotificationOrg } from "../../user-cases/organizer/markAsReadNotificationOrg";
 
 export class OrganizerController {
-    
     public organizerRepo: OrganizerRepositoryDb;
     public signupUsecase: CreateNewOrganizer;
     public loginUsecase: LoginOrganizer;
     public updateUsecase: UpdateOrganizer;
     public getHomeStatsUsecase: GetHomeStats;
+    public markAsReadNotificationOrgUsecase: MarkAsReadNotificationOrg;
 
     constructor() {
         this.organizerRepo = new OrganizerRepositoryDb();
         this.signupUsecase = new CreateNewOrganizer(this.organizerRepo);
         this.loginUsecase = new LoginOrganizer(this.organizerRepo);
         this.updateUsecase = new UpdateOrganizer(this.organizerRepo);
-        this.getHomeStatsUsecase = new GetHomeStats(this.organizerRepo)
+        this.getHomeStatsUsecase = new GetHomeStats(this.organizerRepo);
+        this.markAsReadNotificationOrgUsecase = new MarkAsReadNotificationOrg(
+            this.organizerRepo
+        );
     }
 
     signupOrganizer = async (req: Request, res: Response): Promise<void> => {
@@ -44,7 +48,7 @@ export class OrganizerController {
             const { accessToken, refreshToken } = generateToken(
                 result.organizer._id,
                 "organizer"
-            ); 
+            );
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 secure: true,
@@ -85,17 +89,38 @@ export class OrganizerController {
                 .json({ message: err.message, success: false });
         }
     };
- 
+
     getHomeStats = async (req: Request, res: Response): Promise<void> => {
         try {
             if (!req.user?._id) throw new Error("organizer id is missing");
-            const result = await this.getHomeStatsUsecase.execute(
-                req.user._id, 
-            );
+            const result = await this.getHomeStatsUsecase.execute(req.user._id);
 
             res.status(HttpStatusCode.OK).json({
                 message: "Stats loaded Successfull",
                 result,
+                success: true,
+            });
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            res
+                .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+                .json({ message: err.message, success: false });
+        }
+    };
+
+    MarkAsReadNotification = async (
+        req: Request,
+        res: Response
+    ): Promise<void> => {
+        try {
+            const { notificationId } = req.params;
+            const notification = await this.markAsReadNotificationOrgUsecase.execute(
+                notificationId
+            );
+
+            res.status(HttpStatusCode.CREATED).json({
+                message: "Notification updated successfully",
+                notification,
                 success: true,
             });
         } catch (error: unknown) {
