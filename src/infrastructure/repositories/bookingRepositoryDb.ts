@@ -7,6 +7,8 @@ import { AdminModel } from "../database/Schema/AdminSchema";
 import { BookingModel } from "../database/Schema/BookingSchema";
 import { EventModel } from "../database/Schema/EventSchema";
 import { GuestModel } from "../database/Schema/GuestSchema";
+import { NotificationModel } from "../database/Schema/NotificationSchem";
+import { INotification } from "../../domain/entities/Notification";
 
 export class BookingRepositoryDb implements IBookingRepository {
     async newBooking(
@@ -19,8 +21,8 @@ export class BookingRepositoryDb implements IBookingRepository {
         zipcode: string,
         numberOfSeats: number,
         total: number
-    ): Promise<void> {
-        
+    ): Promise<INotification> {
+
         const session = await startSession();
         session.startTransaction();
 
@@ -58,9 +60,18 @@ export class BookingRepositoryDb implements IBookingRepository {
 
             autoExpierBooking(newBooking._id, String(updateEventSeats?.date));
 
+            const addNotification = await new NotificationModel({
+                role: "guest",
+                roleId: guestId,
+                entityId: newBooking._id,
+                message: "New Booking Created",
+                markAsRead: false,
+                createdAt: Date.now(),
+            }).save();
+
             await session.commitTransaction();
             session.endSession();
-            return;
+            return addNotification;
         } catch (error) {
             await session.abortTransaction();
             session.endSession();

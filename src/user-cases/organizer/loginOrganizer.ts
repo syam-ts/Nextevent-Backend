@@ -1,6 +1,6 @@
 import { IOrganizer } from "../../domain/entities/Organizer";
 import { IOrganizerRepository } from "../../domain/interfaces/IOrganiserRepository";
- 
+
 type Body = Pick<IOrganizer, "email" | "password">;
 
 export class LoginOrganizer {

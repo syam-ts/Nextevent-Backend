@@ -3,7 +3,9 @@ type Role = "organizer" | "guest";
 export interface INotification {
   _id: string;
   role: Required<Role>;
-  message: string;
+  roleId: string;
   entityId: string;
+  message: string; 
+  markAsRead: boolean;
   createdAt: Date;
 }

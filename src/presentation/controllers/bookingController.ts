@@ -55,6 +55,7 @@ export class BookingController {
 
             res.status(HttpStatusCode.CREATED).json({
                 message: "New Paid Booking created",
+                result,
                 success: true,
             });
         } catch (error: unknown) {

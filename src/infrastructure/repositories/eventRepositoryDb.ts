@@ -22,7 +22,7 @@ export class EventRepositorDb implements IEventRepository {
         isPaid: boolean,
         details: string
     ): Promise<INotification> {
-        
+
         const newEvent = await new EventModel({
             eventName,
             eventImage,
@@ -48,8 +48,10 @@ export class EventRepositorDb implements IEventRepository {
 
         const addNotification = await new NotificationModel({
             role: "organizer",
-            message: "hi",
-            entityId: organizerId,
+            roleId: organizerId,
+            entityId: newEvent._id,
+            message: "New Event Created", 
+            markAsRead: false,
             createdAt: Date.now(),
         }).save();
 

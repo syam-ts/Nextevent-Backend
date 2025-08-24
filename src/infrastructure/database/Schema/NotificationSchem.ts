@@ -7,13 +7,22 @@ export const NotificationSchema = new Schema<INotification>({
     enum: ["organizer", "guest"],
     required: true,
   },
-  message: {
+  roleId: {
     type: String,
     required: true,
   },
   entityId: {
     type: String,
     required: true,
+  },
+  message: {
+    type: String,
+    required: true,
+  },
+  markAsRead: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
   createdAt: {
     type: Date,
