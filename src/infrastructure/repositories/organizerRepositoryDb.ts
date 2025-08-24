@@ -111,4 +111,22 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
       totalGuests: totalTiketAndGuest[0].totalGuests,
     };
   }
+
+  async markAsReadNotification(notificationId: string): Promise<INotification> {
+    const notification = await NotificationModel.findByIdAndUpdate(
+      notificationId,
+      {
+        $set: {
+          markAsRead: true,
+        },
+      },
+      {
+        new: true,
+      }
+    ).lean<INotification>();
+
+    if (!notification) throw new Error("Notification not found");
+
+    return notification;
+  }
 }

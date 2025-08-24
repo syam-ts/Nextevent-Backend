@@ -44,7 +44,7 @@ export class EventRepositorDb implements IEventRepository {
 
         if (!newEvent) throw new Error("Event not created");
 
-        autoExpierEvent(newEvent._id, String(date));
+        autoExpierEvent(organizerId, newEvent._id, String(date));
 
         const addNotification = await new NotificationModel({
             role: "organizer",

@@ -23,4 +23,6 @@ export interface IOrganizerRepository {
     ): Promise<IOrganizer>;
 
     getHomeStats(organizerId: string): Promise<any>;
+
+    markAsReadNotification(notificationId: string): Promise<INotification>
 }
