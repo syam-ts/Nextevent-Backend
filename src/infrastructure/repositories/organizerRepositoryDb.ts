@@ -1,9 +1,11 @@
+import { INotification } from "../../domain/entities/Notification";
 import { IOrganizer } from "../../domain/entities/Organizer";
 import { IOrganizerRepository } from "../../domain/interfaces/IOrganiserRepository";
 import { sendMail } from "../../helper/helperFuntions/sendMail";
 import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
 import { verifyPassword } from "../../utils/crypto/verifyPassword";
 import { EventModel } from "../database/Schema/EventSchema";
+import { NotificationModel } from "../database/Schema/NotificationSchem";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
 
 export class OrganizerRepositoryDb implements IOrganizerRepository {
@@ -31,7 +33,10 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
     return;
   }
 
-  async loginOrganizer(email: string, password: string): Promise<IOrganizer> {
+  async loginOrganizer(
+    email: string,
+    password: string
+  ): Promise<{ notifications: INotification[]; organizer: IOrganizer }> {
     const organizer = await OrganizerModel.findOne({
       email,
     }).lean<IOrganizer>();
@@ -47,7 +52,11 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
       "Welcome to Nextevent"
     );
 
-    return organizer;
+    const notifications = await NotificationModel.find({
+      roleId: organizer._id,
+    }).lean<INotification[]>();
+
+    return { notifications, organizer };
   }
 
   async updateOrganizer(

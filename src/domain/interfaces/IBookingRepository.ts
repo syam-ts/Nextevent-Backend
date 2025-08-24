@@ -1,4 +1,5 @@
 import { IBooking } from "../entities/Booking";
+import { INotification } from "../entities/Notification";
 
 export interface IBookingRepository {
     newBooking(
@@ -11,7 +12,7 @@ export interface IBookingRepository {
         zipcode: string,
         numberOfSeats: number,
         total: number
-    ): Promise<void>;
+    ): Promise<INotification>;
 
     getMyBookings(guestId: string): Promise<IBooking[]>;
 

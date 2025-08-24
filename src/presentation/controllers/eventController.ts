@@ -26,8 +26,7 @@ export class EventController {
     }
 
     createEvent = async (req: Request, res: Response): Promise<void> => {
-        try {
-            console.log('reched here',req.user)
+        try { 
             if (!req.user?._id) throw new Error("organizer id is missing");
             const organizer = await this.createEventUsecase.execute(
                 req.user._id,
@@ -36,7 +35,7 @@ export class EventController {
 
             res.status(HttpStatusCode.CREATED).json({
                 message: "New event created",
-                organizer,
+                notification: organizer,
                 success: true,
             });
         } catch (error: unknown) {

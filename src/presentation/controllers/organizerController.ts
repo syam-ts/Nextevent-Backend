@@ -40,9 +40,9 @@ export class OrganizerController {
 
     loginOrganizer = async (req: Request, res: Response): Promise<void> => {
         try {
-            const organizer = await this.loginUsecase.execute(req.body);
+            const result = await this.loginUsecase.execute(req.body);
             const { accessToken, refreshToken } = generateToken(
-                organizer._id,
+                result.organizer._id,
                 "organizer"
             ); 
             res.cookie("refreshToken", refreshToken, {
@@ -52,7 +52,8 @@ export class OrganizerController {
             });
             res.status(HttpStatusCode.CREATED).json({
                 message: "Loggedin Successfull",
-                organizer,
+                organizer: result.organizer,
+                notifications: result.notifications,
                 accessToken,
                 success: true,
             });
