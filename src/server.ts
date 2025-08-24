@@ -1,6 +1,7 @@
 import cors from "cors";
-import dotenv from "dotenv";
+import dayjs from "dayjs";
 import morgan from "morgan";
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import express, { Express } from "express";
 import ConnectDB from "./infrastructure/database/db";
@@ -10,11 +11,18 @@ import OrganizerRoute from "./presentation/exress-http/routes/organizerRoute";
 import EventRoute from "./presentation/exress-http/routes/eventRoute";
 import BookingRoute from "./presentation/exress-http/routes/bookingRoute";
 
-class Server {
-    
+interface IServer {
+    connectDB: ConnectDB;
+    configureMiddlewares: () => void;
+    loggerConfigs: () => void;
+    start: () => void;
+}
+
+class Server implements IServer {
     private app: Express;
     private port: number;
     private apiLimiter: RateLimitRequestHandler;
+    private env: string;
     private frontendUrl: string;
     private corsMethods: string[];
     private guestRoute: GuestRoute;
@@ -24,18 +32,20 @@ class Server {
     public connectDB: ConnectDB;
 
     constructor() {
-
         dotenv.config({
             path: ".env",
         }),
             (this.app = express());
         this.port = parseInt(process.env.PORT || "3001");
         this.apiLimiter = rateLimit({
-            windowMs: 5 * 10000,
-            max: 10,
+            windowMs: 15 * 60 * 1000,
+            limit: 100,
+            standardHeaders: "draft-8",
+            legacyHeaders: false,
             message:
                 "Too many requests from this IP, please try again after 5 minutes",
         });
+        this.env = process.env.NODE_ENV as string;
         this.frontendUrl = process.env.FRONTEND_URL as string;
         this.corsMethods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
         this.guestRoute = new GuestRoute();
@@ -43,10 +53,13 @@ class Server {
         this.eventRoute = new EventRoute();
         this.bookingRoute = new BookingRoute();
         this.connectDB = new ConnectDB();
+        this.executeMethods();
+    }
 
+    private executeMethods(): void {
+        this.env === "development" && this.loggerConfigs();
         this.configureMiddlewares();
         this.configuredRoute();
-        this.loggerConfigs();
     }
 
     public configureMiddlewares(): void {
@@ -63,7 +76,7 @@ class Server {
     }
 
     public loggerConfigs(): void {
-        this.app.use(morgan("dev"));
+        this.app.use(morgan(":method :url :status - :response-time ms"));
     }
 
     private configuredRoute(): void {
@@ -83,8 +96,9 @@ class Server {
         this.app.listen(this.port, async (): Promise<void> => {
             this.connectToDatabase();
             console.log(
-                `Server listening to port ${this.port
-                } on ${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()} `
+                `Server listening to port ${this.port} on ${dayjs(Date.now()).format(
+                    "dddd MMMM YYYY : H mm a"
+                )} `
             );
         });
     }

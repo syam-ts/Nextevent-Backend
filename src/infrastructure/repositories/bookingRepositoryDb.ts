@@ -1,3 +1,4 @@
+import { startSession } from "mongoose";
 import { autoExpierBooking } from "../../cron-jobs/autoExpireBooking";
 import { IBooking } from "../../domain/entities/Booking";
 import { IEvent } from "../../domain/entities/Event";
@@ -19,36 +20,52 @@ export class BookingRepositoryDb implements IBookingRepository {
         numberOfSeats: number,
         total: number
     ): Promise<void> {
-        const addNewBooking = await new BookingModel({
-            guestId,
-            eventDetails: {
-                _id: eventId,
-                eventName: eventName,
-            },
-            isPaid,
-            street,
-            city,
-            zipcode,
-            numberOfSeats,
-            total,
-            createdAt: Date.now(),
-        }).save();
-        if (!addNewBooking) throw new Error("Could not create new Booking");
+        
+        const session = await startSession();
+        session.startTransaction();
 
-        const currentEvent = await EventModel.findById(eventId).lean<IEvent>();
-        if (!currentEvent) throw new Error("Event not found");
+        try {
+            const updateEventSeats = await EventModel.findByIdAndUpdate(
+                {
+                    _id: eventId,
+                    totalSeats: { $gte: numberOfSeats },
+                },
+                {
+                    $inc: { totalSeats: -numberOfSeats, numberOfBooking: numberOfSeats },
+                }
+            );
 
-        autoExpierBooking(addNewBooking._id, String(currentEvent?.date));
+            if (!updateEventSeats) {
+                throw new Error("Requested seats not available");
+            }
 
-        //update seats in event
-        const updateEventSeats = await EventModel.findByIdAndUpdate(eventId, {
-            $inc: { totalSeats: -numberOfSeats, numberOfBooking: numberOfSeats },
-        });
+            const newBooking = await new BookingModel({
+                guestId,
+                eventDetails: {
+                    _id: eventId,
+                    eventName: eventName,
+                },
+                isPaid,
+                street,
+                city,
+                zipcode,
+                numberOfSeats,
+                total,
+                createdAt: Date.now(),
+            }).save({ session });
 
-        if (!updateEventSeats)
-            throw new Error("Could not update event seats number!");
+            if (!newBooking) throw new Error("Could not create new Booking");
 
-        return;
+            autoExpierBooking(newBooking._id, String(updateEventSeats?.date));
+
+            await session.commitTransaction();
+            session.endSession();
+            return;
+        } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
+            throw error;
+        }
     }
 
     async getMyBookings(guestId: string): Promise<IBooking[]> {

@@ -22,6 +22,7 @@ export class EventRepositorDb implements IEventRepository {
         isPaid: boolean,
         details: string
     ): Promise<INotification> {
+        
         const newEvent = await new EventModel({
             eventName,
             eventImage,
