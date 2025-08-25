@@ -22,7 +22,6 @@ export class EventRepositorDb implements IEventRepository {
         isPaid: boolean,
         details: string
     ): Promise<INotification> {
-
         const newEvent = await new EventModel({
             eventName,
             eventImage,
@@ -50,7 +49,7 @@ export class EventRepositorDb implements IEventRepository {
             role: "organizer",
             roleId: organizerId,
             entityId: newEvent._id,
-            message: "New Event Created", 
+            message: "New Event Created",
             markAsRead: false,
             createdAt: Date.now(),
         }).save();
@@ -84,14 +83,20 @@ export class EventRepositorDb implements IEventRepository {
     async getAllEvents(
         guestId: string,
         currentPage: number,
-        filter: string
+        filter: string,
+        input: string
     ): Promise<IEvent[]> {
         const guest = await GuestModel.findById(guestId).lean<IGuest>();
 
         if (!guest) throw new Error("guest not found");
+        console.log("INPUT: ", input);
 
         let filterQuery;
-        if (filter === "free") {
+        if (input) {
+            filterQuery = {
+                eventName: { $regex: input, $options: "i" },
+            };
+        } else if (filter === "free") {
             filterQuery = {
                 isPaid: false,
             };
@@ -118,7 +123,8 @@ export class EventRepositorDb implements IEventRepository {
         //     .lean<IEvent[]>();
         // -----------------------------------
 
-        const events = await EventModel.find(filterQuery).lean<IEvent[]>();
+        let events = await EventModel.find(filterQuery).lean<IEvent[]>();
+        // console.log('EEVNT: ', events)
 
         if (!events) throw new Error("No event found");
         return events;
