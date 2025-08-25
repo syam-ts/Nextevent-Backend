@@ -1,6 +1,6 @@
 import { Router } from "express"; 
 import { verifyToken } from "../../middlewares/verifyToken";
-import refreshToken from "../../../utils/jwt/refreshToken";  
+import refreshToken from "../../../lib/jwt/refreshToken";  
 import { OrganizerController } from "../../controllers/organizerController";
 
 class OrganizerRoute {

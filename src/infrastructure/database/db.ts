@@ -1,6 +1,6 @@
 import { connect } from "mongoose";
 import dotenv from "dotenv"; 
-import { createTestAdmin } from "../../helper/helperFuntions/createTestAdmin";
+import { createTestAdmin } from "../../helper/createTestAdmin";
 
 interface IConnectDB {
     connect(): void

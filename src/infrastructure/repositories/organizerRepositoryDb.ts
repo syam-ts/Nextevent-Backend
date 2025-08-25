@@ -1,9 +1,9 @@
 import { INotification } from "../../domain/entities/Notification";
 import { IOrganizer } from "../../domain/entities/Organizer";
 import { IOrganizerRepository } from "../../domain/interfaces/IOrganiserRepository";
-import { sendMail } from "../../helper/helperFuntions/sendMail";
-import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
-import { verifyPassword } from "../../utils/crypto/verifyPassword";
+import { sendMail } from "../../helper/sendMail";
+import { hashPasswordFunction } from "../../lib/crypto/hashPassword";
+import { verifyPassword } from "../../lib/crypto/verifyPassword";
 import { EventModel } from "../database/Schema/EventSchema";
 import { NotificationModel } from "../database/Schema/NotificationSchem";
 import { OrganizerModel } from "../database/Schema/organizerSchema";

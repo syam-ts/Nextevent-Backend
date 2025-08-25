@@ -24,6 +24,6 @@ export interface IEventRepository {
 
     getLatestEvents(): Promise<IEvent[]>
 
-
+    deleteEvent(eventId: string): Promise<void>;
 
 }

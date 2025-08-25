@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { BookingRepositoryDb } from "../../infrastructure/repositories/bookingRepositoryDb";
 import { NewBooking } from "../../user-cases/booking/newBooking";
-import { HttpStatusCode } from "../../helper/constants/statusCodes";
+import { HttpStatusCode } from "../../utils/constants/statusCodes";
 import { CancelBooking } from "../../user-cases/booking/cancelBooking";
 import { BookingPayment } from "../../user-cases/booking/bookingPayment";
 import { GetMyBookings } from "../../user-cases/booking/getMyBookings";

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { GuestRepositoryDb } from "../../infrastructure/repositories/guestRepositoryDb";
 import { CreateGuest } from "../../user-cases/guest/createGuest";
-import { HttpStatusCode } from "../../helper/constants/statusCodes";
-import generateToken from "../../utils/jwt/generateToken";
+import { HttpStatusCode } from "../../utils/constants/statusCodes";
+import generateToken from "../../lib/jwt/generateToken";
 import { LoginGuest } from "../../user-cases/guest/loginGuest";
 import { UpdateGuest } from "../../user-cases/guest/updateGuest";
 import { GetWallet } from "../../user-cases/guest/getWallet";

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Response, NextFunction, Request } from "express";
-import { HttpStatusCode } from "../../helper/constants/statusCodes";
-import { StatusMessage } from "../../helper/constants/statusMessage";
+import { HttpStatusCode } from "../../utils/constants/statusCodes";
+import { StatusMessage } from "../../utils/constants/statusMessage";
 require("dotenv").config();
 
 type DecodedUser = {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { EventRepositorDb } from "../../infrastructure/repositories/eventRepositoryDb";
 import { CreateEvent } from "../../user-cases/event/createEvent";
-import { HttpStatusCode } from "../../helper/constants/statusCodes";
+import { HttpStatusCode } from "../../utils/constants/statusCodes";
 import { GetMyEvents } from "../../user-cases/event/getMyEvent";
 import { GetAllEvents } from "../../user-cases/event/getAllEvents";
 import { ViewEvent } from "../../user-cases/event/viewEvent";
