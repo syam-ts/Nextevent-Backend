@@ -1,8 +1,8 @@
 import { Response, Request } from "express";
 import { CreateNewOrganizer } from "../../user-cases/organizer/createNewOrganizer";
-import { HttpStatusCode } from "../../helper/constants/statusCodes";
+import { HttpStatusCode } from "../../utils/constants/statusCodes";
 import { LoginOrganizer } from "../../user-cases/organizer/loginOrganizer";
-import generateToken from "../../utils/jwt/generateToken";
+import generateToken from "../../lib/jwt/generateToken";
 import { UpdateOrganizer } from "../../user-cases/organizer/updateOrganizer";
 import { OrganizerRepositoryDb } from "../../infrastructure/repositories/organizerRepositoryDb";
 import { GetHomeStats } from "../../user-cases/organizer/getHomeStats";

@@ -1,6 +1,6 @@
-import { IEvent } from "../domain/entities/Event";
-import { EventModel } from "../infrastructure/database/Schema/EventSchema";
-import { NotificationModel } from "../infrastructure/database/Schema/NotificationSchem";
+import { IEvent } from "../../domain/entities/Event";
+import { EventModel } from "../../infrastructure/database/Schema/EventSchema";
+import { NotificationModel } from "../../infrastructure/database/Schema/NotificationSchem";
 
 export const autoExpierEvent = (
   organizerId: string,

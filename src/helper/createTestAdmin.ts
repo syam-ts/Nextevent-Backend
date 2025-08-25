@@ -1,5 +1,5 @@
-import { IAdmin } from "../../domain/entities/Admin";
-import { AdminModel } from "../../infrastructure/database/Schema/AdminSchema";
+import { IAdmin } from "../domain/entities/Admin";
+import { AdminModel } from "../infrastructure/database/Schema/AdminSchema";
 
 export const createTestAdmin = async (): Promise<IAdmin> => {
     return await AdminModel.create({

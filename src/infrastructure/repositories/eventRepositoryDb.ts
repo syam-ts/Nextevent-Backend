@@ -1,4 +1,4 @@
-import { autoExpierEvent } from "../../cron-jobs/autoExpireEvent";
+import { autoExpierEvent } from "../../helper/auto-expiry/autoExpireEvent";
 import { IEvent } from "../../domain/entities/Event";
 import { IGuest } from "../../domain/entities/Guest";
 import { INotification } from "../../domain/entities/Notification";
@@ -22,6 +22,7 @@ export class EventRepositorDb implements IEventRepository {
         isPaid: boolean,
         details: string
     ): Promise<INotification> {
+        
         const newEvent = await new EventModel({
             eventName,
             eventImage,
@@ -144,5 +145,15 @@ export class EventRepositorDb implements IEventRepository {
 
         if (!events) throw new Error("No event found");
         return events;
+    }
+
+    async deleteEvent(eventId: string): Promise<void> {
+        const deletedEvent = await EventModel.findByIdAndDelete(
+            eventId
+        ).lean<IEvent>();
+
+        if (!deletedEvent) throw new Error("could't delete event");
+
+        return;
     }
 }

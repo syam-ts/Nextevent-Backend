@@ -1,5 +1,5 @@
 import { startSession } from "mongoose";
-import { autoExpierBooking } from "../../cron-jobs/autoExpireBooking";
+import { autoExpierBooking } from "../../helper/auto-expiry/autoExpireBooking";
 import { IBooking } from "../../domain/entities/Booking";
 import { IEvent } from "../../domain/entities/Event";
 import { IBookingRepository } from "../../domain/interfaces/IBookingRepository";

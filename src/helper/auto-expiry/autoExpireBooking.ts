@@ -1,5 +1,5 @@
-import { IBooking } from "../domain/entities/Booking";
-import { BookingModel } from "../infrastructure/database/Schema/BookingSchema";
+import { IBooking } from "../../domain/entities/Booking";
+import { BookingModel } from "../../infrastructure/database/Schema/BookingSchema";
 
 export const autoExpierBooking = (
   bookingId: string,

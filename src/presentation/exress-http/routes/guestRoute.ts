@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { verifyToken } from "../../middlewares/verifyToken";
 import { GuestController } from "../../controllers/guestController";
-import refreshToken from "../../../utils/jwt/refreshToken";
+import refreshToken from "../../../lib/jwt/refreshToken";
 
 class GuestRoute {
 
