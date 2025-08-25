@@ -8,7 +8,6 @@ import { ViewEvent } from "../../user-cases/event/viewEvent";
 import { LatestEvent } from "../../user-cases/event/latestEvent";
 
 export class EventController {
-    
     public eventRepo: EventRepositorDb;
     public createEventUsecase: CreateEvent;
     public getMyEventsUsecase: GetMyEvents;
@@ -26,7 +25,7 @@ export class EventController {
     }
 
     createEvent = async (req: Request, res: Response): Promise<void> => {
-        try { 
+        try {
             if (!req.user?._id) throw new Error("organizer id is missing");
             const organizer = await this.createEventUsecase.execute(
                 req.user._id,
@@ -66,18 +65,20 @@ export class EventController {
 
     getAllEvents = async (req: Request, res: Response): Promise<void> => {
         try {
-            if (!req.user?._id) throw new Error("organizer id is missing");
+            if (!req.user?._id) throw new Error("organizer id is missing"); 
 
             if (!req.query) throw new Error("query params are empty");
-            const { currentPage, filter } = req.query as {
+            const { currentPage, filter, input } = req.query as {
                 currentPage: string;
                 filter: string;
+                input: string;
             };
 
             const events = await this.getAllEventsUsecase.execute(
                 req.user._id,
                 parseInt(currentPage),
-                filter
+                filter,
+                input
             );
 
             res.status(HttpStatusCode.CREATED).json({
