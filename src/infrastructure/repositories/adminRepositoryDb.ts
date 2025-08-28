@@ -1,0 +1,34 @@
+import { IEvent } from "../../domain/entities/Event";
+import { IGuest } from "../../domain/entities/Guest";
+import { IOrganizer } from "../../domain/entities/Organizer";
+import { IAdminRepository } from "../../domain/interfaces/IAdminRepository";
+import { EventModel } from "../database/Schema/EventSchema";
+import { GuestModel } from "../database/Schema/GuestSchema";
+import { OrganizerModel } from "../database/Schema/organizerSchema";
+
+export class AdminRepositoryDb implements IAdminRepository {
+  async getAllOrganizers(): Promise<IOrganizer[]> {
+    //pagination
+    const allOrganizers = await OrganizerModel.find().lean<IOrganizer[]>();
+
+    if (!allOrganizers) throw new Error("Organizers not found");
+
+    return allOrganizers;
+  }
+
+  async getAllGuests(): Promise<IGuest[]> {
+    const allGuests = await GuestModel.find().lean<IGuest[]>();
+
+    if (!allGuests) throw new Error("Guests not found");
+
+    return allGuests;
+  }
+
+  async getAllEvents(): Promise<IEvent[]> {
+    const allEvents = await EventModel.find().lean<IEvent[]>();
+
+    if (!allEvents) throw new Error("Events not found");
+
+    return allEvents;
+  }
+}

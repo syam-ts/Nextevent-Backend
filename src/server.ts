@@ -10,6 +10,7 @@ import GuestRoute from "./presentation/exress-http/routes/guestRoute";
 import OrganizerRoute from "./presentation/exress-http/routes/organizerRoute";
 import EventRoute from "./presentation/exress-http/routes/eventRoute";
 import BookingRoute from "./presentation/exress-http/routes/bookingRoute";
+import AdminRoute from "./presentation/exress-http/routes/adminRoute";
 
 interface IServer {
     connectDB: ConnectDB;
@@ -19,6 +20,7 @@ interface IServer {
 }
 
 class Server implements IServer {
+    
     private app: Express;
     private port: number;
     private apiLimiter: RateLimitRequestHandler;
@@ -29,6 +31,7 @@ class Server implements IServer {
     private organizerRoute: OrganizerRoute;
     private eventRoute: EventRoute;
     private bookingRoute: BookingRoute;
+    private adminRoute: AdminRoute;
     public connectDB: ConnectDB;
 
     constructor() {
@@ -52,6 +55,7 @@ class Server implements IServer {
         this.organizerRoute = new OrganizerRoute();
         this.eventRoute = new EventRoute();
         this.bookingRoute = new BookingRoute();
+        this.adminRoute = new AdminRoute();
         this.connectDB = new ConnectDB();
         this.executeMethods();
     }
@@ -84,6 +88,7 @@ class Server implements IServer {
         this.app.use("/api/organizer", this.organizerRoute.router);
         this.app.use("/api/event", this.eventRoute.router);
         this.app.use("/api/booking", this.bookingRoute.router);
+        this.app.use("/api/admin", this.adminRoute.router);
     }
 
     private async connectToDatabase(): Promise<void> {
