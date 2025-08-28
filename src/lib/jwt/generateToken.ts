@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 require("dotenv").config();
 
-type Role = "guest" | "organizer";
+type Role = "guest" | "organizer"| "admin";
 
 const accessToken_SECRET: string = process.env.ACCESS_TOKEN_SECRET as string;
 

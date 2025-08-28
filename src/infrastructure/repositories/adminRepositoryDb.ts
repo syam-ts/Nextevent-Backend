@@ -1,12 +1,32 @@
+import { IAdmin } from "../../domain/entities/Admin";
 import { IEvent } from "../../domain/entities/Event";
 import { IGuest } from "../../domain/entities/Guest";
 import { IOrganizer } from "../../domain/entities/Organizer";
 import { IAdminRepository } from "../../domain/interfaces/IAdminRepository";
+import { sendMail } from "../../helper/sendMail";
+import { AdminModel } from "../database/Schema/AdminSchema";
 import { EventModel } from "../database/Schema/EventSchema";
 import { GuestModel } from "../database/Schema/GuestSchema";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
 
 export class AdminRepositoryDb implements IAdminRepository {
+  async loginAdmin(userName: string, password: string): Promise<IAdmin> {
+    const admin = await AdminModel.findOne({ userName }).lean<IAdmin>();
+
+    if (!admin) throw new Error("Admin not found");
+
+    if (password !== admin.password) throw new Error("Wrong password!");
+
+    sendMail(
+      "syamnandhu3@gmail.com",
+      "Admin",
+      "Login From Nextevent",
+      "Welcome to Nextevent"
+    );
+
+    return admin;
+  }
+
   async getAllOrganizers(): Promise<IOrganizer[]> {
     //pagination
     const allOrganizers = await OrganizerModel.find().lean<IOrganizer[]>();

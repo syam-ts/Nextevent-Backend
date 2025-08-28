@@ -4,7 +4,7 @@ declare module 'express-serve-static-core' {
     interface Request {
         user?: { 
             _id?: string,
-             role: 'organizer' | 'guest' 
+             role: 'organizer' | 'guest' | 'admin'
             } 
         cookies: {refreshToken?: string}
         query: {page?: number}
