@@ -6,7 +6,7 @@ require("dotenv").config();
 
 type DecodedUser = {
     _id: string | undefined;
-    role: "organizer" | "guest";
+    role: "organizer" | "guest" | "admin";
 }
 
 const access_secret = process.env.ACCESS_TOKEN_SECRET as string;
