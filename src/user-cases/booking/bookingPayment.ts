@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { IBookingRepository } from "../../domain/interfaces/IBookingRepository";
+import { IBooking } from "../../domain/entities/Booking";
 
 interface IBody {
     guestId: string;
@@ -11,7 +12,7 @@ interface IBody {
     zipcode: string;
     numberOfSeats: number;
     total: number;
-}
+} 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2025-06-30.basil",

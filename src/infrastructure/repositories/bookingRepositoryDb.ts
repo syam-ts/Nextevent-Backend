@@ -1,9 +1,14 @@
+import { startSession } from "mongoose";
+import { autoExpierBooking } from "../../helper/auto-expiry/autoExpireBooking";
 import { IBooking } from "../../domain/entities/Booking";
+import { IEvent } from "../../domain/entities/Event";
 import { IBookingRepository } from "../../domain/interfaces/IBookingRepository";
 import { AdminModel } from "../database/Schema/AdminSchema";
 import { BookingModel } from "../database/Schema/BookingSchema";
 import { EventModel } from "../database/Schema/EventSchema";
 import { GuestModel } from "../database/Schema/GuestSchema";
+import { NotificationModel } from "../database/Schema/NotificationSchem";
+import { INotification } from "../../domain/entities/Notification";
 
 export class BookingRepositoryDb implements IBookingRepository {
     async newBooking(
@@ -16,32 +21,62 @@ export class BookingRepositoryDb implements IBookingRepository {
         zipcode: string,
         numberOfSeats: number,
         total: number
-    ): Promise<void> {
-        const addNewBooking = await new BookingModel({
-            guestId,
-            eventDetails: {
-                _id: eventId,
-                eventName: eventName,
-            },
-            isPaid,
-            street,
-            city,
-            zipcode,
-            numberOfSeats,
-            total,
-            createdAt: Date.now(),
-        }).save();
-        if (!addNewBooking) throw new Error("Could not create new Booking");
+    ): Promise<INotification> {
 
-        //update seats in event
-        const updateEventSeats = await EventModel.findByIdAndUpdate(eventId, {
-            $inc: { totalSeats: -numberOfSeats, numberOfBooking: numberOfSeats },
-        });
+        const session = await startSession();
+        session.startTransaction();
 
-        if (!updateEventSeats)
-            throw new Error("Could not update event seats number!");
+        try {
+            const updateEventSeats = await EventModel.findByIdAndUpdate(
+                {
+                    _id: eventId,
+                    totalSeats: { $gte: numberOfSeats },
+                },
+                {
+                    $inc: { totalSeats: -numberOfSeats, numberOfBooking: numberOfSeats },
+                }
+            );
 
-        return;
+            if (!updateEventSeats) {
+                throw new Error("Requested seats not available");
+            }
+
+            const newBooking = await new BookingModel({
+                guestId,
+                eventDetails: {
+                    _id: eventId,
+                    eventName: eventName,
+                },
+                isPaid,
+                street,
+                city,
+                zipcode,
+                numberOfSeats,
+                total,
+                createdAt: Date.now(),
+            }).save({ session });
+
+            if (!newBooking) throw new Error("Could not create new Booking");
+
+            autoExpierBooking(newBooking._id, String(updateEventSeats?.date));
+
+            const addNotification = await new NotificationModel({
+                role: "guest",
+                roleId: guestId,
+                entityId: newBooking._id,
+                message: "New Booking Created",
+                markAsRead: false,
+                createdAt: Date.now(),
+            }).save();
+
+            await session.commitTransaction();
+            session.endSession();
+            return addNotification;
+        } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
+            throw error;
+        }
     }
 
     async getMyBookings(guestId: string): Promise<IBooking[]> {
@@ -61,7 +96,6 @@ export class BookingRepositoryDb implements IBookingRepository {
     }
 
     async cancelBooking(bookingId: string): Promise<void> {
-        
         const cancelGuestBooking = await BookingModel.findByIdAndDelete(bookingId);
         if (!cancelGuestBooking) throw new Error("Booking not cancel");
 
@@ -73,7 +107,7 @@ export class BookingRepositoryDb implements IBookingRepository {
                 $inc: { "wallet.balance": walletAmount },
 
                 $push: {
-                    "wallet.transaction": {
+                    "wallet.transactions": {
                         type: "credit",
                         amount: walletAmount,
                         fromName: "admin",
@@ -90,7 +124,7 @@ export class BookingRepositoryDb implements IBookingRepository {
                 $inc: { "wallet.balance": walletAmount },
 
                 $push: {
-                    "wallet.transaction": {
+                    "wallet.transactions": {
                         type: "credit",
                         amount: walletAmount,
                         fromName: "guest",

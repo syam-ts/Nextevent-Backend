@@ -1,9 +1,9 @@
 import { IWallet } from "./Wallet";
 
 export interface IAdmin {
-    _id?: string;
+    _id: string;
     userName: string;
-    password: String;
+    password: string;
     isAuthurized: boolean;
     wallet: IWallet
     createdAt: Date

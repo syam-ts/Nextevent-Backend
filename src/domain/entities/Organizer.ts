@@ -1,4 +1,3 @@
-import { IEvent } from "./Event"
 
 export interface IOrganizer {
     _id: string;
@@ -8,6 +7,6 @@ export interface IOrganizer {
     password: string
     role: "organizer",
     organizationName: string,
-    createdEvents: IEvent[],
+    totalEventsCreated: number,
     createdAt: Date
 }

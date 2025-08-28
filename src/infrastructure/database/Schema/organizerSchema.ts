@@ -27,13 +27,11 @@ const organizerSchema = new Schema<IOrganizer>({
         type: String,
         required: true,
     },
-    createdEvents: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "event",
-            require: false,
-        },
-    ],
+    totalEventsCreated: {
+        type: Number,
+        required: true,
+        default: 0
+    },
     createdAt: {
         type: Date,
         required: true,
