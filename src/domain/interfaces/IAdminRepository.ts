@@ -4,9 +4,17 @@ import { IGuest } from "../entities/Guest";
 import { IOrganizer } from "../entities/Organizer";
 
 export interface IAdminRepository {
-
-  loginAdmin(userName: string, password: string): Promise<IAdmin>; 
-  getAllOrganizers(): Promise<IOrganizer[]>;
+  loginAdmin(userName: string, password: string): Promise<IAdmin>;
+  getAllOrganizers(
+    currentPage: number,
+    filter: string
+  ): Promise<{
+    organizers: IOrganizer[];
+    totalPages: number;
+  }>;
   getAllGuests(): Promise<IGuest[]>;
   getAllEvents(): Promise<IEvent[]>;
+
+  blockOrganizer(organizersId: string): Promise<void>;
+  unBlockOrganizer(organizerId: string): Promise<void>;
 }

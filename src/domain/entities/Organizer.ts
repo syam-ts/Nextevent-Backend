@@ -8,5 +8,6 @@ export interface IOrganizer {
     role: "organizer",
     organizationName: string,
     totalEventsCreated: number,
+    isBlocked: boolean,
     createdAt: Date
 }
