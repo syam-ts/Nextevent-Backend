@@ -7,14 +7,17 @@ import { GetAllOrganizers } from "../../user-cases/admin/getAllOrganizers";
 import { HttpStatusCode } from "../../utils/constants/statusCodes";
 import generateToken from "../../lib/jwt/generateToken";
 import { LoginAdmin } from "../../user-cases/admin/loginAdmin";
+import { BlockOrganizer } from "../../user-cases/admin/blockOrganizer";
+import { UnBlockOrganizer } from "../../user-cases/admin/unBlockOrganizer";
 
 export class AdminController {
-  
   private adminRepo: IAdminRepository;
   public loginAdminUsecase: LoginAdmin;
   public getAllOrganizersUsecase: GetAllOrganizers;
   public getAllGuestsUsecase: GetAllGuests;
   public getAllEventsUsecase: GetAllEvents;
+  public blockOrganizerUsecase: BlockOrganizer;
+  public unBlockOrganizerUsecase: UnBlockOrganizer;
 
   constructor() {
     this.adminRepo = new AdminRepositoryDb();
@@ -22,6 +25,8 @@ export class AdminController {
     this.getAllOrganizersUsecase = new GetAllOrganizers(this.adminRepo);
     this.getAllGuestsUsecase = new GetAllGuests(this.adminRepo);
     this.getAllEventsUsecase = new GetAllEvents(this.adminRepo);
+    this.blockOrganizerUsecase = new BlockOrganizer(this.adminRepo);
+    this.unBlockOrganizerUsecase = new UnBlockOrganizer(this.adminRepo);
   }
 
   loginAdmin = async (req: Request, res: Response): Promise<void> => {
@@ -51,10 +56,15 @@ export class AdminController {
 
   getAllOrganizers = async (req: Request, res: Response) => {
     try {
-      const organizers = await this.getAllOrganizersUsecase.execute();
+      const { currentPage, filter } = req.query;
+      const result = await this.getAllOrganizersUsecase.execute(
+        Number(currentPage),
+        String(filter)
+      );
 
       res.status(HttpStatusCode.OK).json({
-        organizers,
+        organizers: result.organizers,
+        totalPages: result.totalPages,
         message: "Loaded all organizes",
         success: true,
       });
@@ -90,6 +100,40 @@ export class AdminController {
       res.status(HttpStatusCode.OK).json({
         events,
         message: "Loaded all events",
+        success: true,
+      });
+    } catch (error: unknown) {
+      const err = error as { message: string };
+      res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message, success: false });
+    }
+  };
+
+  blockOrganizer = async (req: Request, res: Response) => {
+    try {
+      const { organizerId } = req.params;
+      const reuslt = await this.blockOrganizerUsecase.execute(organizerId);
+
+      res.status(HttpStatusCode.CREATED).json({
+        message: "Organizer blocked",
+        success: true,
+      });
+    } catch (error: unknown) {
+      const err = error as { message: string };
+      res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message, success: false });
+    }
+  };
+
+  unBlockOrganizer = async (req: Request, res: Response) => {
+    try {
+      const { organizerId } = req.params;
+      const reuslt = await this.unBlockOrganizerUsecase.execute(organizerId);
+
+      res.status(HttpStatusCode.CREATED).json({
+        message: "Organizer unblocked",
         success: true,
       });
     } catch (error: unknown) {

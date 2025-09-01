@@ -32,6 +32,11 @@ const organizerSchema = new Schema<IOrganizer>({
         required: true,
         default: 0
     },
+    isBlocked: {
+        type: Boolean, 
+        required: true,
+        default: false
+    },
     createdAt: {
         type: Date,
         required: true,
