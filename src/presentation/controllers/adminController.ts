@@ -113,9 +113,9 @@ export class AdminController {
   blockOrganizer = async (req: Request, res: Response) => {
     try {
       const { organizerId } = req.params;
-      const reuslt = await this.blockOrganizerUsecase.execute(organizerId);
+      const result = await this.blockOrganizerUsecase.execute(organizerId);
 
-      res.status(HttpStatusCode.CREATED).json({
+      res.status(HttpStatusCode.CREATED).json({ 
         message: "Organizer blocked",
         success: true,
       });
@@ -130,9 +130,9 @@ export class AdminController {
   unBlockOrganizer = async (req: Request, res: Response) => {
     try {
       const { organizerId } = req.params;
-      const reuslt = await this.unBlockOrganizerUsecase.execute(organizerId);
+      const result = await this.unBlockOrganizerUsecase.execute(organizerId);
 
-      res.status(HttpStatusCode.CREATED).json({
+      res.status(HttpStatusCode.CREATED).json({ 
         message: "Organizer unblocked",
         success: true,
       });
