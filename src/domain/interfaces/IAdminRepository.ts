@@ -17,4 +17,17 @@ export interface IAdminRepository {
 
   blockOrganizer(organizersId: string): Promise<IOrganizer>;
   unBlockOrganizer(organizerId: string): Promise<IOrganizer>;
+
+  getDashboardStatsForEntities(filter: string): Promise<{
+    totalEvents: number;
+    totalOrganizers: number;
+    totalGuests: number;
+  }>;
+
+  getDashboardStatsForGrossData(): Promise<{
+    totalTickets: number;
+    totalRefund: number;
+    totalTransfer: number;
+    totalProfit: number;
+  }>;
 }
