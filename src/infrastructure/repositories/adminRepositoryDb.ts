@@ -8,6 +8,7 @@ import { GuestModel } from "../database/Schema/GuestSchema";
 import { IOrganizer } from "../../domain/entities/Organizer";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
 import { IAdminRepository } from "../../domain/interfaces/IAdminRepository";
+import { BookingModel } from "../database/Schema/BookingSchema";
 
 export class AdminRepositoryDb implements IAdminRepository {
   async loginAdmin(userName: string, password: string): Promise<IAdmin> {
@@ -111,5 +112,71 @@ export class AdminRepositoryDb implements IAdminRepository {
 
     if (!unBlockedOrganizer) throw new Error("Could not unblock organizer");
     return unBlockedOrganizer;
+  }
+  async getDashboardStatsForEntities(filter: string): Promise<{
+    totalEvents: number;
+    totalOrganizers: number;
+    totalGuests: number;
+  }> {
+    //filter [ day, week, month]
+    const totalEvents = await EventModel.countDocuments();
+    !totalEvents && new Error("no events found");
+
+    const totalOrganizers = await OrganizerModel.countDocuments();
+    !totalOrganizers && new Error("no organizers found");
+
+    const totalGuests = await GuestModel.countDocuments();
+    !totalGuests && new Error("no guets found");
+
+    return {
+      totalEvents,
+      totalOrganizers,
+      totalGuests,
+    };
+  }
+
+  async getDashboardStatsForGrossData(): Promise<{
+    totalTickets: number;
+    totalRefund: number;
+    totalTransfer: number;
+    totalProfit: number;
+  }> {
+    const totalTickets: any = await BookingModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$numberOfSeats" },
+        },
+      },
+    ]);
+
+    if (!totalTickets) throw new Error("Total tickets not found");
+
+    const totalRefund: any = await GuestModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$wallet.balance" },
+        },
+      },
+    ]);
+
+    const totalTransfer = 1000;
+
+    const totalProfit: any = await AdminModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$wallet.balance" },
+        },
+      },
+    ]);
+
+    return {
+      totalTickets: totalTickets[0].total,
+      totalRefund: totalRefund[0].total,
+      totalTransfer,
+      totalProfit: totalProfit[0].total,
+    };
   }
 }

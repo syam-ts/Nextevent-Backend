@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
+import generateToken from "../../lib/jwt/generateToken";
 import { IAdminRepository } from "../../domain/interfaces/IAdminRepository";
 import { AdminRepositoryDb } from "../../infrastructure/repositories/adminRepositoryDb";
 import { GetAllEvents } from "../../user-cases/admin/getAllEvents";
 import { GetAllGuests } from "../../user-cases/admin/getAllGuests";
 import { GetAllOrganizers } from "../../user-cases/admin/getAllOrganizers";
 import { HttpStatusCode } from "../../utils/constants/statusCodes";
-import generateToken from "../../lib/jwt/generateToken";
 import { LoginAdmin } from "../../user-cases/admin/loginAdmin";
 import { BlockOrganizer } from "../../user-cases/admin/blockOrganizer";
 import { UnBlockOrganizer } from "../../user-cases/admin/unBlockOrganizer";
+import { GetDashboardStatsForEntities } from "../../user-cases/admin/getDashboardStatsForEntites";
+import { GetDashboardStatsForGrossData } from "../../user-cases/admin/getDashboardStatsForGrossData";
 
 export class AdminController {
   private adminRepo: IAdminRepository;
@@ -18,6 +20,8 @@ export class AdminController {
   public getAllEventsUsecase: GetAllEvents;
   public blockOrganizerUsecase: BlockOrganizer;
   public unBlockOrganizerUsecase: UnBlockOrganizer;
+  public getDashboardStatsForEntitiesUsecase: GetDashboardStatsForEntities;
+  public getDashboardStatsForGrossDataUsecase: GetDashboardStatsForGrossData;
 
   constructor() {
     this.adminRepo = new AdminRepositoryDb();
@@ -27,6 +31,11 @@ export class AdminController {
     this.getAllEventsUsecase = new GetAllEvents(this.adminRepo);
     this.blockOrganizerUsecase = new BlockOrganizer(this.adminRepo);
     this.unBlockOrganizerUsecase = new UnBlockOrganizer(this.adminRepo);
+    this.getDashboardStatsForEntitiesUsecase = new GetDashboardStatsForEntities(
+      this.adminRepo
+    );
+    this.getDashboardStatsForGrossDataUsecase =
+      new GetDashboardStatsForGrossData(this.adminRepo);
   }
 
   loginAdmin = async (req: Request, res: Response): Promise<void> => {
@@ -115,7 +124,7 @@ export class AdminController {
       const { organizerId } = req.params;
       const result = await this.blockOrganizerUsecase.execute(organizerId);
 
-      res.status(HttpStatusCode.CREATED).json({ 
+      res.status(HttpStatusCode.CREATED).json({
         message: "Organizer blocked",
         success: true,
       });
@@ -132,8 +141,50 @@ export class AdminController {
       const { organizerId } = req.params;
       const result = await this.unBlockOrganizerUsecase.execute(organizerId);
 
-      res.status(HttpStatusCode.CREATED).json({ 
+      res.status(HttpStatusCode.CREATED).json({
         message: "Organizer unblocked",
+        success: true,
+      });
+    } catch (error: unknown) {
+      const err = error as { message: string };
+      res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message, success: false });
+    }
+  };
+
+  getDashboardStatsForEntities = async (req: Request, res: Response) => {
+    try {
+      const { filter } = req.query;
+      const result = await this.getDashboardStatsForEntitiesUsecase.execute(
+        String(filter)
+      );
+
+      res.status(HttpStatusCode.CREATED).json({
+        totalEvents: result.totalEvents,
+        totalOrganizers: result.totalOrganizers,
+        totalGuests: result.totalGuests,
+        message: "Dashboard stats loaded",
+        success: true,
+      });
+    } catch (error: unknown) {
+      const err = error as { message: string };
+      res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message, success: false });
+    }
+  };
+
+  getDashboardStatsForGrossData = async (req: Request, res: Response) => {
+    try {
+      const result = await this.getDashboardStatsForGrossDataUsecase.execute();
+
+      res.status(HttpStatusCode.CREATED).json({
+        totalTickets: result.totalTickets,
+        totalRefund: result.totalRefund,
+        totalTransfer: result.totalTransfer,
+        totalProfit: result.totalProfit,
+        message: "Dashboard gross stats loaded",
         success: true,
       });
     } catch (error: unknown) {

@@ -23,6 +23,8 @@ class AdminRoute {
     this.router.get("/all-events", verifyToken, this.adminController.getAllEvents);
     this.router.patch('/organizer/block/:organizerId', verifyToken, this.adminController.blockOrganizer);
     this.router.patch('/organizer/unblock/:organizerId', verifyToken, this.adminController.unBlockOrganizer);
+    this.router.get('/dashboard/all-entities', verifyToken, this.adminController.getDashboardStatsForEntities);
+    this.router.get('/dashboard/all-grossData', verifyToken, this.adminController.getDashboardStatsForGrossData);
   }
 }
 
