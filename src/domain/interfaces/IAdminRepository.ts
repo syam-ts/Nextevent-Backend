@@ -15,6 +15,6 @@ export interface IAdminRepository {
   getAllGuests(): Promise<IGuest[]>;
   getAllEvents(): Promise<IEvent[]>;
 
-  blockOrganizer(organizersId: string): Promise<void>;
-  unBlockOrganizer(organizerId: string): Promise<void>;
+  blockOrganizer(organizersId: string): Promise<IOrganizer>;
+  unBlockOrganizer(organizerId: string): Promise<IOrganizer>;
 }

@@ -10,7 +10,6 @@ import { OrganizerModel } from "../database/Schema/organizerSchema";
 import { IAdminRepository } from "../../domain/interfaces/IAdminRepository";
 
 export class AdminRepositoryDb implements IAdminRepository {
-
   async loginAdmin(userName: string, password: string): Promise<IAdmin> {
     const admin = await AdminModel.findOne({ userName }).lean<IAdmin>();
 
@@ -86,7 +85,7 @@ export class AdminRepositoryDb implements IAdminRepository {
     return allEvents;
   }
 
-  async blockOrganizer(organizersId: string): Promise<void> {
+  async blockOrganizer(organizersId: string): Promise<IOrganizer> {
     const blockedOrganizer = await OrganizerModel.findByIdAndUpdate(
       organizersId,
       {
@@ -97,10 +96,10 @@ export class AdminRepositoryDb implements IAdminRepository {
     ).lean<IOrganizer>();
 
     if (!blockedOrganizer) throw new Error("Could not block organizer");
-    return;
+    return blockedOrganizer;
   }
 
-  async unBlockOrganizer(organizersId: string): Promise<void> {
+  async unBlockOrganizer(organizersId: string): Promise<IOrganizer> {
     const unBlockedOrganizer = await OrganizerModel.findByIdAndUpdate(
       organizersId,
       {
@@ -111,6 +110,6 @@ export class AdminRepositoryDb implements IAdminRepository {
     ).lean<IOrganizer>();
 
     if (!unBlockedOrganizer) throw new Error("Could not unblock organizer");
-    return;
+    return unBlockedOrganizer;
   }
 }

@@ -11,7 +11,7 @@ export const AdminSchema = new Schema<IAdmin>({
     password: {
         type: String,
         required: true,
-        default: "admin123",
+        default: "admin1234",
     },
 
     isAuthurized: {
