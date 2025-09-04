@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import express, { Express } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import ConnectDB from "./infrastructure/database/db";
 import rateLimit, { RateLimitRequestHandler } from "express-rate-limit";
 import GuestRoute from "./presentation/exress-http/routes/guestRoute";
@@ -11,6 +11,8 @@ import OrganizerRoute from "./presentation/exress-http/routes/organizerRoute";
 import EventRoute from "./presentation/exress-http/routes/eventRoute";
 import BookingRoute from "./presentation/exress-http/routes/bookingRoute";
 import AdminRoute from "./presentation/exress-http/routes/adminRoute";
+import logger from "./logger/logger";
+ 
 
 interface IServer {
     connectDB: ConnectDB;
@@ -67,6 +69,14 @@ class Server implements IServer {
     }
 
     public configureMiddlewares(): void {
+        this.app.use((req: Request, res: Response, next: NextFunction) => {  
+            logger.info(`route: ${req.url}`); 
+            next();
+        });
+        this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+        logger.error(err.message, { stack: err.stack });
+        res.status(500).send("Internal Server Error");
+        }); 
         this.app.use(this.apiLimiter);
         this.app.use(express.json());
         this.app.use(cookieParser());
