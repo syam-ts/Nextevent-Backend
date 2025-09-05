@@ -7,6 +7,11 @@ import { verifyPassword } from "../../lib/crypto/verifyPassword";
 import { EventModel } from "../database/Schema/EventSchema";
 import { NotificationModel } from "../database/Schema/NotificationSchem";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
+import Redis from 'redis';
+
+const redisClient = Redis.createClient();
+
+
 
 export class OrganizerRepositoryDb implements IOrganizerRepository {
   async signupOrganizer(
@@ -17,7 +22,6 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
     organizationName: string
   ): Promise<void> {
     const hashedPassword = await hashPasswordFunction(password);
-    console.log("HA", hashedPassword);
 
     const newOrganizer = await new OrganizerModel({
       name,
@@ -84,9 +88,6 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
   }
 
   async getHomeStats(organizerId: string): Promise<any> {
-    //Total Ticket Price
-
-    //Total Guest
 
     const organizer = await OrganizerModel.findById(
       organizerId
