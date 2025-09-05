@@ -1,6 +1,6 @@
-import { model, Schema } from "mongoose";
-import { IAdmin } from "../../../domain/entities/Admin";
+import { model, Schema } from "mongoose"; 
 import { WalletSchema } from "./WalletSchemat";
+import { IAdmin } from "../../../domain/entities/Admin";
 
 export const AdminSchema = new Schema<IAdmin>({
     userName: {
@@ -11,7 +11,7 @@ export const AdminSchema = new Schema<IAdmin>({
     password: {
         type: String,
         required: true,
-        default: "admin123",
+        default: "admin1234",
     },
 
     isAuthurized: {

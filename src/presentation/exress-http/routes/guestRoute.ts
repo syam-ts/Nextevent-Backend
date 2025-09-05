@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { EventController } from "../../controllers/eventController";
 import { verifyToken } from "../../middlewares/verifyToken";
 import { GuestController } from "../../controllers/guestController";
+import refreshToken from "../../../lib/jwt/refreshToken";
 
 class GuestRoute {
+
     public router: Router;
     private guestController: GuestController;
 
@@ -15,9 +16,14 @@ class GuestRoute {
     }
 
     private initializeRoutes(): void {
+        this.router.get('/refresh-token', refreshToken);
         this.router.post("/signup", this.guestController.signupGuest);
         this.router.post("/login", this.guestController.loginGuest);
+        this.router.get('/wallet', verifyToken, this.guestController.getWallet);
         this.router.put("/update", verifyToken, this.guestController.updateGuest);
+        this.router.get('/home-stats', verifyToken, this.guestController.getHomeStats);
+        this.router.get('/organizers', verifyToken, this.guestController.getAllOrganizers);
+        this.router.get('/organizer-events/:organizerId', verifyToken, this.guestController.getEventsByOrganizer);
     }
 }
 

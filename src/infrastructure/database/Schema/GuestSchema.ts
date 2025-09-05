@@ -24,8 +24,8 @@ export const GuestSchema = new Schema<IGuest>({
         type: Number,
         required: true,
     },
-    age: {
-        type: Number,
+    location: {
+        type: String,
         required: true,
     },
     numberOfEventsAttended: {

@@ -18,8 +18,9 @@ class BookingRoute {
 
         this.router.post("/payment", verifyToken, this.bookingController.bookingPayment);
         this.router.post("/confirm", verifyToken, this.bookingController.newBooking);
+        this.router.post('/free', verifyToken, this.bookingController.freeBooking)
         this.router.get("/my-bookings", verifyToken, this.bookingController.getMyBookings);
-        this.router.get('/view/:bookingId', verifyToken, this.bookingController.viewBooking);
+        this.router.get('/view/:bookingId', verifyToken, this.bookingController.viewBooking)
         this.router.delete("/cancel/:bookingId", verifyToken, this.bookingController.cancelBooking);
     }
 }

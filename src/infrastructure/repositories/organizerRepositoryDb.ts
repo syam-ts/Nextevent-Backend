@@ -1,8 +1,17 @@
+import { INotification } from "../../domain/entities/Notification";
 import { IOrganizer } from "../../domain/entities/Organizer";
 import { IOrganizerRepository } from "../../domain/interfaces/IOrganiserRepository";
-import { hashPasswordFunction } from "../../utils/crypto/hashPassword";
-import { verifyPassword } from "../../utils/crypto/verifyPassword";
+import { sendMail } from "../../helper/sendMail";
+import { hashPasswordFunction } from "../../lib/crypto/hashPassword";
+import { verifyPassword } from "../../lib/crypto/verifyPassword";
+import { EventModel } from "../database/Schema/EventSchema";
+import { NotificationModel } from "../database/Schema/NotificationSchem";
 import { OrganizerModel } from "../database/Schema/organizerSchema";
+import Redis from 'redis';
+
+const redisClient = Redis.createClient();
+
+
 
 export class OrganizerRepositoryDb implements IOrganizerRepository {
   async signupOrganizer(
@@ -11,9 +20,8 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
     mobile: number,
     password: string,
     organizationName: string
-  ): Promise<void> { 
+  ): Promise<void> {
     const hashedPassword = await hashPasswordFunction(password);
-    console.log('HA',hashedPassword)
 
     const newOrganizer = await new OrganizerModel({
       name,
@@ -29,7 +37,10 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
     return;
   }
 
-  async loginOrganizer(email: string, password: string): Promise<IOrganizer> {
+  async loginOrganizer(
+    email: string,
+    password: string
+  ): Promise<{ notifications: INotification[]; organizer: IOrganizer }> {
     const organizer = await OrganizerModel.findOne({
       email,
     }).lean<IOrganizer>();
@@ -37,7 +48,19 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
 
     const verifyPass = verifyPassword(password, organizer.password);
     if (!verifyPass) throw new Error("Wrong Password!");
-    return organizer;
+
+    sendMail(
+      email,
+      organizer.organizationName,
+      "Login From Nextevent",
+      "Welcome to Nextevent"
+    );
+
+    const notifications = await NotificationModel.find({
+      roleId: organizer._id,
+    }).lean<INotification[]>();
+
+    return { notifications, organizer };
   }
 
   async updateOrganizer(
@@ -62,5 +85,49 @@ export class OrganizerRepositoryDb implements IOrganizerRepository {
 
     if (!updateOrganizer) throw new Error("updation failed!");
     return updateOrganizer;
+  }
+
+  async getHomeStats(organizerId: string): Promise<any> {
+
+    const organizer = await OrganizerModel.findById(
+      organizerId
+    ).lean<IOrganizer>();
+
+    const totalTiketAndGuest: any = await EventModel.aggregate([
+      {
+        $match: { "organizerDetails._id": organizerId },
+      },
+      {
+        $group: {
+          _id: null,
+          totalTicket: { $sum: "$ticketPrice" },
+          totalGuests: { $sum: "$totalSeats" },
+        },
+      },
+    ]);
+
+    return {
+      totalEventsCreated: organizer?.totalEventsCreated,
+      totalTicket: totalTiketAndGuest[0].totalTicket,
+      totalGuests: totalTiketAndGuest[0].totalGuests,
+    };
+  }
+
+  async markAsReadNotification(notificationId: string): Promise<INotification> {
+    const notification = await NotificationModel.findByIdAndUpdate(
+      notificationId,
+      {
+        $set: {
+          markAsRead: true,
+        },
+      },
+      {
+        new: true,
+      }
+    ).lean<INotification>();
+
+    if (!notification) throw new Error("Notification not found");
+
+    return notification;
   }
 }
